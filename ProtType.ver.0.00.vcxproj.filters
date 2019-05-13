@@ -108,6 +108,9 @@
     <ClCompile Include="collision.cpp">
       <Filter>アプリケーション\オブジェクト\更新処理</Filter>
     </ClCompile>
+    <ClCompile Include="Select_Game.cpp">
+      <Filter>アプリケーション\シーン</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>アプリケーション\オブジェクト\更新処理</Filter>
+    </ClInclude>
+    <ClInclude Include="Select_Game.h">
+      <Filter>アプリケーション\シーン</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

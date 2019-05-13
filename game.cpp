@@ -67,3 +67,7 @@ void changeScene()
 		}
 	}
 }
+
+// ”óÀ’Ç‰Á
+int *getScene() { return (&scene); }
+// ‚±‚±‚Ü‚Å

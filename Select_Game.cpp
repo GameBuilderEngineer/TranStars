@@ -226,8 +226,9 @@ void moveChooseStageCursor()
 
 	if (GetKeyboardTrigger(DIK_RETURN))
 	{
-		// void を int にして返り値を渡すようにする？
-		initializeObject(g_cursor % MOVE_CHOOSE_MAX);
+		// 
+		// 引数どれ設定すればいい？
+		initializeObject( /*StageObj *p_stgobj*/,g_cursor % MOVE_CHOOSE_MAX);
 		g_cursor = 0;
 
 		// STAGEを正しい遷移先に変える必要あり
