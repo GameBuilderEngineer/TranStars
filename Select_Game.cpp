@@ -228,7 +228,7 @@ void moveChooseStageCursor()
 	{
 		// 
 		// ˆø”‚Ç‚êİ’è‚·‚ê‚Î‚¢‚¢H
-		initializeObject( /*StageObj *p_stgobj*/,g_cursor % MOVE_CHOOSE_MAX);
+		//initializeObject( /*StageObj *p_stgobj*/,g_cursor % MOVE_CHOOSE_MAX);
 		g_cursor = 0;
 
 		// STAGE‚ğ³‚µ‚¢‘JˆÚæ‚É•Ï‚¦‚é•K—v‚ ‚è

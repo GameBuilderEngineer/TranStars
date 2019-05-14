@@ -141,11 +141,11 @@ void setPosition(Image* image, float _x, float _y)
 void setAngle(Image* image, float _angle)
 {
 	image->angle = _angle;
-	float x = image->position.x;
-	float y = image->position.y;
 	float angle = image->angle;
 	float width = image->width;
 	float height = image->height;
+	float x = image->position.x+width/2;
+	float y = image->position.y+height/2;
 	
 	//x = x * cosθ - y * sinθ
 	//y = x * sinθ + y * cosθ
@@ -158,14 +158,14 @@ void setAngle(Image* image, float _angle)
 		image->g_pD3DVtxBuffer->Lock(0, 0, (void**)&pVtx, 0);
 		 
 		// 頂点座標の設定
-		pVtx[0].vtx.x = x * cosf(radian) - y * sinf(radian);
-		pVtx[0].vtx.y = x * sinf(radian) + y * cosf(radian);
-		pVtx[1].vtx.x = (x+width) * cosf(radian) - y * sinf(radian);
-		pVtx[1].vtx.y = (x+width) * sinf(radian) + y * cosf(radian);
-		pVtx[2].vtx.x = x * cosf(radian) - (y+height) * sinf(radian);
-		pVtx[2].vtx.y = x * sinf(radian) + (y+height) * cosf(radian);
-		pVtx[3].vtx.x = (x+width) * cosf(radian) - (y+height) * sinf(radian);
-		pVtx[3].vtx.y = (x+width) * sinf(radian) + (y+height) * cosf(radian);
+		pVtx[0].vtx.x = (-width/2) * cosf(radian) - (-height/2) * sinf(radian) + x;
+		pVtx[0].vtx.y = (-width/2) * sinf(radian) + (-height/2) * cosf(radian) + y;
+		pVtx[1].vtx.x = (width/2) * cosf(radian) - (-height/2) * sinf(radian) + x;
+		pVtx[1].vtx.y = (width/2) * sinf(radian) + (-height/2) * cosf(radian) + y;
+		pVtx[2].vtx.x = (-width/2) * cosf(radian) - (height/2) * sinf(radian) + x;
+		pVtx[2].vtx.y = (-width/2) * sinf(radian) + (height/2) * cosf(radian) + y;
+		pVtx[3].vtx.x = (width/2) * cosf(radian) - (height/2) * sinf(radian) + x;
+		pVtx[3].vtx.y = (width/2) * sinf(radian) + (height/2) * cosf(radian) + y;
 
 		// 頂点データをアンロックする
 		image->g_pD3DVtxBuffer->Unlock();
