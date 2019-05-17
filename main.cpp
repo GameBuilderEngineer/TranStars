@@ -316,7 +316,20 @@ void draw()
 {
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);				// αブレンドを行う
 
+	// 樋沼追加
+	// pngの透過を適用するとき必要
+	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// αソースカラーの指定
+	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// αデスティネーションカラーの指定
+
+	// テクスチャステージステートの設定　
+	// 画像のα値をいじるとき必要
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);	// アルファブレンディング処理
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);	// 最初のアルファ引数
+	pDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);	// ２番目のアルファ引数
+
+	// ここまで
 	drawGame();
 
 }

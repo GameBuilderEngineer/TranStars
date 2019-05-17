@@ -19,10 +19,9 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::COMET] = { "TEXTURE/comet.jpg" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.h" };
-	//textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };
-	
+
 	// îÛè¿í«â¡
-	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/back_ground.png" };
+	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };
 	textureName[textureLoaderNS::TITLE_LOGO] = { "TEXTURE/title_logo.png" };
 	textureName[textureLoaderNS::TITLE_PRESS_ENTER] = { "TEXTURE/press_enter.png" };
 	textureName[textureLoaderNS::TITLE_NEW_GAME] = { "TEXTURE/new_game.png" };

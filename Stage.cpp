@@ -6,6 +6,7 @@
 #include "messageDialog.h"
 #include "inputDialog.h"
 #include "object.h"
+#include "Select_Game.h" // ”óÀ’Ç‰Á
 
 MessageDialog mDialog;
 InputDialog inDialog;
@@ -20,6 +21,11 @@ void initializeStage() {
 	InitImage(&gameBG, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
 };
 void updateStage() {
+	// ”óÀ’Ç‰Á
+	// timer‚Ímain‚É‚ ‚é‚©‚çA‚»‚±‚Åif•¶‚·‚é‚©A‚±‚±‚Étimer‚ğ‚Á‚Ä‚­‚é‚©‚Ç‚¿‚ç‚ª‚¢‚¢‚©
+	bool p_pause = *getPause();
+	updatePause();
+	// ‘å‘Ì‚±‚±‚Ü‚Å
 	inDialog.update();
 	mDialog.update();
 	updateObject(&stageObj);
@@ -34,6 +40,7 @@ void drawStage() {
 	inDialog.draw();
 	//mDialog.draw();
 	drawObject(&stageObj);
+	drawPause(); // ”óÀ
 
 };
 
