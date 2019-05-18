@@ -369,11 +369,12 @@ void sortObjEdgeListByX(DataList* list) {
 	list->crnt = list->head;//着目ノードをリセット
 	while (Next(list)) {//最後までx座標順になったら0になって終了
 		if (compareObjEdgeCurrentNextByX(list) == 0) {
-			//(先頭ノード以外で)x座標順になっていないものを見つけていたら
+			// (先頭ノード以外で)次ノードとの間でx座標順になっていないものを見つけていたら
 
-			if (compareObjEdgeByX(list, list->crnt->prev, list->crnt->next) == 1) {
+			if (compareObjEdgeByX(list, list->crnt->prev, list->crnt->next) != 0) {
 				//-1(head) , 0(>) , 1(<)
-				// カレントの前とカレントの次が順序立っていれば==おかしいのがカレントノードならば、カレント自身を右方向へ
+				//(1) カレントの前とカレントの次が順序立っていれば==おかしいのがカレントノードならば、カレント自身を右方向へ
+				//(-1) カレントの前が先頭ノードなので比較できなかった場合も、カレント自身を右方向へ(左方向移動にくっ付けてもよいが、右方向の整列を兼ねられる可能性が高いのと、左方向移動の方でやるとPrevの初回抜けを回避しなければいけないため
 
 				DataNode *crnt_prev = list->crnt->prev, *crnt_ = list->crnt;
 				while (Next(list)) {
@@ -383,11 +384,11 @@ void sortObjEdgeListByX(DataList* list) {
 						break;
 					}
 				}
-				list->crnt = crnt_prev;
+				list->crnt = crnt_prev;//この後Nextされる
 			}
-			else if (compareObjEdgeByX(list, list->crnt->prev, list->crnt->next) == 0) {
+			else{// でなければ
 				//-1(head) , 0(>) , 1(<)
-				// でなければ==おかしいのがカレントの次ノードならば、カレントの次を左方向へ移動
+				//(0) おかしいのがカレントの次ノードならば、カレントの次を左方向へ移動
 				DataNode *crnt_prev = list->crnt->prev, *crnt_next = list->crnt->next;
 				while (Prev(list)) {
 					if (compareObjEdgeByX(list, list->crnt->prev, crnt_next) != 0) {
@@ -396,13 +397,8 @@ void sortObjEdgeListByX(DataList* list) {
 						break;
 					}
 				}
-//				list->crnt = crnt_;
-				list->crnt = crnt_prev;
-			}
-			else if (list->crnt->prev == list->head) {
-				//-1(head) , 0(>) , 1(<)
-				//カレントの前が先頭ノードなので比較できない場合は
-				MoveDnodeAfter(list->head, list->crnt->next);//カレントの次を、先頭ノードの次に移動
+//				list->crnt = crnt_;//この後Nextされる crnt_nextが移動した後の(crnt_ < crnt_->Next)が保証されないのでダメ
+				list->crnt = crnt_prev;//この後Nextされる
 			}
 		}
 	}
