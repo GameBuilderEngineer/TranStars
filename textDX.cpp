@@ -101,3 +101,7 @@ int txtLineBreak() {//¼ì 0.02
 	TxtLine.m_y += TxtLine.m_SIZE;//‰üs
 	return TxtLine.m_y - TxtLine.m_SIZE;
 }
+
+void txtColorChange(TextDX* f, int a, int r, int g, int b) {
+	f->color = SETCOLOR_ARGB(a, r, g, b); 
+}//¼ì0518  F•ÏX

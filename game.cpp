@@ -6,7 +6,7 @@
 #include "textureLoader.h"
 
 int scene;
-void changeScene();
+//void changeScene();//西川0518
 
 void initializeGame() {
 	getTextureLoader()->load(getDevice());//テクスチャの読込
@@ -17,14 +17,14 @@ void initializeGame() {
 };
 
 void updateGame() {
-	
+
 	switch (scene)
 	{
 	case TITLE:		updateTitle();		break;
 	case SELECT_MODE: updateTitle(); break;	// 樋沼追加
 	case CHOOSE_STAGE: updateTitle(); break;	// 樋沼追加
-	case STAGE:		updateStage();	break;
-	case RESULT:		updateResult();	break;
+	case STAGE:		updateStage();	changeScene()/*西川0518*/;break;
+	case RESULT:		updateResult();	changeScene()/*西川0518*/;break;
 	default:	break;
 	}
 };
@@ -65,13 +65,29 @@ void changeScene()
 {
 	if(GetKeyboardTrigger(DIK_RETURN))
 	{
-		scene++;
-		if (scene >= SCENE_NUM)
-		{
-			scene = 0;
-		}
+//		scene++;
+//		if (scene >= SCENE_NUM)
+//		{
+//			scene = 0;
+//		}
+		changeNewScene(SceneList(int(scene) + 1));//西川0518 意味は一緒のはず
 	}
 }
+
+void changeNewScene(SceneList newscene){
+	scene = newscene;
+	if (scene >= SCENE_NUM)
+	{
+		scene = 0;
+	}
+	switch (scene)//西川0518
+	{
+	case TITLE: break;
+	case STAGE:	startStage(); break;
+	case RESULT: finishStage(); break;
+	default:	break;
+	}
+}//西川0518 ++以外の方法でシーン遷移 ステージに入る直前・直後にだけしたい処理(↑のswitch内)があるのでgameを通さずにシーンを変えないでほしい
 
 // 樋沼追加
 int *getScene() { return (&scene); }

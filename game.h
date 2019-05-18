@@ -21,3 +21,5 @@ void unInitializeGame();
 void changeScene();
 int *getScene();
 //　ここまで
+
+void changeNewScene(SceneList newscene);//西川0518 ++以外の方法でシーン遷移 ステージに入る直前・直後にだけしたい処理があるのでgameを通さずにシーンを変えないでほしい

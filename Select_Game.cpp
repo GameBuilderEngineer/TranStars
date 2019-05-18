@@ -203,7 +203,8 @@ void moveSelectModeCursor()
 		{
 			// ステージ01に飛ぶ
 			g_cursor = 0;
-			*scene = STAGE;
+			//*scene = STAGE;
+			changeNewScene(STAGE);//西川0518
 		}
 		break;
 
@@ -213,7 +214,8 @@ void moveSelectModeCursor()
 		{
 			// ステージ選択に飛ぶ
 			g_cursor = 0;
-			*scene = CHOOSE_STAGE;
+			//*scene = CHOOSE_STAGE;
+			changeNewScene(CHOOSE_STAGE);//西川0518
 		}
 		break;
 	}
@@ -247,7 +249,8 @@ void moveChooseStageCursor()
 		// STAGEを正しい遷移先に変える必要あり
 		// 多分　STAGE + (g_cursor % MOVE_CHOOSE_MAX)
 		// game.h内と相談
-		*scene = STAGE;
+		//*scene = STAGE;
+		changeNewScene(STAGE);//西川0518
 	}
 
 	switch (g_cursor % MOVE_CHOOSE_MAX)
@@ -320,7 +323,8 @@ void returnBeforeScene()
 	if (GetKeyboardTrigger(DIK_BACK))
 	{
 		g_cursor = 0;
-		*scene -= 1;
+		//*scene -= 1;
+		changeNewScene(SceneList(int(*scene)-1));//西川0518
 	}
 }
 
@@ -421,7 +425,8 @@ void updatePause()
 	if (g_pause == TRUE && GetKeyboardTrigger(DIK_RETURN))
 	{
 		g_pause = FALSE;
-		*scene = TITLE;
+		//*scene = TITLE;
+		changeNewScene(TITLE);//西川0518
 	}
 }
 

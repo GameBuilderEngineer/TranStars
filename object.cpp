@@ -407,6 +407,13 @@ void printObject(StageObj* p_stgobj) {
 
 }
 
+float getObjectSizeLonger(ObjStr* p_obj) {
+	float dgnl = sqrtf((p_obj->m_rect.x * p_obj->m_rect.x +
+		p_obj->m_rect.y * p_obj->m_rect.y) / 2.0f) / 2.0f;
+	if (dgnl >= p_obj->m_rad) return dgnl;
+	else return p_obj->m_rad;
+}//西川0518  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+
 
 /////以下オブジェクトセット系ローカル関数
 

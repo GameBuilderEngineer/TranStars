@@ -1,0 +1,44 @@
+//西川 05/18
+
+・ステージ選択・クリアごとにしなければいけない処理の分離
+　<Game.cpp>
+　SetSceneに、ステージ開始・終了時にだけしなければいけない処理の呼出を追加
+　Game外でsceneの値をいじる時用の関数(ChangeNewStage)を追加
+
+　<Stage.cpp/h>
+　ステージ開始・終了時にだけしなければいけない処理を呼ぶ関数(startStage,finishStage)を追加
+
+　<Select_Game.cpp>
+　Game外でsceneの値を直接いじってほしくなかったので、*scene=で書き換えていた箇所をChangeNewStageを経由するように変更
+
+
+・共有ファイルへの細かい関数追加
+　<textDX.cpp/h>
+　フォント色を変える関数(txtColorChange)を追加
+
+　<object.cpp/h>
+　オブジェクトが持つxy辺の対角線か半径のうち、長い方を返す関数(getObjectSizeLonger)を追加
+
+
+・x順リスト実装
+　<useList.cpp/h>
+　機能：x座標順のリスト(xBased)、なんかの処理結果リスト(result)を作り、運用
+　resultは何に使うのか：少なくともコリジョン後、エフェクト・アクション等に渡す
+
+　<dataList.cpp/h>
+　共用体UnionDataを作り、おおまかにはデータ部が異なるだけのリスト.cpp/h３種類を１種類のノード/リストとしてこのファイルにまとめた
+　色々機能があるけどuseListでしか呼んでいない
+
+
+・リスト処理の呼出
+　<Stage.cpp/h>
+　リスト処理が完成したので初期化・更新・終了・表示など各呼出を追加
+
+
+・ファイル削除・変更
+　<CircDblLinkedList.cpp/h>
+　<data.cpp/h>
+　<listUse.cpp/h>
+　<objectList.cpp/h>
+　<typeList.cpp/h>
+　消去・名前変更・統一などで消滅(旧ファイルはどれも呼び出していなかったので問題は起こさないと思いますが、名前変えまくっててすみません)

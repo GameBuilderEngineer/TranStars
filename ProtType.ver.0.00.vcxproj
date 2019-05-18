@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{CFB0D1CE-C54D-4600-940E-3470527391A1}</ProjectGuid>
     <RootNamespace>ProtTypever000</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>GameProtType.ver.0.00</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -129,33 +129,32 @@
   <ItemGroup>
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="dataList.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="inputDialog.cpp" />
-    <ClCompile Include="circDblLinkedList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messageDialog.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="read_text.cpp" />
     <ClCompile Include="Result.cpp" />
-    <ClCompile Include="data.cpp" />
     <ClCompile Include="Select_Game.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureLoader.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="useList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="dataList.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="data.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="inputDialog.h" />
-    <ClInclude Include="circDblLinkedList.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="messageDialog.h" />
     <ClInclude Include="object.h" />
@@ -167,6 +166,7 @@
     <ClInclude Include="textureLoader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="useList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

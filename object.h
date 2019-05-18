@@ -20,7 +20,7 @@ enum objTypes{
 		UI_CURSOR,
 		UI_EFFECT,
 		UI_HP,
-	TYPE_MAX
+	TYPE_MAX,
 };
 
 //shortは-0.5±32767.5、intは-0.5±2147483647.5
@@ -73,3 +73,5 @@ void uninitializeObject(StageObj* p_stgobj);
 void updateObject(StageObj* p_stgobj);
 void drawObject(StageObj* p_stgobj);
 void printObject(StageObj* p_stgobj);
+
+float getObjectSizeLonger(ObjStr* p_obj);//西川0518 オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
