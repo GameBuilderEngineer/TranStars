@@ -38,7 +38,7 @@ void updateStage() {
 	mDialog.update();
 	updateObject(&stageObj);
 	updateObjList(&xBasedList, &resultList, checkHitObjRR);//西川0518 x順リストを更新、同時進行的にコリジョン関数を渡してその結果リストを取得
-//	checkResultList(&resultList,);//西川0518
+	check_updateAndResultList(&resultList, checkHitObjCC);//西川0518
 	if (getMouseMButton())
 	{
 		inDialog.print("please InputText");
@@ -60,8 +60,8 @@ void printStage() {
 	printTextDX(getDebugFont(), "mouseX:", 1000, 0, getMouseX());
 	printTextDX(getDebugFont(), "mouseY:", 1000, 30, getMouseY());
 
-//	printList(&xBasedList);//西川0518 x順リストの中身を視覚化
-	printList(&resultList);//西川0518 結果リストの中身を視覚化
+	if (GetKeyboardPress(DIK_LCONTROL)/*左CTRL*/) printList(&xBasedList);//西川0518 x順リストの中身を視覚化
+	if (GetKeyboardPress(DIK_RCONTROL)/*右CTRL*/) printList(&resultList);//西川0518 結果リストの中身を視覚化
 	printObject(&stageObj);//西川 0.22
 };
 void unInitializeStage() {

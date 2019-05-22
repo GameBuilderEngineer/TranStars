@@ -43,14 +43,14 @@
     <Filter Include="ドメイン\メッセージダイアログ">
       <UniqueIdentifier>{07793791-7ab6-41de-87c8-c890aeb80160}</UniqueIdentifier>
     </Filter>
-    <Filter Include="アプリケーション\ステージ管理">
-      <UniqueIdentifier>{72ddab81-4ee4-442b-85cb-68de9da41b48}</UniqueIdentifier>
-    </Filter>
     <Filter Include="アプリケーション\オブジェクト\リスト化">
       <UniqueIdentifier>{6bb8f1f7-4974-4dd6-b114-309af4adf932}</UniqueIdentifier>
     </Filter>
     <Filter Include="アプリケーション\オブジェクト\更新処理">
       <UniqueIdentifier>{4c727316-4c2a-4e44-9105-2f3a7acd8012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\シーン\ステージ管理">
+      <UniqueIdentifier>{72ddab81-4ee4-442b-85cb-68de9da41b48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +94,7 @@
       <Filter>アプリケーション\オブジェクト</Filter>
     </ClCompile>
     <ClCompile Include="read_text.cpp">
-      <Filter>アプリケーション\ステージ管理</Filter>
+      <Filter>アプリケーション\シーン\ステージ管理</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>アプリケーション\ゲーム管理</Filter>
@@ -110,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="dataList.cpp">
       <Filter>アプリケーション\オブジェクト\リスト化</Filter>
+    </ClCompile>
+    <ClCompile Include="effect.cpp">
+      <Filter>アプリケーション\オブジェクト\更新処理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +159,7 @@
       <Filter>アプリケーション\オブジェクト</Filter>
     </ClInclude>
     <ClInclude Include="read_text.h">
-      <Filter>アプリケーション\ステージ管理</Filter>
+      <Filter>アプリケーション\シーン\ステージ管理</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>アプリケーション\オブジェクト\更新処理</Filter>
@@ -169,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="dataList.h">
       <Filter>アプリケーション\オブジェクト\リスト化</Filter>
+    </ClInclude>
+    <ClInclude Include="effect.h">
+      <Filter>アプリケーション\オブジェクト\更新処理</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

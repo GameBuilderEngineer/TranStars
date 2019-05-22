@@ -48,8 +48,8 @@ void Remove(DataList* list, DataNode* p)
 	p->next->prev = p->prev;
 	list->crnt = p->prev;	// 削除したノードの先行ノードに着目
 	free(p);
-	if (list->crnt == list->head)
-		list->crnt = list->head->next;
+//	if (list->crnt == list->head)
+//		list->crnt = list->head->next;
 };
 
 //a->b=(*a).b

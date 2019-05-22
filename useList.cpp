@@ -23,9 +23,30 @@ void updateObjList(DataList* xBased, DataList* result, bool process(ObjStr* a, O
 	sortObjEdgeListByX(xBased);//x端リストにオブジェクトの移動を反映
 	optimizeObjList_getResult(NULL, xBased, result, process);
 }
+
+//既に作った結果リストを全部processで参照する
 void checkResultList(DataList* result, void process(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
 	while (Next(result))
-		if (result->crnt->d._oC.m_use) process(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+		process(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+}
+//結果リストから、processの結果がfalseなノードを削除
+void check_cutResultList(DataList* result, bool process(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
+	while (Next(result))
+		if (!process(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR)) RemoveCurrent(result);
+}
+//結果リストの中で、processの結果がtrueなものをtrueに書き換える
+void check_updateOrResultList(DataList* result, bool process(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
+	while (Next(result))
+		if (!result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = process(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+}
+//結果リストの中で、processの結果がfalseなものをfalseに書き換える
+void check_updateAndResultList(DataList* result, bool process(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
+	while (Next(result))
+		if (result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = process(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
 }
 
 //リストの中身を画面に表示
