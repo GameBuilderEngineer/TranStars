@@ -35,6 +35,7 @@ typedef struct {
 	objTypes mp_type2;					// データ2
 	bool m_act;							// 1が2に干渉するか
 	bool m_pas;							// 2が1に干渉するか
+	bool (*mp_func)(ObjStr* a, ObjStr* b);// 使う関数
 }D_typeCmp;
 
 // 統一データ型

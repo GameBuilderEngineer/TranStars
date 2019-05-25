@@ -1,3 +1,17 @@
+//西川 05/23
+
+<object.cpp>
+・ステージ前後でマウスカーソルを非表示/表示
+・マウスカーソルにあてるオブジェクトを配置
+
+<TextureLoader.cpp/h>
+・星１～３(star1~3.PNG)、魔女(witch.png)、魔法陣(magic_circle.PNG)を読込
+
+<effect.cpp/h>
+・クリック時の星x5 追加
+
+
+
 //西川 05/22
 
 <object.cpp/h>
@@ -8,9 +22,9 @@
 　checkResultList、check_cutResultList、check_updateOrList、check_updateAndListを暫定で作成
 
 <dataList.cpp>
-・Removeに先頭ノードがカレントになったまま終わらないようカレントを動かす処理が入っていたが、
+・Removeに先頭ダミーノードがカレントになったまま終わらないようカレントを動かす処理が入っていたが、
 　条件を満たすノード全てをRemoveCurrentで削除する処理(check_cutResult)を作ったところ、
-　ノードが１つ未満にならず邪魔だったので、コメントアウト
+　ノードが先頭ダミーノード含め２つから減らせず邪魔だったので、コメントアウト
 
 <Stage.cpp>
 ・結果リストは右CTRL、x順リストは左CTRLを押していないと画面から消すように変更

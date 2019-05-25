@@ -28,10 +28,11 @@ static UnionData SetDataObjectCon(ObjStr *p_objL, ObjStr *p_objR, bool use) {
 	d._oC.mp_objL = p_objL; d._oC.mp_objR = p_objR; d._oC.m_use = use;
 	return d;
 }
-static UnionData SetDataTypeCompat(objTypes p_type1, objTypes p_type2, bool act, bool pas) {
+static UnionData SetDataTypeCompat(objTypes p_type1, objTypes p_type2, bool act, bool pas, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	UnionData d;
 	d._tC.dType = DATA_TYPE_COMPAT;
 	d._tC.mp_type1 = p_type1; d._tC.mp_type2 = p_type2; d._tC.m_act = act; d._tC.m_pas = pas;
+	d._tC.mp_func = p_func;
 	return d;
 }
 
@@ -92,7 +93,7 @@ int DataTypeCmp(const UnionData* x, const UnionData* y)
 	return x->_oE.dType < y->_oE.dType ? -1 : x->_oE.dType > y->_oE.dType ? 1 : 0;
 };
 // リストの確認関数
-int DataTypeCmp(const DataList* x, const DataList* y)
+int DataListCmp(const DataList* x, const DataList* y)
 {
 	return x < y ? -1 : x > y ? 1 : 0;
 };
@@ -121,6 +122,7 @@ void PrintCurrent(const DataList* list)
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x)
 {
 	DataNode* ptr = list->head->next;
+//	if (ptr->d._oE.dType != DATA_OBJ_EDGE) return NULL;
 	while (ptr != list->head)
 	{
 		if (ObjPntrCmp(ptr->d._oE.mp_obj, x) == 0)
@@ -135,6 +137,7 @@ DataNode* SearchObjEdge(DataList *list, const ObjStr* x)
 DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2)
 {
 	DataNode* ptr = list->head->next;
+//	if (ptr->d._oC.dType != DATA_OBJ_CON) return NULL;
 	while (ptr != list->head)
 	{
 		if (ObjPntrCmp(ptr->d._oC.mp_objL, x1) == 0 && ObjPntrCmp(ptr->d._oC.mp_objR, x2) == 0)
@@ -149,9 +152,10 @@ DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2)
 DataNode* Search(DataList *list, DataNode* n)
 {
 	DataNode* ptr = list->head->next;
+	if (DataTypeCmp(&ptr->d, &n->d) == 0) return NULL;
 	while (ptr != list->head)
 	{
-		if (NodeCmp(ptr, n) == 0 && DataTypeCmp(&ptr->d, &n->d) == 0)
+		if (NodeCmp(ptr, n) == 0)
 		{
 			list->crnt = ptr;
 			return ptr;			// 探索成功
@@ -169,7 +173,8 @@ void Print(const DataList* list)
 		printTextDX(getDebugFont(), "ノードがありません。", WINDOW_CENTER_X, WINDOW_CENTER_Y);
 	else {
 		DataNode* ptr = list->head->next;
-		printTextDX(getDebugFont(), "【一覧表】", WINDOW_CENTER_X, WINDOW_CENTER_Y);
+		printTextDX(getDebugFont(), "【一覧表】", WINDOW_CENTER_X, WINDOW_CENTER_Y,
+			int(sizeof(UnionData)));
 		while (ptr != list->head) {
 			PrintData(ptr);
 			ptr = ptr->next;		// 後続ノードに着目

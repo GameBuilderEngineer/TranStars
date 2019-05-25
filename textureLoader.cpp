@@ -13,12 +13,16 @@ LPDIRECT3DTEXTURE9* getTexture(int i)
 TextureLoader::TextureLoader()
 {
 //êºêÏ 0.22
-	textureName[textureLoaderNS::STAR] = { "TEXTURE/Star_kari.png" };
+	textureName[textureLoaderNS::STAR1] = { "TEXTURE/star1.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::STAR2] = { "TEXTURE/star2.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::STAR3] = { "TEXTURE/star3.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::BLACK_HOLE] = { "TEXTURE/BH_kari.png" };
 	textureName[textureLoaderNS::WHITE_HOLE] = { "TEXTURE/WH_kari.png" };
 	textureName[textureLoaderNS::COMET] = { "TEXTURE/comet.jpg" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.h" };
+	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
+	textureName[textureLoaderNS::MAGIC_CIRLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
 
 	// îÛè¿í«â¡
 	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };

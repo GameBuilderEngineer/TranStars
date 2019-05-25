@@ -16,11 +16,12 @@ enum objTypes{
 		STAGE_WALL,
 		STAGE_LOCK,
 		EVENT_GOAL,
-	FROMFILE_TYPE_MAX,
+//	FROMFILE_TYPE_MAX,//西川0525
 		UI_CURSOR,
 		UI_EFFECT,
 		UI_HP,
 	TYPE_MAX,
+	FROMFILE_TYPE_MAX = UI_CURSOR//西川0525
 };
 
 //shortは-0.5±32767.5、intは-0.5±2147483647.5
@@ -74,4 +75,4 @@ void updateObject(StageObj* p_stgobj);
 void drawObject(StageObj* p_stgobj);
 void printObject(StageObj* p_stgobj);
 
-float getObjectSizeLonger(ObjStr* p_obj);//西川0518 オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+float getObjectSizeLonger(ObjStr* p_obj);//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
