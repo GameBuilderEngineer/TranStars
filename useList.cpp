@@ -1,7 +1,7 @@
 //西川
 #include "useList.h"
 
-void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool process(ObjStr* a, ObjStr* b));
+void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b));
 
 void initializeObjList(StageObj* p_stageobj, DataList* xBased, DataList* result) {
 	Initialize(xBased);
@@ -18,14 +18,35 @@ void uninitializeObjList(DataList* xBased, DataList* result) {
 	Terminate(result);
 }
 
-void updateObjList(DataList* xBased, DataList* result, bool process(ObjStr* a, ObjStr* b)) {
+void updateObjList(DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 	Clear(result);//毎フレーム、前のresultを(要らない＋次作るまでに消しとかなきゃいけないので)消去
 	sortObjEdgeListByX(xBased);//x端リストにオブジェクトの移動を反映
-	optimizeObjList_getResult(NULL, xBased, result, process);
+	optimizeObjList_getResult(NULL, xBased, result, func);
 }
-void checkResultList(DataList* result, void process(ObjStr* a, ObjStr* b)) {
+
+//既に作った結果リストを全部funcで参照する
+void checkResultList(DataList* result, void func(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
 	while (Next(result))
-		if (result->crnt->d._oC.m_use) process(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+		func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+}
+//結果リストから、funcの結果がfalseなノードを削除
+void cutResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
+	while (Next(result))
+		if (!func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR)) RemoveCurrent(result);
+}
+//結果リストの中で、funcの結果がtrueなものをtrueに書き換える
+void updateOrResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
+	while (Next(result))
+		if (!result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+}
+//結果リストの中で、funcの結果がfalseなものをfalseに書き換える
+void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
+	result->crnt = result->head;// リストの着目ノードをリセット
+	while (Next(result))
+		if (result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
 }
 
 //リストの中身を画面に表示
@@ -33,8 +54,8 @@ void printList(DataList* draw) {
 	Print(draw);
 }
 
-//毎フレーム、xBasedとprocess(なんらかの処理)をもとにresultを作成
-void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool process(ObjStr* a, ObjStr* b)) {
+//毎フレーム、xBasedとfunc(なんらかの処理)をもとにresultを作成
+void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 
 	//compatとは？…タイプ関係。余裕があったらタイプ関係による効率化もしたい
 
@@ -55,7 +76,7 @@ void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* res
 					if (SearchObjCon(result, sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj) == NULL)
 						InsertRearCon(result, sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj,
 							// まだ結果リストにないものだったら結果リストに登録
-							process(sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj));
+							func(sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj));
 					// もらった関数で得た結果(bool型)も登録
 				}
 				checkList.crnt = sub_crnt;//カレントまで戻す
@@ -71,3 +92,4 @@ void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* res
 
 	Terminate(&checkList);//チェックリスト撲滅
 }
+

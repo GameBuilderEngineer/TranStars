@@ -1,3 +1,39 @@
+//西川 05/23
+
+<object.cpp>
+・ステージ前後でマウスカーソルを非表示/表示
+・マウスカーソルにあてるオブジェクトを配置
+
+<TextureLoader.cpp/h>
+・星１～３(star1~3.PNG)、魔女(witch.png)、魔法陣(magic_circle.PNG)を読込
+
+<effect.cpp/h>
+・クリック時の星x5 追加
+
+
+
+//西川 05/22
+
+<object.cpp/h>
+・getObjectSizeLongerに不要な/2.0fが入っていたので削除
+
+<useList.cpp/h>
+・リストと、別ファイルが持つ(オブジェクト関係の)処理を渡すと、リスト内のデータ全てについてその処理を実行する処理↓
+　checkResultList、check_cutResultList、check_updateOrList、check_updateAndListを暫定で作成
+
+<dataList.cpp>
+・Removeに先頭ダミーノードがカレントになったまま終わらないようカレントを動かす処理が入っていたが、
+　条件を満たすノード全てをRemoveCurrentで削除する処理(check_cutResult)を作ったところ、
+　ノードが先頭ダミーノード含め２つから減らせず邪魔だったので、コメントアウト
+
+<Stage.cpp>
+・結果リストは右CTRL、x順リストは左CTRLを押していないと画面から消すように変更
+
+<effect.cpp/h>
+・追加しただけ(エフェクトをやっていくファイルになる予定)
+
+
+
 //西川 05/18
 
 ・ステージ選択・クリアごとにしなければいけない処理の分離

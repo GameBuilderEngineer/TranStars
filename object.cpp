@@ -121,11 +121,11 @@ void initializeObject(StageObj *p_stgobj,int stage){
 	//↓ステージのテクスチャたちの初期値＝テクスチャリスト/実際には外からもらう値
 	for (int j = 0; j < TYPE_MAX; j++) {
 		k = (objTypes)(j);
-		if (NO_TYPE < k && k < TYPE_MAX && k != FROMFILE_TYPE_MAX) {
+		if (NO_TYPE < k && k < TYPE_MAX/* && k != FROMFILE_TYPE_MAX*/) {
 			StubTex[j].m_type = k;
 			switch (k) {
 			case CHARA_PLAYER:
-				StubTex[j].texture = (textureLoaderNS::STAR);
+				StubTex[j].texture = (textureLoaderNS::STAR1);//西川0525
 				StubTex[j].width = 50.0f;
 				StubTex[j].height = 50.0f;
 				StubTex[j].playAnime = false;
@@ -184,15 +184,15 @@ void initializeObject(StageObj *p_stgobj,int stage){
 				StubTex[j].DIVIDE_U = 10;
 				StubTex[j].DIVIDE_V = 5;
 				break;
-			case UI_CURSOR:
-				StubTex[j].texture = (textureLoaderNS::PLANET);
-				StubTex[j].width = 240.0f;
-				StubTex[j].height = 120.0f;
-				StubTex[j].playAnime = true;
-				StubTex[j].ANIME_TIME = 10;
-				StubTex[j].ANIME_PATTERN = 4;
-				StubTex[j].DIVIDE_U = 2;
-				StubTex[j].DIVIDE_V = 2;
+			case UI_CURSOR://西川0525
+				StubTex[j].texture = (textureLoaderNS::MAGIC_CIRLE);
+				StubTex[j].width = 160.0f;
+				StubTex[j].height = 160.0f;
+				StubTex[j].playAnime = false;
+				StubTex[j].ANIME_TIME = 1;
+				StubTex[j].ANIME_PATTERN = 1;
+				StubTex[j].DIVIDE_U = 1;
+				StubTex[j].DIVIDE_V = 1;
 				break;
 			default:
 				StubTex[j].texture = (textureLoaderNS::BACK_GROUND);
@@ -221,15 +221,17 @@ void initializeObject(StageObj *p_stgobj,int stage){
 	if (p_stgobj->m_Obj == NULL) return;//malloc/newは確保に失敗することもあるらしく、以降がぜんぶおかしくなると思うのでfalseを返す(返された側で終了するなり無視するなりしてほしい)
 
 	for (int i = 0; i < p_stgobj->m_OBJNUM; i++) {
-		if (i < p_stgobj->m_OBJNUM) {//オブジェクトにオブジェクトデータからもらった値をセット
+		if (i < p_stgobj->m_OBJNUM){//オブジェクトにオブジェクトデータからもらった値をセット
+			if (i - p_fromstage->num_m_pObj == 0)//西川0525
+				setObjNotFrom(&(p_stgobj->m_Obj[i]), i, p_fromstage->num_m_pObj);//西川0525
+			else//西川0525
 			setObjFromFile(&(p_stgobj->m_Obj[i]),i, p_fromstage);
 		}
 		else {//オブジェクトにオブジェクトデータからもらっていない値をセット
-			setObjNotFrom(&(p_stgobj->m_Obj[i]),i, p_stgobj->m_OBJNUM);
 		}
 
 		//オブジェクトにテクスチャデータからもらった値をセット
-		setObjTex(&(p_stgobj->m_Obj[i]),i);
+		setObjTex(&(p_stgobj->m_Obj[i]), i);
 
 		switch (p_stgobj->m_Obj[i].m_type) {//タイプごとの、わざわざファイルに書く必要はないが、ゲーム向けにする必要はある初期化
 		case CHARA_PLAYER:
@@ -275,6 +277,7 @@ void initializeObject(StageObj *p_stgobj,int stage){
 
 		case UI_CURSOR:
 			//ブラックホール置くカーソル
+			while (ShowCursor(FALSE) != -1);//マウスを非表示
 			break;
 		case UI_EFFECT:
 			//エフェクト
@@ -288,7 +291,6 @@ void initializeObject(StageObj *p_stgobj,int stage){
 	for (int i = 0; i < p_stgobj->m_OBJNUM; i++) {
 		p_stgobj->m_Obj[i].m_tar = p_stgobj->m_Obj[plID].m_ptr;
 	}
-
 }
 
 void uninitializeObject(StageObj* p_stgobj) {
@@ -298,6 +300,7 @@ void uninitializeObject(StageObj* p_stgobj) {
 		p_stgobj->m_Obj = NULL;
 		//誤ってfree/deleteを２連続でやるとヤバい かつ NULLぽがfree/deleteされる分には平気 らしいのでこうした
 	}
+	while (ShowCursor(TRUE) != 0);//マウスを表示
 }
 
 void updateObject(StageObj* p_stgobj) {
@@ -349,8 +352,25 @@ void updateObject(StageObj* p_stgobj) {
 		case EVENT_GOAL:
 			//ゴール
 			break;
-		case UI_CURSOR:
+		case UI_CURSOR://西川 0525
 			//ブラックホール置くカーソル
+			if (getMouseLButtonTrigger() || getMouseRButtonTrigger()) {
+				p_stgobj->m_Obj[i].m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
+				p_stgobj->m_Obj[i].m_pos.y += p_stgobj->m_Obj[i].m_image.height;
+				p_stgobj->m_Obj[i].m_image.height = 0.0f;
+
+				setAngle(&p_stgobj->m_Obj[i].m_image, 0.0f);
+			}
+			if ((p_stgobj->m_Obj[i].m_image.height < p_stgobj->m_Obj[i].m_image.width)) {
+				p_stgobj->m_Obj[i].m_pos.y -= (float)p_stgobj->m_Obj[i].m_image.width / 25.0f;
+				p_stgobj->m_Obj[i].m_image.height += (float)p_stgobj->m_Obj[i].m_image.width / 25.0f;
+
+				p_stgobj->m_Obj[i].m_image.angle -= 2.0f;//回転の相殺
+			}
+			else {
+				p_stgobj->m_Obj[i].m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
+				p_stgobj->m_Obj[i].m_image.height = p_stgobj->m_Obj[i].m_image.width;
+			}
 			break;
 		case UI_EFFECT:
 			//エフェクト
@@ -409,10 +429,10 @@ void printObject(StageObj* p_stgobj) {
 
 float getObjectSizeLonger(ObjStr* p_obj) {
 	float dgnl = sqrtf((p_obj->m_rect.x * p_obj->m_rect.x +
-		p_obj->m_rect.y * p_obj->m_rect.y) / 2.0f) / 2.0f;
+		p_obj->m_rect.y * p_obj->m_rect.y)) / 2.0f;
 	if (dgnl >= p_obj->m_rad) return dgnl;
 	else return p_obj->m_rad;
-}//西川0518  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+}//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
 
 
 /////以下オブジェクトセット系ローカル関数
@@ -482,7 +502,8 @@ void setObjNotFrom(ObjStr *obj, int i, int objnum) {
 	switch (i - objnum) {
 	case 0:
 		obj->m_type = UI_CURSOR;
-		obj->m_pos = { (float)WINDOW_CENTER_X,(float)WINDOW_CENTER_Y };//マウスカーソルの移動ってどうやるんだろ
+		//西川0525
+		obj->m_rect = { StubTex[int(UI_CURSOR)].width,StubTex[int(UI_CURSOR)].height };//西川0525
 		break;
 	case 1:
 		obj->m_type = UI_EFFECT;
