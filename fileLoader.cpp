@@ -20,6 +20,7 @@ void FileLoader::load(LPSTR fileName)
 	if (_initialized)
 	{
 		delete[] obj;
+		obj = NULL;
 	}
 
 	while (!feof(fp) || strcmp(key, "num") == 0)
@@ -58,7 +59,8 @@ void FileLoader::load(LPSTR fileName)
 
 void FileLoader::release()
 {
-	delete[] obj;
+	SAFE_DELETE_ARRAY (obj);
+	
 }
 
 FileLoader* getFileLoader()

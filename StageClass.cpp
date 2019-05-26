@@ -17,6 +17,7 @@ void StageClass::initialize(int stage)
 void StageClass::uninitialize()
 {
 	SAFE_DELETE_ARRAY (m_Obj);
+	getFileLoader()->release();
 }
 
 void StageClass::update()
