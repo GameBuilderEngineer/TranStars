@@ -35,8 +35,8 @@ namespace titleNS
 	const int CURSOR_PAUSE_FIX_Y = 5;
 
 	// Cursor ‚ÌˆÚ“®
-	const float CURSOR_UPDOWN = 3;
-	const float CURSOR_LEFTRIGHT = 1;
+	const int CURSOR_UPDOWN = 3;
+	const int CURSOR_LEFTRIGHT = 1;
 }
 
 enum MOVE_CURSOR_SELECT

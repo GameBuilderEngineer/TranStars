@@ -5,12 +5,11 @@
 
 void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b));
 
-void initializeObjList(StageObj* p_stageobj, DataList* xBased, DataList* result) {
+void initializeObjList(StageClass* stage, DataList* xBased, DataList* result) {
 	Initialize(xBased);
-	for (int i = 0; i < p_stageobj->m_OBJNUM; i++) {
-		float size = getObjectSizeLonger(&p_stageobj->m_Obj[i]);//半径と辺、どちらが当たり判定かはともかく長い方
-		InsertRearEdges(xBased, &p_stageobj->m_Obj[i],
-			p_stageobj->m_Obj[i].m_image.width / 2.0f - size, p_stageobj->m_Obj[i].m_image.width / 2.0f + size);
+	for (int i = 0; i < stage->getObjNum(); i++) {
+		float size = getObjectSizeLonger(&stage->getObj()[i]);//半径と辺、どちらが当たり判定かはともかく長い方
+		InsertRearEdges(xBased, &stage->getObj()[i],stage->getObj()[i].m_image.width / 2.0f - size, stage->getObj()[i].m_image.width / 2.0f + size);
 		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
 	}
 	Initialize(result);
@@ -32,6 +31,7 @@ void checkResultList(DataList* result, void func(ObjStr* a, ObjStr* b)) {
 	while (Next(result))
 		func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
 }
+
 //結果リストから、funcの結果がfalseなノードを削除
 void cutResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 	result->crnt = result->head;// リストの着目ノードをリセット

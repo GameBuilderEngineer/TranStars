@@ -30,106 +30,106 @@ void initSelectTitle() {
 	InitImage(&title, getTexture(textureLoaderNS::TITLE_LOGO), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2.5;
-	y = WINDOW_HEIGHT / 1.4;
+	x = WINDOW_WIDTH / 2.5f;
+	y = WINDOW_HEIGHT / 1.4f;
 	width = PRESS_ENTER_WIDTH;
 	height = PRESS_ENTER_HEIGHT;
 	InitImage(&title_press_enter, getTexture(textureLoaderNS::TITLE_PRESS_ENTER), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2;
-	y = WINDOW_HEIGHT / 2.8;
+	x = WINDOW_WIDTH / 2.0f;
+	y = WINDOW_HEIGHT / 2.8f;
 	width = NEW_GAME_WIDTH;
 	height = NEW_GAME_HEIGHT;
 	InitImage(&new_game, getTexture(textureLoaderNS::TITLE_NEW_GAME), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2;
-	y = WINDOW_HEIGHT / 1.8;
+	x = WINDOW_WIDTH / 2.0f;
+	y = WINDOW_HEIGHT / 1.8f;
 	width = CHOOSE_STAGE_WIDTH;
 	height = CHOOSE_STAGE_HEIGHT;
 	InitImage(&choose_stage, getTexture(textureLoaderNS::TITLE_SELECT_STAGE), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 3;
-	y = WINDOW_HEIGHT / 2.8;
+	x = WINDOW_WIDTH / 3.0f;
+	y = WINDOW_HEIGHT / 2.8f;
 	width = CURSOR_SELECT_WIDTH;
 	height = CURSOR_SELECT_HEIGHT;
 	InitImage(&cursor, getTexture(textureLoaderNS::TITLE_CURSOR), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 9;
-	y = WINDOW_HEIGHT / 9;
+	x = WINDOW_WIDTH / 9.0f;
+	y = WINDOW_HEIGHT / 9.0f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage01, getTexture(textureLoaderNS::THUM_STAGE01), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2.5;
-	y = WINDOW_HEIGHT / 9;
+	x = WINDOW_WIDTH / 2.5f;
+	y = WINDOW_HEIGHT / 9.0f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage02, getTexture(textureLoaderNS::THUM_STAGE02), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 1.4;
-	y = WINDOW_HEIGHT / 9;
+	x = WINDOW_WIDTH / 1.4f;
+	y = WINDOW_HEIGHT / 9.0f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage03, getTexture(textureLoaderNS::THUM_STAGE03), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 9;
-	y = WINDOW_HEIGHT / 2.5;
+	x = WINDOW_WIDTH / 9.0f;
+	y = WINDOW_HEIGHT / 2.5f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage04, getTexture(textureLoaderNS::THUM_STAGE04), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2.5;
-	y = WINDOW_HEIGHT / 2.5;
+	x = WINDOW_WIDTH / 2.5f;
+	y = WINDOW_HEIGHT / 2.5f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage05, getTexture(textureLoaderNS::THUM_STAGE05), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 1.4;
-	y = WINDOW_HEIGHT / 2.5;
+	x = WINDOW_WIDTH / 1.4f;
+	y = WINDOW_HEIGHT / 2.5f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage06, getTexture(textureLoaderNS::THUM_STAGE06), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 9;
-	y = WINDOW_HEIGHT / 1.4;
+	x = WINDOW_WIDTH / 9.0f;
+	y = WINDOW_HEIGHT / 1.4f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage07, getTexture(textureLoaderNS::THUM_STAGE07), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2.5;
-	y = WINDOW_HEIGHT / 1.4;
+	x = WINDOW_WIDTH / 2.5f;
+	y = WINDOW_HEIGHT / 1.4f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage08, getTexture(textureLoaderNS::THUM_STAGE08), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 1.4;
-	y = WINDOW_HEIGHT / 1.4;
+	x = WINDOW_WIDTH / 1.4f;
+	y = WINDOW_HEIGHT / 1.4f;
 	width = THUM_STAGE_WIDTH;
 	height = THUM_STAGE_HEIGHT;
 	InitImage(&stage09, getTexture(textureLoaderNS::THUM_STAGE09), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 3;
-	y = WINDOW_HEIGHT / 5;
+	x = WINDOW_WIDTH / 3.0f;
+	y = WINDOW_HEIGHT / 5.0f;
 	width = PAUSE_WIDTH;
 	height = PAUSE_HEIGHT;
 	InitImage(&pause, getTexture(textureLoaderNS::PAUSE), x, y, width, height);
 
 	//
-	x = WINDOW_WIDTH / 2.5;
-	y = WINDOW_HEIGHT / 2;
+	x = WINDOW_WIDTH / 2.5f;
+	y = WINDOW_HEIGHT / 2.0f;
 	width = PAUSE_RETURN_TITLE_WIDTH;
 	height = PAUSE_RETURN_TITLE_HEIGHT;
 	InitImage(&pause_return_title, getTexture(textureLoaderNS::PAUSE_RETURN_TITLE), x, y, width, height);
@@ -145,13 +145,10 @@ void initSelectTitle() {
 }
 
 void updateSelectTitle() {
-
-	int *scene = getScene();
-
-	switch (*scene)
+	switch (getScene())
 	{
 	case TITLE:
-		changeScene(); break;
+		changeScene(SELECT_MODE); break;
 
 		// MODE選択のときだけ、矢印のimageが座標移動する
 		// 更に、選んだものによりシーン遷移先が変わる
@@ -167,8 +164,7 @@ void updateSelectTitle() {
 
 void drawSelectTitle()
 {
-	int *scene = getScene();
-	switch (*scene)
+	switch (getScene())
 	{
 	case TITLE:			drawTitleStart();	break;
 	case SELECT_MODE:	drawSelectMode();	break;
@@ -177,9 +173,7 @@ void drawSelectTitle()
 }
 
 void printSelectTitle() {
-
-	int *scene = getScene();
-	switch (*scene)
+	switch (getScene())
 	{
 	case TITLE: 	printTextDX(getDebugFont(), "Title", 0, 0); break;
 	case SELECT_MODE: printTextDX(getDebugFont(), "SelectGame", 0, 0); break;
@@ -190,9 +184,8 @@ void printSelectTitle() {
 // モード選択
 void moveSelectModeCursor()
 {
-	int *scene = getScene();
-	float x, y;
-	g_cursor += moveTitleCursor(*scene);
+	//int *scene = getScene();
+	g_cursor += moveTitleCursor(getScene());
 	returnBeforeScene();
 
 	switch (g_cursor % MOVE_MAX)
@@ -204,7 +197,7 @@ void moveSelectModeCursor()
 			// ステージ01に飛ぶ
 			g_cursor = 0;
 			//*scene = STAGE;
-			changeNewScene(STAGE);//西川0518
+			changeScene(STAGE);//西川0518
 		}
 		break;
 
@@ -215,19 +208,20 @@ void moveSelectModeCursor()
 			// ステージ選択に飛ぶ
 			g_cursor = 0;
 			//*scene = CHOOSE_STAGE;
-			changeNewScene(CHOOSE_STAGE);//西川0518
+			changeScene(CHOOSE_STAGE);//西川0518
 		}
 		break;
 	}
 }
 
+//値を返さない関数になってるkanno
 int moveTitleCursor(int scene)
 {
 	if (scene == SELECT_MODE)
 	{
 		if (GetKeyboardTrigger(DIK_UP) || GetKeyboardTrigger(DIK_DOWN))
 		{
-			return 1;
+			return 1;//この変数の意味は？kanno
 		}
 	}
 }
@@ -235,8 +229,7 @@ int moveTitleCursor(int scene)
 // ステージ選択
 void moveChooseStageCursor()
 {
-	int *scene = getScene();
-	g_cursor += moveStageCursor(*scene);
+	g_cursor += moveStageCursor(getScene());
 	fixCursorNum();
 	returnBeforeScene();
 
@@ -250,7 +243,7 @@ void moveChooseStageCursor()
 		// 多分　STAGE + (g_cursor % MOVE_CHOOSE_MAX)
 		// game.h内と相談
 		//*scene = STAGE;
-		changeNewScene(STAGE);//西川0518
+		changeScene(STAGE);//西川0518
 	}
 
 	switch (g_cursor % MOVE_CHOOSE_MAX)
@@ -285,6 +278,7 @@ void moveChooseStageCursor()
 	}
 }
 
+//値を返さない関数になってるkanno
 int moveStageCursor(int scene)
 {
 	if (scene == CHOOSE_STAGE)
@@ -319,12 +313,10 @@ void fixCursorNum()
 // その他
 void returnBeforeScene()
 {
-	int *scene = getScene();
 	if (GetKeyboardTrigger(DIK_BACK))
 	{
 		g_cursor = 0;
-		//*scene -= 1;
-		changeNewScene(SceneList(int(*scene)-1));//西川0518
+		changeScene(SceneList(getScene()-1));//西川0518菅野0526
 	}
 }
 
@@ -334,16 +326,14 @@ void unInitializeSelectTitle()
 
 void changeCursorSize()
 {
-	int *scene = getScene();
 	float width, height;
-	switch (*scene)
+	switch (getScene())
 	{
 	case SELECT_MODE:
 		width = CURSOR_SELECT_WIDTH;
 		height = CURSOR_SELECT_HEIGHT;
 		setSize(&cursor, width, height);
 		break;
-
 	case CHOOSE_STAGE:
 		width = CURSOR_CHOOSE_WIDTH;
 		height = CURSOR_CHOOSE_HEIGHT;
@@ -358,16 +348,14 @@ void changeCursorSize()
 
 void moveCursorPos(Image* image)
 {
-	int *scene = getScene();
 	float x, y;
-	switch (*scene)
+	switch (getScene())
 	{
 	case SELECT_MODE:
 		x = image->position.x - CURSOR_SELECT_FIX_X;
 		y = image->position.y + CURSOR_SELECT_FIX_Y;
 		setPosition(&cursor, x, y);
 		break;
-
 	case CHOOSE_STAGE:
 		x = image->position.x - CURSOR_CHOOSE_FIX_X;
 		y = image->position.y + CURSOR_CHOOSE_FIX_Y;
@@ -415,7 +403,6 @@ bool g_pause = FALSE;
 
 void updatePause()
 {
-	int *scene = getScene();
 	changeCursorSize();
 	moveCursorPos(&pause_return_title);
 	if (GetKeyboardTrigger(DIK_P))
@@ -425,8 +412,7 @@ void updatePause()
 	if (g_pause == TRUE && GetKeyboardTrigger(DIK_RETURN))
 	{
 		g_pause = FALSE;
-		//*scene = TITLE;
-		changeNewScene(TITLE);//西川0518
+		changeScene(TITLE);//西川0518
 	}
 }
 
