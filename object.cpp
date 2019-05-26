@@ -5,6 +5,7 @@
 #include"textureLoader.h"
 #include "read_text.h"
 #include "textDX.h"
+#include "input.h"
 
 //仮置き構造体たち
 struct StubObject {
@@ -185,7 +186,7 @@ void initializeObject(StageObj *p_stgobj,int stage){
 				StubTex[j].DIVIDE_V = 5;
 				break;
 			case UI_CURSOR://西川0525
-				StubTex[j].texture = (textureLoaderNS::MAGIC_CIRLE);
+				StubTex[j].texture = (textureLoaderNS::WITCH);
 				StubTex[j].width = 160.0f;
 				StubTex[j].height = 160.0f;
 				StubTex[j].playAnime = false;
@@ -277,7 +278,7 @@ void initializeObject(StageObj *p_stgobj,int stage){
 
 		case UI_CURSOR:
 			//ブラックホール置くカーソル
-			while (ShowCursor(FALSE) != -1);//マウスを非表示
+//			while (ShowCursor(FALSE) != -1);//マウスを非表示
 			break;
 		case UI_EFFECT:
 			//エフェクト
@@ -300,7 +301,7 @@ void uninitializeObject(StageObj* p_stgobj) {
 		p_stgobj->m_Obj = NULL;
 		//誤ってfree/deleteを２連続でやるとヤバい かつ NULLぽがfree/deleteされる分には平気 らしいのでこうした
 	}
-	while (ShowCursor(TRUE) != 0);//マウスを表示
+//	while (ShowCursor(TRUE) != 0);//マウスを表示
 }
 
 void updateObject(StageObj* p_stgobj) {
@@ -354,7 +355,7 @@ void updateObject(StageObj* p_stgobj) {
 			break;
 		case UI_CURSOR://西川 0525
 			//ブラックホール置くカーソル
-			if (getMouseLButtonTrigger() || getMouseRButtonTrigger()) {
+			/*if (getMouseLButtonTrigger() || getMouseRButtonTrigger()) {
 				p_stgobj->m_Obj[i].m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
 				p_stgobj->m_Obj[i].m_pos.y += p_stgobj->m_Obj[i].m_image.height;
 				p_stgobj->m_Obj[i].m_image.height = 0.0f;
@@ -367,7 +368,7 @@ void updateObject(StageObj* p_stgobj) {
 
 				p_stgobj->m_Obj[i].m_image.angle -= 2.0f;//回転の相殺
 			}
-			else {
+			else */{
 				p_stgobj->m_Obj[i].m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
 				p_stgobj->m_Obj[i].m_image.height = p_stgobj->m_Obj[i].m_image.width;
 			}
@@ -586,7 +587,7 @@ void updateWhiteHole(ObjStr* p_obj) {
 
 void  setBlackHole(ObjStr* p_obj) {
 	p_obj->m_use = true;
-	p_obj->m_pos = D3DXVECTOR2{ (float)getMouseX(),(float)getMouseY() };
+	p_obj->m_pos = D3DXVECTOR2{ (float)getMouseX()- (float)p_obj->m_image.width / 2.0f,(float)getMouseY()- (float)p_obj->m_image.height / 2.0f };
 };
 
 void  setWhiteHole(ObjStr* p_obj) {

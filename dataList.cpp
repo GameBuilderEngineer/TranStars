@@ -28,10 +28,11 @@ static UnionData SetDataObjectCon(ObjStr *p_objL, ObjStr *p_objR, bool use) {
 	d._oC.mp_objL = p_objL; d._oC.mp_objR = p_objR; d._oC.m_use = use;
 	return d;
 }
-static UnionData SetDataTypeCompat(objTypes p_type1, objTypes p_type2, bool act, bool pas, bool(*p_func)(ObjStr* a, ObjStr* b)) {
+static UnionData SetDataTypeCompat(objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	UnionData d;
 	d._tC.dType = DATA_TYPE_COMPAT;
-	d._tC.mp_type1 = p_type1; d._tC.mp_type2 = p_type2; d._tC.m_act = act; d._tC.m_pas = pas;
+	d._tC.m_type1 = type1; d._tC.m_type2 = type2;
+	d._tC.m_use = use;
 	d._tC.mp_func = p_func;
 	return d;
 }
@@ -73,6 +74,25 @@ static int compareObjEdgeByX(const DataList* list, const DataNode* n1, const Dat
 		n2->d._oE.mp_obj->m_pos.x + n2->d._oE.m_dst) return 1;//x昇順になっていれば
 	return 0;//NOT x昇順ならば
 }
+
+
+// データ1とデータ2を、タイプについて比べる
+static int typeCompatCmp(const objTypes x, const objTypes y) {
+	return x < y ? -1 : x > y ? 1 : 0;	//2つのデータが同じタイプの組み合わせを持つものであれば
+}
+// タイプが特殊なタイプであれば検出する
+static bool detectNoType(const objTypes t) {
+	if (t == NO_TYPE || t == FROMFILE_TYPE_MAX || t == TYPE_MAX) return false;
+	return true;
+}
+//　タイプの大小をtype1が小さくなるように揃える
+void sortTypeCompat(objTypes* t1,objTypes* t2) {
+	if (int(*t1) > int(*t2)) {
+		objTypes s = *t1;
+		*t1 = *t2; *t2 = s;
+	}
+}
+
 
 // データのポインタの比較関数
 int ObjPntrCmp(const ObjStr* x, const ObjStr* y)
@@ -149,10 +169,25 @@ DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2)
 	}
 	return NULL;				// 探索失敗
 };
-DataNode* Search(DataList *list, DataNode* n)
+DataNode* SearchTypeCompat(DataList *list, const objTypes x1, const objTypes x2)
 {
 	DataNode* ptr = list->head->next;
-	if (DataTypeCmp(&ptr->d, &n->d) == 0) return NULL;
+//	if (ptr->d._tC.dType != DATA_TYPE_COMPAT) return NULL;
+	while (ptr != list->head)
+	{
+		if (typeCompatCmp(ptr->d._tC.m_type1,x1) == 0 && typeCompatCmp(ptr->d._tC.m_type2, x2) == 0)
+		{
+			list->crnt = ptr;
+			return ptr;			// 探索成功
+		}
+		ptr = ptr->next;
+	}
+	return NULL;				// 探索失敗
+};
+DataNode* SearchNode(DataList *list, DataNode* n)
+{
+	DataNode* ptr = list->head->next;
+	if (DataTypeCmp(&ptr->d, &n->d) != 0) return NULL;
 	while (ptr != list->head)
 	{
 		if (NodeCmp(ptr, n) == 0)
@@ -242,12 +277,10 @@ void PrintTypeCompat(const DataNode* n)
 {
 	txtLineReset(txtLineReset(0));
 
-	printTextDX(getDebugFont(), "主type：", 0, txtLineBreak(), int(n->d._tC.mp_type1));
-	printTextDX(getDebugFont(), "受type：", 0, txtLineBreak(), int(n->d._tC.mp_type2));
-	if (n->d._tC.m_act == true) printTextDX(getDebugFont(), "主→受：有効", 0, txtLineBreak());
-	else printTextDX(getDebugFont(), "主→受：無効", 0, txtLineBreak());
-	if (n->d._tC.m_pas == true) printTextDX(getDebugFont(), "受→主：有効", 0, txtLineBreak());
-	else printTextDX(getDebugFont(), "受→主：無効", 0, txtLineBreak());
+	printTextDX(getDebugFont(), "主type：", 0, txtLineBreak(), int(n->d._tC.m_type1));
+	printTextDX(getDebugFont(), "受type：", 0, txtLineBreak(), int(n->d._tC.m_type2));
+	if (n->d._tC.m_use == true) printTextDX(getDebugFont(), "有効", 0, txtLineBreak());
+	else printTextDX(getDebugFont(), "無効", 0, txtLineBreak());
 };
 
 // 着目ノードを一つ後方に進める
@@ -409,3 +442,26 @@ void sortObjEdgeListByX(DataList* list) {
 	}
 }
 //ifやwhileなどの条件式内で関数を呼んだ場合にも値は書き変わる。
+
+void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool (*p_func)(ObjStr* a, ObjStr* b))
+{
+	bool b1 = detectNoType(type1), b2 = detectNoType(type2);//NoTypeならtrue
+	if (!b1 && !b2) {
+		InsertRear(list, SetDataTypeCompat(type1, type2, use, p_func));
+		return;
+	}
+	if (!(b1 && b2)) {//((!b1&&b2)||(b1&&!b2))
+		objTypes type_;
+		if (b1) type_ = type1;
+		if (b2) type_ = type2;
+		for (int i = 0; i < int(type_); i++) {
+			if (b1)
+				InsertRear(list, SetDataTypeCompat(objTypes(i), type2, use, p_func));
+			if (b2)
+				InsertRear(list, SetDataTypeCompat(type1, objTypes(i), use, p_func));
+		}
+		return;
+	}
+	
+}
+

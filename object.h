@@ -3,7 +3,6 @@
 
 #include "main.h"
 #include "Image.h"
-#include "input.h"
 enum objTypes{
 	NO_TYPE = -1,
 		CHARA_PLAYER,

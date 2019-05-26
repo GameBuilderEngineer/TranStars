@@ -14,7 +14,7 @@ namespace textureLoaderNS
 		PLANET,
 		WALL,
 		WITCH,//êºêÏ0525
-		MAGIC_CIRLE,//êºêÏ0525
+		MAGIC_CIRCLE,//êºêÏ0525
 		TITLE_LOGO,
 		TITLE_PRESS_ENTER,
 		TITLE_NEW_GAME,

@@ -37,6 +37,11 @@ void Remove(EffList* list, EffNode* p)
 //a->b=(*a).b
 //EffList->EffNode
 
+// データのタイプの比較関数
+int DataTypeCmp(const EffNode* x, const EffNode* y)
+{
+	return x->effD.m_type < y->effD.m_type ? -1 : x->effD.m_type > y->effD.m_type ? 1 : 0;
+}
 // データのポインタの比較関数
 int DataPntrCmp(const EffData* x, const EffData* y)
 {
@@ -89,15 +94,42 @@ void PrintCurrent(const EffList* list)
 	}
 }
 
-// 関数compareによってxとデータ内容が一致しているノードを探索
-EffNode* Search(EffList *list, EffNode* n)
+// xとデータのタイプが一致している、カレント以後で最も近いノードを探索
+EffNode* SearchNext_notCrnt(EffList *list, EffNode* n,int comp(const EffNode* x, const EffNode* y))
+{
+	EffNode* ptr = list->crnt->next;//一個ずれて開始
+	while (list->crnt != ptr) {//一周してしまったら終了
+		if (ptr != list->head)//ヘッダーはまたげる
+			if (comp(ptr, n) == 0)
+				break;
+		ptr = ptr->next;
+	}
+	return ptr;// 探索成功した場合はそのノード、失敗した場合は元のカレントノード
+};
+
+// xとデータのタイプが一致している、カレント以前で最も近いノードを探索
+EffNode* SearchPrev_notCrnt(EffList *list, EffNode* n, int comp(const EffNode* x, const EffNode* y))
+{
+	EffNode* ptr = list->crnt->prev;//一個ずれて開始
+	while (list->crnt != ptr) {//一周してしまったら終了
+		if (ptr != list->head)//ヘッダーはまたげる
+			if (comp(ptr, n) == 0)
+				break;
+		ptr = ptr->prev;
+	}
+	return ptr;// 探索成功した場合はそのノード、失敗した場合は元のカレントノード
+};
+
+
+// nとノードのポインタが一致しているノードを探索
+EffNode* SearchNode(EffList *list, EffNode* n)
 {
 	EffNode* ptr = list->head->next;
 	while (ptr != list->head)
 	{
 		if (NodeCmp(ptr, n) == 0)
 		{
-			list->crnt = ptr;
+//			list->crnt = ptr;
 			return ptr;			// 探索成功
 		}
 		ptr = ptr->next;
@@ -252,36 +284,46 @@ void updateEffect(EffList* eff) {
 	while (Next(eff)) {
 		EffData *c = &eff->crnt->effD;
 		c->m_time--;
-		if (c->m_time <= 0) RemoveCurrent(eff);//時間いっぱいになって削除
 		switch (c->m_type) {
-		case ePARTICLE:
+		case ePARTICLE: {
 			c->m_rot += 0.5f + 7.0f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX);
-			EffData *c2, *c3;
-			if (eff->crnt->prev != eff->head) c2 = &eff->crnt->prev->effD;
-			else c2 = &eff->head->prev->effD;
-			if (eff->crnt->next != eff->head) c3 = &eff->crnt->next->effD;
-			else c3 = &eff->head->next->effD;
+			EffData *c2 = &SearchPrev_notCrnt(eff, eff->crnt, DataTypeCmp)->effD//リスト内で前方にある同タイプのエフェクト
+				, *c3 = &SearchNext_notCrnt(eff, eff->crnt, DataTypeCmp)->effD;//リスト内で後方にある同タイプのエフェクト
 			c->m_accel = ((c2->m_pos + c3->m_pos) / 2.0f - c->m_pos) / 1000.0f;
 			c->m_speed += c->m_accel;
 			c->m_pos += c->m_speed;
-
+			SetColorImage(&eff->crnt->effD.m_image,
+				{ 1.0f,1.0f,0.5f + 0.5f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX),
+				1.5f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX) - 0.25f });//薄く黄色くなっていく
 			break;
+		}
 		case eLUMINE:
 			break;
 		case eSPLIT:
 			break;
+		case eTAIL:
+			break;
+		case eMAGIC: {
+			c->m_rot += 0.5f + 7.0f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX);
+			float f = 35.0f * float(eff->crnt->effD.m_time - eff->crnt->effD.m_tMAX * 2 / 3) / (float)eff->crnt->effD.m_tMAX;
+			c->m_image.width += (int)f;
+			c->m_image.height += (int)f;
+			c->m_pos = { c->m_pos.x - f / 2.0f ,c->m_pos.y - f / 2.0f };
+			SetColorImage(&eff->crnt->effD.m_image,
+				{ 1.0f,1.0f,1.0f,1.4f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX) - 0.1f });//薄くなっていく
+			break;
+		}
 		default:
 			break;
 		}
+		if (c->m_time <= 0) RemoveCurrent(eff);//時間いっぱいになって削除
 	}
 }
 void drawEffect(EffList* eff) {
 	eff->crnt = eff->head;// リストの着目ノードをリセット
 	while (Next(eff)) {
-		setPosition(&eff->crnt->effD.m_image, eff->crnt->effD.m_pos.x, eff->crnt->effD.m_pos.y);
+		setPosition(&eff->crnt->effD.m_image, eff->crnt->effD.m_pos.x, eff->crnt->effD.m_pos.y);//サイズの更新も兼ねている
 		setAngle(&eff->crnt->effD.m_image, eff->crnt->effD.m_rot);
-		SetColorImage(&eff->crnt->effD.m_image, { 1.0f,1.0f,0.5f + 0.5f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX),
-			1.5f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX) -0.25f});//薄くなっていく
 		DrawImage(&(eff->crnt->effD.m_image));
 	}
 }
@@ -290,13 +332,19 @@ void drawEffect(EffList* eff) {
 void makeParticle(EffList* eff, D3DXVECTOR2 pos) {
 	Image img; float c; D3DXVECTOR2 speed;
 	for (int i = 0; i < 5; i++) {//5個作る
-		c = float(rand() % 100);
+		c = float(rand() % 100) * D3DX_PI / 50.0f;
 		speed = { 5.0f * cosf(c), 5.0f * sinf(c) };
 
-		InitAnimeImage(&img, getTexture(textureLoaderNS::STAR3), pos.x, pos.y, 20, 20, 3, 1, 1, 1);
-		InsertRear(eff, { ePARTICLE, true, pos, 0.0f, { 1.0f, 1.0f}, speed, { 0.0f, 0.0f }, 100, 100, 0, img });
+		InitImage(&img, getTexture(textureLoaderNS::STAR3), pos.x, pos.y, 20, 20);
+		InsertRear(eff, { ePARTICLE, true, {pos.x - img.width / 2,pos.y- img.height / 2}, c, { 1.0f, 1.0f}, speed, { 0.0f, 0.0f }, 100, 100, 0, img });
 
 		pos += {float(rand() % 31 - 15), float(rand() % 31 - 15)};
 	}
 }
 
+void makeMagic(EffList* eff, D3DXVECTOR2 pos) {
+	Image img; float c;
+	c = float(rand() % 100) * D3DX_PI / 50.0f;
+	InitImage(&img, getTexture(textureLoaderNS::MAGIC_CIRCLE), pos.x, pos.y, 100, 100);
+	InsertRear(eff, { eMAGIC, true, {pos.x - img.width / 2 ,pos.y - img.height / 2}, c, { 1.0f, 1.0f}, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 40, 40, 0, img });
+}

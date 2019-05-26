@@ -18,7 +18,7 @@ StageObj stageObj;//西川 0.02
 Image gameBG;
 DataList xBasedList;//西川0518 x座標順・オブジェクト・リスト(initializeで作ってゲーム中通用)
 DataList resultList;//西川0518 確かめ結果・オブジェクト関係・リスト(updateで毎フレーム作って使い捨て)
-DataList typeList_col;//西川0525 タイプ相性リスト、衝突用(initializeで作ってゲーム中通用)
+//DataList typeList_col;//西川0525 タイプ相性リスト、衝突用(initializeで作ってゲーム中通用)
 EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(initializeで作ってゲーム中通用)
 
 void initializeStage() {
@@ -42,7 +42,9 @@ void updateStage() {
 	mDialog.update();
 	updateObject(&stageObj);
 	if (getMouseLButtonTrigger() || getMouseRButtonTrigger())
-		makeParticle(&effectList, { (float)getMouseX() + 40.0f, (float)getMouseY() + 40.0f });//西川0525
+		makeParticle(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0525
+	if (getMouseLButtonTrigger() || getMouseRButtonTrigger())
+		makeMagic(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0526
 	updateEffect(&effectList);//西川0525
 
 	updateObjList(&xBasedList, &resultList, checkHitObjRR);//西川0518 x順リストを更新、同時進行的にコリジョン関数を渡してその結果リストを取得

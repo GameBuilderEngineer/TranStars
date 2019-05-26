@@ -1,11 +1,20 @@
-//西川 05/23
+//西川 05/26
+<effect.cpp/h>
+・魔法陣 追加
+・星が吹き出すやつ、自分たち以外のエフェクトを想定していなかったのでそのように修正(見かけ上は同じ)
+
+<dataList.cpp/h>
+・タイプ関係と関数を関連付けるやつ作り中
+
+
+//西川 05/25
 
 <object.cpp>
 ・ステージ前後でマウスカーソルを非表示/表示
 ・マウスカーソルにあてるオブジェクトを配置
 
 <TextureLoader.cpp/h>
-・星１～３(star1~3.PNG)、魔女(witch.png)、魔法陣(magic_circle.PNG)を読込
+・星１～３(star1~3.PNG)、魔女(witch.png)、魔法陣(magic_circle.PNG)をTEXTUREファイルに追加後、読込
 
 <effect.cpp/h>
 ・クリック時の星x5 追加

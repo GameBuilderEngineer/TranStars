@@ -6,11 +6,13 @@
 
 // タイプ
 enum effTypes {
-	NO_eTYPE = -1,
+	eNO_TYPE = -1,
 		ePARTICLE,//光の粒
 		eLUMINE,//発光
 		eSPLIT,//割れる
-	eTYPE_MAX,
+		eTAIL,//隕石の尾
+		eMAGIC,//魔法陣
+	eTYPE_MAX
 };
 
 // データ
@@ -49,4 +51,6 @@ void initializeEffect(EffList* eff);
 void uninitializeEffect(EffList* eff);
 void updateEffect(EffList* eff);
 void drawEffect(EffList* eff);
+
 void makeParticle(EffList* eff, D3DXVECTOR2 pos);
+void makeMagic(EffList* eff, D3DXVECTOR2 pos);

@@ -1,5 +1,7 @@
 //西川
 #include "useList.h"
+#include "collision.h"//西川0518 コリジョン内の関数をリストに渡すため
+#include "effect.h"//西川0525 エフェクト
 
 void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b));
 
@@ -63,6 +65,8 @@ void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* res
 
 	xBased->crnt = xBased->head;// x順リストの着目ノードをリセット
 	while (Next(xBased)) {
+		if (!xBased->crnt->d._oE.mp_obj->m_use) continue;//useがfalseなら考えない
+
 		if (xBased->crnt->d._oE.mp_L == NULL) {// 調べたオブジェクト端がオブジェクトの左端だった
 			InsertRear(&checkList, xBased->crnt->d);//そのオブジェクトをチェックリストに登録(右端は登録しない)
 

@@ -31,10 +31,9 @@ typedef struct {
 typedef struct {
 	dataTypes dType;					// データのタイプ
 
-	objTypes mp_type1;					// データ1
-	objTypes mp_type2;					// データ2
-	bool m_act;							// 1が2に干渉するか
-	bool m_pas;							// 2が1に干渉するか
+	objTypes m_type1;					// オブジェクトタイプ1
+	objTypes m_type2;					// オブジェクトタイプ2
+	bool m_use;							// 下の関数で1から2に干渉するか
 	bool (*mp_func)(ObjStr* a, ObjStr* b);// 使う関数
 }D_typeCmp;
 
@@ -69,7 +68,8 @@ void PrintCurrent(const DataList *list);
 // 関数compareによって(x)/(x1,x2)とデータ内容が一致しているノードを探索
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x);
 DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2);
-DataNode* Search(DataList *list, DataNode* n);
+DataNode* SearchTypeCompat(DataList *list, const objTypes x1, const objTypes x2);
+DataNode* SearchNode(DataList *list, DataNode* n);
 
 // 全ノードのデータをリスト順に表示
 void Print(const DataList* list);
