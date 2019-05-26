@@ -17,8 +17,8 @@ void initializeTitle() {
 	InitImage(&back, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
 
 	// 樋沼追加
-	string info_file = "information.txt"; // 読み込みファイル名＝ステージ番号
-	read_Status_File(info_file);
+	//string info_file = "information.txt"; // 読み込みファイル名＝ステージ番号
+	//read_Status_File(info_file);
 	initSelectTitle();
 	// ここまで
 

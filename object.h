@@ -24,7 +24,7 @@ enum objTypes{
 	FROMFILE_TYPE_MAX = UI_CURSOR//西川0525
 };
 
-//shortは-0.5±32767.5、intは-0.5±2147483647.5
+//shortは-0.5±32767.5、intは-0.5±2147483647.5←うんち
 
 //************************************************************************
 //オブジェクトの一つ一つ
@@ -49,7 +49,6 @@ typedef struct _obj{
 	int		m_time;						//プレイヤーとは独立して勝手に動くオブジェクトがあれば使う(ステージギミック系)
 	short	m_mode;						//同上、行動パターンとかはこっち
 
-
 	float m_rad;						//半径(プレイヤーの当たり判定とか)
 	D3DXVECTOR2 m_rect;					//矩形の辺長(ステージの当たり判定とか)
 	D3DXVECTOR2	m_corner[4];			// 衝突ボックスの各頂点に対するベクトル
@@ -59,20 +58,17 @@ typedef struct _obj{
 	Image m_image;						//描画情報
 }ObjStr;//Structure
 
-typedef struct {//全部入ってる構造体
-	int m_STAGE;						//ステージ番号
-	int m_OBJNUM;						//オブジェクト数
-	ObjStr *m_Obj;						//オブジェクト
-}StageObj;
+
 
 #define STUB_OBJNUM (100)	//ステージのデータ内にあるオブジェクトの総数/実際には外からもらう値
 #define PLUS_OBJNUM (5)		//ステージ側で保存する必要のないオブジェクト情報(UIなど)があればそれの数
 
 
-void initializeObject(StageObj* p_stgobj,int stage);
-void uninitializeObject(StageObj* p_stgobj);
-void updateObject(StageObj* p_stgobj);
-void drawObject(StageObj* p_stgobj);
-void printObject(StageObj* p_stgobj);
+void initializeObject(ObjStr *obj, int id, int objType, VECTOR2 position, float angle);
+void uninitializeObject(ObjStr* obj);
+void updateObject(ObjStr* obj);
+void drawObject(ObjStr* obj);
+void printObject(ObjStr* obj);
 
-float getObjectSizeLonger(ObjStr* p_obj);//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+float getObjectSizeLonger(ObjStr* obj);

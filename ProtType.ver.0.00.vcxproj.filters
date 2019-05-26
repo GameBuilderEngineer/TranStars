@@ -114,6 +114,12 @@
     <ClCompile Include="effect.cpp">
       <Filter>アプリケーション\オブジェクト\更新処理</Filter>
     </ClCompile>
+    <ClCompile Include="fileLoader.cpp">
+      <Filter>アプリケーション\シーン\ステージ管理</Filter>
+    </ClCompile>
+    <ClCompile Include="StageClass.cpp">
+      <Filter>アプリケーション\オブジェクト</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -175,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="effect.h">
       <Filter>アプリケーション\オブジェクト\更新処理</Filter>
+    </ClInclude>
+    <ClInclude Include="fileLoader.h">
+      <Filter>アプリケーション\シーン\ステージ管理</Filter>
+    </ClInclude>
+    <ClInclude Include="StageClass.h">
+      <Filter>アプリケーション\オブジェクト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

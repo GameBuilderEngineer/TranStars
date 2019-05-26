@@ -122,3 +122,14 @@ inline void safeRelease(T& ptr)
 	}
 }
 #define SAFE_RELEASE safeRelease //後方互換性のために
+// ポインタ参照される配列を安全に削除
+template<typename T>
+inline void safeDeleteArray(T& ptr)
+{
+	if (ptr)
+	{
+		delete[] ptr;
+		ptr = NULL;
+	}
+}
+#define SAFE_DELETE_ARRAY safeDeleteArray //後方互換性のために
