@@ -184,7 +184,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
 		break;
 	case STAGE_LOCK:
 		//鍵で開けられる扉
@@ -196,7 +196,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
 		break;
 	case EVENT_GOAL:
 		//ゴール
@@ -208,7 +208,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
 		break;
 	case UI_HP:
 		//残機表示
@@ -220,7 +220,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
 		break;
 	default:
 		obj->m_scl = { 1.0f,1.0f };

@@ -6,8 +6,8 @@
 #include "StageClass.h"
 
 //ステージ開始時、xBased/resultにダミーノードを登録、xBasedにオブジェクトの端を全て登録
-void initializeObjList(StageObj* p_stageobj, DataList* xBased, DataList* result);
-void initializeTypeList(DataList* typeCompat, objTypes type1, objTypes type2, bool func(ObjStr* a, ObjStr* b));
+void initializeObjList(StageClass* stage, DataList* xBased, DataList* result);
+//void setTypeList(DataList* typeCompat, objTypes type1, objTypes type2, bool act, bool pas, bool (*func)(ObjStr* a, ObjStr* b));
 //ステージ終了時、xBasedとresultを抹消
 void uninitializeObjList(DataList* xBased, DataList* result);
 
