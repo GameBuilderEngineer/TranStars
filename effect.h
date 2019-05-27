@@ -49,6 +49,9 @@ typedef struct {
 
 void initializeEffect(EffList* eff);
 void uninitializeEffect(EffList* eff);
+void startEffect(EffList* eff);
+void finishEffect(EffList* eff);
+
 void updateEffect(EffList* eff);
 void drawEffect(EffList* eff);
 

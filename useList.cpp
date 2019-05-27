@@ -1,28 +1,40 @@
 //西川
 #include "useList.h"
-#include "collision.h"//西川0518 コリジョン内の関数をリストに渡すため
-#include "effect.h"//西川0525 エフェクト
+#include "collision.h"//西川0527 コリジョン内の関数をリストに渡すため
+#include "effect.h"//西川0527 エフェクト
 
-void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b));
+void optimizeObjList_getResult(DataList* typeCompat, DataList* xBased, DataList* result);
+void checkCheckList(DataList* checkList, DataList* typeCompat, DataList* result);
+void startTypeCompatList(DataList* typeCompat);
 
-void initializeObjList(StageClass* stage, DataList* xBased, DataList* result) {
+void initializeObjList(DataList* typeCompat, DataList* xBased, DataList* result) {
 	Initialize(xBased);
-	for (int i = 0; i < stage->getObjNum(); i++) {
-		float size = getObjectSizeLonger(&stage->getObj()[i]);//半径と辺、どちらが当たり判定かはともかく長い方
-		InsertRearEdges(xBased, &stage->getObj()[i],stage->getObj()[i].m_image.width / 2.0f - size, stage->getObj()[i].m_image.width / 2.0f + size);
-		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
-	}
 	Initialize(result);
+	Initialize(typeCompat);
 }
-void uninitializeObjList(DataList* xBased, DataList* result) {
+void uninitializeObjList(DataList* typeCompat,DataList* xBased, DataList* result) {
+	Terminate(typeCompat);
 	Terminate(xBased);
 	Terminate(result);
 }
+void startObjList(StageClass* stage, DataList* typeCompat, DataList* xBased, DataList* result) {
+	for (int i = 0; i < stage->getObjNum(); i++) {
+		float size = getObjectSizeLonger(&stage->getObj()[i]);//半径と辺、どちらが当たり判定かはともかく長い方
+		InsertRearEdges(xBased, &stage->getObj()[i], stage->getObj()[i].m_image.width / 2.0f - size, stage->getObj()[i].m_image.width / 2.0f + size);
+		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
+	}
+	startTypeCompatList(typeCompat);
+}
+void finishObjList(DataList* typeCompat, DataList* xBased, DataList* result) {
+	Clear(typeCompat);
+	Clear(xBased);
+	Clear(result);
+}
 
-void updateObjList(DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b)) {
+void updateObjList(DataList* typeCompat,DataList* xBased, DataList* result) {
 	Clear(result);//毎フレーム、前のresultを(要らない＋次作るまでに消しとかなきゃいけないので)消去
 	sortObjEdgeListByX(xBased);//x端リストにオブジェクトの移動を反映
-	optimizeObjList_getResult(NULL, xBased, result, func);
+	optimizeObjList_getResult(typeCompat, xBased, result);
 }
 
 //既に作った結果リストを全部funcで参照する
@@ -57,7 +69,7 @@ void printList(DataList* draw) {
 }
 
 //毎フレーム、xBasedとfunc(なんらかの処理)をもとにresultを作成
-void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* result, bool func(ObjStr* a, ObjStr* b)) {
+void optimizeObjList_getResult(DataList* typeCompat, DataList* xBased, DataList* result) {
 
 	//compatとは？…タイプ関係。余裕があったらタイプ関係による効率化もしたい
 
@@ -72,19 +84,8 @@ void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* res
 
 			//チェックリストに新しいオブジェクト端が追加されていないならば
 			//リザルトリストに新しいものが増える訳はないので調べ直す必要はない
-			DataNode *sub_crnt; checkList.crnt = checkList.head;
-			while (Next(&checkList)) {//リストがダミーのみだったり見終わったら脱出
-				sub_crnt = checkList.crnt;
-				while (Next(&checkList)) {
-					//カレント以前のノードは一つ大きいループで調べ終わっている筈なので比べるのはcrntの次からでよい
-					if (SearchObjCon(result, sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj) == NULL)
-						InsertRearCon(result, sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj,
-							// まだ結果リストにないものだったら結果リストに登録
-							func(sub_crnt->d._oE.mp_obj, checkList.crnt->d._oE.mp_obj));
-					// もらった関数で得た結果(bool型)も登録
-				}
-				checkList.crnt = sub_crnt;//カレントまで戻す
-			}
+
+			checkCheckList(&checkList, typeCompat, result);//チェックリストをチェック
 		}
 		if (xBased->crnt->d._oE.mp_L != NULL) {// 調べたオブジェクト端がオブジェクトの右端だった
 			checkList.crnt = SearchObjEdge(&checkList, xBased->crnt->d._oE.mp_L->mp_obj);
@@ -97,3 +98,28 @@ void optimizeObjList_getResult(DataList* compat, DataList* xBased, DataList* res
 	Terminate(&checkList);//チェックリスト撲滅
 }
 
+//チェックリストとタイプ相性リストを見つつ、タイプ相性リストに登録された関数の結果をリザルトリストに記録
+void checkCheckList(DataList* checkList, DataList* typeCompat, DataList* result) {
+	DataNode *sub_crnt; checkList->crnt = checkList->head;
+	while (Next(checkList)) {//リストがダミーのみだったり見終わったら脱出
+		sub_crnt = checkList->crnt;
+		while (Next(checkList)) {
+			//カレント以前のノードは一つ大きいループで調べ終わっている筈なので比べるのはcrntの次からでよい
+			if (SearchObjCon(result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj) == NULL) {// まだ結果リストにないものだったら
+				typeCompat->crnt = typeCompat->head;//タイプ表のカレントをリセット
+				while (SearchNextTypeCompat(typeCompat, sub_crnt->d._oE.mp_obj->m_type, checkList->crnt->d._oE.mp_obj->m_type)
+					!= NULL) {//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
+					InsertRearCon(result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj, 
+						(*typeCompat->crnt->d._tC.mp_func)(sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj));
+						// チェックリストに登録されていた関数(*mp_func)で得た結果(bool)を登録
+				}
+			}
+		}
+		checkList->crnt = sub_crnt;//大きいwhileのカレントまで戻す
+	}
+}
+
+
+void startTypeCompatList(DataList* typeCompat) {
+	setTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, true, &checkHitObjRR);//全タイプ
+}

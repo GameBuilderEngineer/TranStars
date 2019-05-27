@@ -30,8 +30,8 @@ void Remove(EffList* list, EffNode* p)
 	p->next->prev = p->prev;
 	list->crnt = p->prev;	// 削除したノードの先行ノードに着目
 	free(p);
-	if (list->crnt == list->head)
-		list->crnt = list->head->next;
+//	if (list->crnt == list->head)
+//		list->crnt = list->head->next;
 };
 
 //a->b=(*a).b
@@ -94,7 +94,7 @@ void PrintCurrent(const EffList* list)
 	}
 }
 
-// xとデータのタイプが一致している、カレント以後で最も近いノードを探索
+// なにかの条件でxと一致している、カレント以後で最も近いノードを探索
 EffNode* SearchNext_notCrnt(EffList *list, EffNode* n,int comp(const EffNode* x, const EffNode* y))
 {
 	EffNode* ptr = list->crnt->next;//一個ずれて開始
@@ -107,7 +107,7 @@ EffNode* SearchNext_notCrnt(EffList *list, EffNode* n,int comp(const EffNode* x,
 	return ptr;// 探索成功した場合はそのノード、失敗した場合は元のカレントノード
 };
 
-// xとデータのタイプが一致している、カレント以前で最も近いノードを探索
+// なにかの条件でxと一致している、カレント以前で最も近いノードを探索
 EffNode* SearchPrev_notCrnt(EffList *list, EffNode* n, int comp(const EffNode* x, const EffNode* y))
 {
 	EffNode* ptr = list->crnt->prev;//一個ずれて開始
@@ -129,7 +129,7 @@ EffNode* SearchNode(EffList *list, EffNode* n)
 	{
 		if (NodeCmp(ptr, n) == 0)
 		{
-//			list->crnt = ptr;
+			list->crnt = ptr;
 			return ptr;			// 探索成功
 		}
 		ptr = ptr->next;
@@ -265,10 +265,8 @@ void MoveDnodeBefore(EffNode* p_is, EffNode* p_to) {
 // 循環・重連結リストの後始末
 void Terminate(EffList* list)
 {
-	if (list->head != NULL) {
-		Clear(list);			// 全ノードを削除
-		free(list->head);		// ダミーノードを削除
-	}
+	Clear(list);			// 全ノードを削除
+	free(list->head);		// ダミーノードを削除
 };
 
 //↑ローカル関数
@@ -279,6 +277,10 @@ void initializeEffect(EffList* eff) {
 void uninitializeEffect(EffList* eff) {
 	Terminate(eff);
 }
+void startEffect(EffList* eff) {};
+void finishEffect(EffList* eff) {
+	Clear(eff);
+}
 void updateEffect(EffList* eff) {
 	eff->crnt = eff->head;// リストの着目ノードをリセット
 	while (Next(eff)) {
@@ -286,15 +288,14 @@ void updateEffect(EffList* eff) {
 		c->m_time--;
 		switch (c->m_type) {
 		case ePARTICLE: {
-			c->m_rot += 0.5f + 7.0f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX);
+			c->m_rot += 0.5f + 7.0f * float(c->m_time) / float(c->m_tMAX);
 			EffData *c2 = &SearchPrev_notCrnt(eff, eff->crnt, DataTypeCmp)->effD//リスト内で前方にある同タイプのエフェクト
 				, *c3 = &SearchNext_notCrnt(eff, eff->crnt, DataTypeCmp)->effD;//リスト内で後方にある同タイプのエフェクト
 			c->m_accel = ((c2->m_pos + c3->m_pos) / 2.0f - c->m_pos) / 1000.0f;
 			c->m_speed += c->m_accel;
 			c->m_pos += c->m_speed;
-			SetColorImage(&eff->crnt->effD.m_image,
-				{ 1.0f,1.0f,0.5f + 0.5f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX),
-				1.5f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX) - 0.25f });//薄く黄色くなっていく
+			SetColorImage(&c->m_image, { 1.0f,1.0f,0.5f + 0.5f * float(c->m_time) / float(c->m_tMAX),
+				1.5f * float(c->m_time) / float(c->m_tMAX) - 0.25f });//薄く黄色くなっていく
 			break;
 		}
 		case eLUMINE:
@@ -304,13 +305,12 @@ void updateEffect(EffList* eff) {
 		case eTAIL:
 			break;
 		case eMAGIC: {
-			c->m_rot += 0.5f + 7.0f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX);
-			float f = 35.0f * float(eff->crnt->effD.m_time - eff->crnt->effD.m_tMAX * 2 / 3) / (float)eff->crnt->effD.m_tMAX;
+			c->m_rot += 0.5f + 7.0f * float(c->m_time) / float(c->m_tMAX);
+			float f = 35.0f * float(c->m_time - c->m_tMAX * 2 / 3) / (float)c->m_tMAX;
 			c->m_image.width += (int)f;
 			c->m_image.height += (int)f;
 			c->m_pos = { c->m_pos.x - f / 2.0f ,c->m_pos.y - f / 2.0f };
-			SetColorImage(&eff->crnt->effD.m_image,
-				{ 1.0f,1.0f,1.0f,1.4f * float(eff->crnt->effD.m_time) / float(eff->crnt->effD.m_tMAX) - 0.1f });//薄くなっていく
+			SetColorImage(&c->m_image, { 1.0f,1.0f,1.0f,1.4f * float(c->m_time) / float(c->m_tMAX) - 0.1f });//薄くなっていく
 			break;
 		}
 		default:
