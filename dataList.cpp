@@ -82,7 +82,7 @@ static int typeCompatCmp(const objTypes x, const objTypes y) {
 }
 // タイプが特殊なタイプであれば検出(true)する
 static bool detectNoType(const objTypes t) {
-	if ((int)t < (int)NO_TYPE || t == NO_TYPE || t == TYPE_MAX || (int)TYPE_MAX < (int)t) return true;
+	if (int(t) < int(NO_TYPE) || t == NO_TYPE || t == TYPE_MAX || int(TYPE_MAX) < int(t)) return true;
 	return false;
 }
 //　タイプの大小をtype1が小さくなるように揃える
@@ -485,8 +485,8 @@ void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, boo
 void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	//setTypeCompatが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
-	for (int i = (int)type1L; i <= (int)type1H; i++)
-		for (int j = (int)type2L; j <= (int)type2H; j++) {
+	for (int i = int(type1L); i <= int(type1H); i++)
+		for (int j = int(type2L); j <= int(type2H); j++) {
 			UnionData d = SetDataTypeCompat((objTypes)i, (objTypes)j, use, p_func);
 			if (SearchData(list, &d) == NULL)//同じ処理はまだなかったら
 				setTypeCompat(list, (objTypes)i, (objTypes)j, use, p_func);

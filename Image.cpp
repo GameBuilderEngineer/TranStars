@@ -138,6 +138,52 @@ void setPosition(Image* image, float _x, float _y)
 	}
 };
 
+void setVertex(Image* image, D3DXVECTOR2 vtx0, D3DXVECTOR2 vtx1, D3DXVECTOR2 vtx2, D3DXVECTOR2 vtx3)
+{
+	{
+		VERTEX_2D *pVtx;
+
+		// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+		image->g_pD3DVtxBuffer->Lock(0, 0, (void**)&pVtx, 0);
+
+		// 頂点座標の設定
+		pVtx[0].vtx = { vtx0.x,vtx0.y,0.0f };
+		pVtx[1].vtx = { vtx1.x,vtx1.y,0.0f };
+		pVtx[2].vtx = { vtx2.x,vtx2.y,0.0f };
+		pVtx[3].vtx = { vtx3.x,vtx3.y,0.0f };
+
+		// 頂点データをアンロックする
+		image->g_pD3DVtxBuffer->Unlock();
+	}
+	image->position.x = vtx0.x;
+	image->position.y = vtx0.y;
+}//西川0528
+
+void movePosition(Image* image, float _x, float _y)
+{
+	float mvx = _x - image->position.x;
+	float mvy = _y - image->position.y;
+	float width = image->width;
+	float height = image->height;
+	{//頂点バッファの中身を埋める
+		VERTEX_2D *pVtx;
+
+		// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+		image->g_pD3DVtxBuffer->Lock(0, 0, (void**)&pVtx, 0);
+
+		// 頂点座標の設定
+		pVtx[0].vtx += D3DXVECTOR3(mvx, mvy, 0.0f);
+		pVtx[1].vtx += D3DXVECTOR3(mvx, mvy, 0.0f);
+		pVtx[2].vtx += D3DXVECTOR3(mvx, mvy, 0.0f);
+		pVtx[3].vtx += D3DXVECTOR3(mvx, mvy, 0.0f);
+
+		// 頂点データをアンロックする
+		image->g_pD3DVtxBuffer->Unlock();
+	}
+	image->position.x = _x;
+	image->position.y = _y;
+};//西川0528 四点の関係には触れずに、左上基準で移動だけ行う
+
 void setAngle(Image* image, float _angle)
 {
 	image->angle = _angle;
@@ -166,6 +212,40 @@ void setAngle(Image* image, float _angle)
 		pVtx[2].vtx.y = (-width/2) * sinf(radian) + (height/2) * cosf(radian) + y;
 		pVtx[3].vtx.x = (width/2) * cosf(radian) - (height/2) * sinf(radian) + x;
 		pVtx[3].vtx.y = (width/2) * sinf(radian) + (height/2) * cosf(radian) + y;
+
+		// 頂点データをアンロックする
+		image->g_pD3DVtxBuffer->Unlock();
+	}
+};
+
+void setAngleRad(Image* image, float _angleRad)
+{
+	image->angle = D3DXToDegree(_angleRad);
+	float angle = image->angle;
+	float width = image->width;
+	float height = image->height;
+	float x = image->position.x + width / 2;
+	float y = image->position.y + height / 2;
+
+	//x = x * cosθ - y * sinθ
+	//y = x * sinθ + y * cosθ
+	float radian = _angleRad;
+
+	{//頂点バッファの中身を埋める
+		VERTEX_2D *pVtx;
+
+		// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+		image->g_pD3DVtxBuffer->Lock(0, 0, (void**)&pVtx, 0);
+
+		// 頂点座標の設定
+		pVtx[0].vtx.x = (-width / 2) * cosf(radian) - (-height / 2) * sinf(radian) + x;
+		pVtx[0].vtx.y = (-width / 2) * sinf(radian) + (-height / 2) * cosf(radian) + y;
+		pVtx[1].vtx.x = (width / 2) * cosf(radian) - (-height / 2) * sinf(radian) + x;
+		pVtx[1].vtx.y = (width / 2) * sinf(radian) + (-height / 2) * cosf(radian) + y;
+		pVtx[2].vtx.x = (-width / 2) * cosf(radian) - (height / 2) * sinf(radian) + x;
+		pVtx[2].vtx.y = (-width / 2) * sinf(radian) + (height / 2) * cosf(radian) + y;
+		pVtx[3].vtx.x = (width / 2) * cosf(radian) - (height / 2) * sinf(radian) + x;
+		pVtx[3].vtx.y = (width / 2) * sinf(radian) + (height / 2) * cosf(radian) + y;
 
 		// 頂点データをアンロックする
 		image->g_pD3DVtxBuffer->Unlock();
@@ -250,6 +330,23 @@ void SetTexture(Image* image, float ratioU, float ratioV)
 		image->g_pD3DVtxBuffer->Unlock();
 	}
 }
+
+void SetTexture(Image* image, D3DXVECTOR2 tex0, D3DXVECTOR2 tex1, D3DXVECTOR2 tex2, D3DXVECTOR2 tex3)
+{
+	VERTEX_2D *pVtx;
+
+	// 頂点データの範囲をロックし、頂点バッファへのポインタを取得
+	image->g_pD3DVtxBuffer->Lock(0, 0, (void**)&pVtx, 0);
+
+	// テクスチャ座標の設定
+	pVtx[0].tex = tex0;
+	pVtx[1].tex = tex1;
+	pVtx[2].tex = tex2;
+	pVtx[3].tex = tex3;
+
+	// 頂点データをアンロックする
+	image->g_pD3DVtxBuffer->Unlock();
+}//西川0527
 
 HRESULT MakeVertex(Image* image, LPDIRECT3DDEVICE9 pDevice)
 {

@@ -42,10 +42,13 @@ void updateStage() {
 	updatePause();
 	// 大体ここまで
 	stage.update();//菅野
-	if (getMouseLButtonTrigger() || getMouseRButtonTrigger())
+	if (getMouseLButtonTrigger())
 		makeParticle(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0525
-	if (getMouseLButtonTrigger() || getMouseRButtonTrigger())
-		makeMagic(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0526
+	if (getMouseRButtonTrigger())
+//		makeMagic(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0526
+		makeSplit(&effectList, { (float)getMouseX(), (float)getMouseY() }, &stage.getObj()[0].m_image);//西川0527
+	makeTail(&effectList, { stage.getObj()[0].m_pos.x + stage.getObj()[0].m_image.width / 2.0f,
+		stage.getObj()[0].m_pos.y + stage.getObj()[0].m_image.height / 2.0f }, stage.getObj()[0].m_speed);//西川0528
 	updateEffect(&effectList);//西川0525
 
 	updateObjList(&typeCompatList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数を渡してその結果リストを取得

@@ -255,6 +255,7 @@ void uninitializeObject(ObjStr* obj) {
 
 void updateObject(ObjStr* obj) {
 	if (obj->m_use == false) return;
+	if (obj->m_id == 0) obj->m_pos += obj->m_speed = (D3DXVECTOR2{ float(getMouseX()), float(getMouseY()) } - obj->m_pos) / 50.0f;
 	switch (obj->m_type) {//ƒ^ƒCƒv‚²‚Æ‚Éˆ—•ª‚¯
 	case CHARA_PLAYER:
 		//¯
