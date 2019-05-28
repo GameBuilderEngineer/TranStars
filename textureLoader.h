@@ -5,16 +5,18 @@
 namespace textureLoaderNS
 {
 	enum TEXTURE_NUMBER {
-		STAR1,//êºêÏ0525
-		STAR2,//êºêÏ0525
+		SMALL_STAR,//êºêÏ0525
+		BIG_STAR,//êºêÏ0525
 		STAR3,//êºêÏ0525
 		BLACK_HOLE,
 		WHITE_HOLE,
-		COMET,
+		COMET01,
+		COMET02,
 		PLANET,
 		WALL,
 		WITCH,//êºêÏ0525
 		MAGIC_CIRCLE,//êºêÏ0525
+		STAGE_SELECT,
 		TITLE_LOGO,
 		TITLE_PRESS_ENTER,
 		TITLE_NEW_GAME,

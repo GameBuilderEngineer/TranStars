@@ -13,20 +13,22 @@ LPDIRECT3DTEXTURE9* getTexture(int i)
 TextureLoader::TextureLoader()
 {
 //êºêÏ 0.22
-	textureName[textureLoaderNS::STAR1] = { "TEXTURE/star1.PNG" };//êºêÏ0525
-	textureName[textureLoaderNS::STAR2] = { "TEXTURE/star2.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::SMALL_STAR] = { "TEXTURE/star1.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::BIG_STAR] = { "TEXTURE/star2.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::STAR3] = { "TEXTURE/star3.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::BLACK_HOLE] = { "TEXTURE/BH_kari.png" };
 	textureName[textureLoaderNS::WHITE_HOLE] = { "TEXTURE/WH_kari.png" };
-	textureName[textureLoaderNS::COMET] = { "TEXTURE/comet.jpg" };
+	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.jpg" };
+	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.jpg" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.h" };
 	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
 	textureName[textureLoaderNS::MAGIC_CIRCLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::STAGE_SELECT] = { "TEXTURE/stageSelectImage.png" };//êºêÏ0525
 
 	// îÛè¿í«â¡
 	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };
-	textureName[textureLoaderNS::TITLE_LOGO] = { "TEXTURE/title_logo.png" };
+	textureName[textureLoaderNS::TITLE_LOGO] = { "TEXTURE/titleLogo.png" };
 	textureName[textureLoaderNS::TITLE_PRESS_ENTER] = { "TEXTURE/press_enter.png" };
 	textureName[textureLoaderNS::TITLE_NEW_GAME] = { "TEXTURE/new_game.png" };
 	textureName[textureLoaderNS::TITLE_SELECT_STAGE] = { "TEXTURE/stage_select.png" };

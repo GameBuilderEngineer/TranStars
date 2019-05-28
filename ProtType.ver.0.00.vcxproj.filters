@@ -22,9 +22,6 @@
     <Filter Include="アプリケーション\ゲーム管理">
       <UniqueIdentifier>{d3ebaf14-6ee5-4d7b-b428-ae2e4d4060c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="アプリケーション\オブジェクト">
-      <UniqueIdentifier>{6479e1ab-a24d-40d6-bec2-8fb52698b37d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ドメイン\タイマークラス">
       <UniqueIdentifier>{34b636cc-9890-48c4-beb8-d3fc1c4ce0f5}</UniqueIdentifier>
     </Filter>
@@ -43,14 +40,47 @@
     <Filter Include="ドメイン\メッセージダイアログ">
       <UniqueIdentifier>{07793791-7ab6-41de-87c8-c890aeb80160}</UniqueIdentifier>
     </Filter>
-    <Filter Include="アプリケーション\オブジェクト\リスト化">
-      <UniqueIdentifier>{6bb8f1f7-4974-4dd6-b114-309af4adf932}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="アプリケーション\オブジェクト\更新処理">
-      <UniqueIdentifier>{4c727316-4c2a-4e44-9105-2f3a7acd8012}</UniqueIdentifier>
-    </Filter>
     <Filter Include="アプリケーション\シーン\ステージ管理">
       <UniqueIdentifier>{72ddab81-4ee4-442b-85cb-68de9da41b48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\ステージクラス">
+      <UniqueIdentifier>{1305c1d2-186e-4a3d-bfa3-eb4b73997dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト">
+      <UniqueIdentifier>{6479e1ab-a24d-40d6-bec2-8fb52698b37d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\リスト化">
+      <UniqueIdentifier>{6bb8f1f7-4974-4dd6-b114-309af4adf932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\更新処理">
+      <UniqueIdentifier>{4c727316-4c2a-4e44-9105-2f3a7acd8012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星（小）">
+      <UniqueIdentifier>{25d6bf79-f8d3-47e2-a2ae-7ef664db8d43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星（大）">
+      <UniqueIdentifier>{95280b4d-6504-4118-a5d0-60a8cc640a59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\ベース">
+      <UniqueIdentifier>{f351704f-faf4-492d-89eb-fc1f7c2f595b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\ブラックホール">
+      <UniqueIdentifier>{19957b4a-b57b-4888-a92e-be2c9022644e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\ホワイトホール">
+      <UniqueIdentifier>{15e33ea1-3c60-49b1-9149-efabbe38c3da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\カーソル">
+      <UniqueIdentifier>{ba65f10f-50d9-4d26-8974-ed92cd2d229c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星（小）生成地">
+      <UniqueIdentifier>{2ea8d77e-fd56-4a25-861c-252a94edd1ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星（大）生成地">
+      <UniqueIdentifier>{9c21f5c5-7eb1-4c13-b0c9-03af561f6a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\隕石">
+      <UniqueIdentifier>{3dc1c0ba-9acd-47d1-bd0a-9a1039700d5a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +120,6 @@
     <ClCompile Include="messageDialog.cpp">
       <Filter>ドメイン\メッセージダイアログ</Filter>
     </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>アプリケーション\オブジェクト</Filter>
-    </ClCompile>
     <ClCompile Include="read_text.cpp">
       <Filter>アプリケーション\シーン\ステージ管理</Filter>
     </ClCompile>
@@ -100,25 +127,52 @@
       <Filter>アプリケーション\ゲーム管理</Filter>
     </ClCompile>
     <ClCompile Include="collision.cpp">
-      <Filter>アプリケーション\オブジェクト\更新処理</Filter>
+      <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClCompile>
     <ClCompile Include="Select_Game.cpp">
       <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
     <ClCompile Include="useList.cpp">
-      <Filter>アプリケーション\オブジェクト\リスト化</Filter>
+      <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
     </ClCompile>
     <ClCompile Include="dataList.cpp">
-      <Filter>アプリケーション\オブジェクト\リスト化</Filter>
+      <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
     </ClCompile>
     <ClCompile Include="effect.cpp">
-      <Filter>アプリケーション\オブジェクト\更新処理</Filter>
+      <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClCompile>
     <ClCompile Include="fileLoader.cpp">
       <Filter>アプリケーション\シーン\ステージ管理</Filter>
     </ClCompile>
+    <ClCompile Include="SmallStar.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星（小）</Filter>
+    </ClCompile>
+    <ClCompile Include="BigStar.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星（大）</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>アプリケーション\動的オブジェクト\ベース</Filter>
+    </ClCompile>
     <ClCompile Include="StageClass.cpp">
-      <Filter>アプリケーション\オブジェクト</Filter>
+      <Filter>アプリケーション\ステージクラス</Filter>
+    </ClCompile>
+    <ClCompile Include="PopBigStar.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星（大）生成地</Filter>
+    </ClCompile>
+    <ClCompile Include="PopSmallStar.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星（小）生成地</Filter>
+    </ClCompile>
+    <ClCompile Include="Cursor.cpp">
+      <Filter>アプリケーション\動的オブジェクト\カーソル</Filter>
+    </ClCompile>
+    <ClCompile Include="WhiteHole.cpp">
+      <Filter>アプリケーション\動的オブジェクト\ホワイトホール</Filter>
+    </ClCompile>
+    <ClCompile Include="BlalckHole.cpp">
+      <Filter>アプリケーション\動的オブジェクト\ブラックホール</Filter>
+    </ClCompile>
+    <ClCompile Include="comet.cpp">
+      <Filter>アプリケーション\動的オブジェクト\隕石</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,32 +215,56 @@
     <ClInclude Include="messageDialog.h">
       <Filter>ドメイン\メッセージダイアログ</Filter>
     </ClInclude>
-    <ClInclude Include="object.h">
-      <Filter>アプリケーション\オブジェクト</Filter>
-    </ClInclude>
     <ClInclude Include="read_text.h">
       <Filter>アプリケーション\シーン\ステージ管理</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
-      <Filter>アプリケーション\オブジェクト\更新処理</Filter>
+      <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClInclude>
     <ClInclude Include="Select_Game.h">
       <Filter>アプリケーション\シーン</Filter>
     </ClInclude>
     <ClInclude Include="useList.h">
-      <Filter>アプリケーション\オブジェクト\リスト化</Filter>
+      <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
     </ClInclude>
     <ClInclude Include="dataList.h">
-      <Filter>アプリケーション\オブジェクト\リスト化</Filter>
+      <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
     </ClInclude>
     <ClInclude Include="effect.h">
-      <Filter>アプリケーション\オブジェクト\更新処理</Filter>
+      <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClInclude>
     <ClInclude Include="fileLoader.h">
       <Filter>アプリケーション\シーン\ステージ管理</Filter>
     </ClInclude>
+    <ClInclude Include="SmallStar.h">
+      <Filter>アプリケーション\動的オブジェクト\星（小）</Filter>
+    </ClInclude>
+    <ClInclude Include="BigStar.h">
+      <Filter>アプリケーション\動的オブジェクト\星（大）</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>アプリケーション\動的オブジェクト\ベース</Filter>
+    </ClInclude>
     <ClInclude Include="StageClass.h">
-      <Filter>アプリケーション\オブジェクト</Filter>
+      <Filter>アプリケーション\ステージクラス</Filter>
+    </ClInclude>
+    <ClInclude Include="PopBigStar.h">
+      <Filter>アプリケーション\動的オブジェクト\星（大）生成地</Filter>
+    </ClInclude>
+    <ClInclude Include="PopSmallStar.h">
+      <Filter>アプリケーション\動的オブジェクト\星（小）生成地</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
+      <Filter>アプリケーション\動的オブジェクト\カーソル</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteHole.h">
+      <Filter>アプリケーション\動的オブジェクト\ホワイトホール</Filter>
+    </ClInclude>
+    <ClInclude Include="BlackHole.h">
+      <Filter>アプリケーション\動的オブジェクト\ブラックホール</Filter>
+    </ClInclude>
+    <ClInclude Include="comet.h">
+      <Filter>アプリケーション\動的オブジェクト\隕石</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

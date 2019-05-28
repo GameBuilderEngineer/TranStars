@@ -7,7 +7,15 @@
 #include "textDX.h"
 #include "input.h"
 #include "fileLoader.h"
-
+#include "SmallStar.h"
+#include "BlackHole.h"
+#include "WhiteHole.h"
+#include "SmallStar.h"
+#include "BigStar.h"
+#include "comet.h"
+#include "PopSmallStar.h"
+#include "PopBigStar.h"
+#include "Cursor.h"
 
 //菅野
 //改造しました。
@@ -15,25 +23,19 @@
 //ファイル分けをしました。
 //このオブジェクトcppは、基本的には、一つのオブジェクトに作用する関数、データで構成しました。
 
-const float VALUE_ATTRACTION = 0.02f; // 引力の強さ
-const float RANGE_ATTRACTION = 800.0f;	// 引力の働く範囲
 
 //オブジェクトをセットする系ローカル関数
-ObjStr cleanObj(int i);
+//ObjStr cleanObj(int i);
 Image cleanTex(void);
 
 //オブジェクトを個別処理する関数
 //機能ごとにファイル分けをした方が良いと思います。（kanno）
 void updatePlayer(ObjStr* p_obj);
-void setBlackHole(ObjStr* p_obj);
-void updateBlackHole(ObjStr* p_obj);
-void setWhiteHole(ObjStr* p_obj);
-void updateWhiteHole(ObjStr* p_obj);
+
+
+
 void resetStar(ObjStr* p_obj);
 //いろいろ応用できそうな計算処理的関数
-float objectLength(ObjStr* p_obj1, ObjStr* p_obj2);				//2つのオブジェクト間の距離を計算
-D3DXVECTOR2 objectDirection(ObjStr* p_obj1, ObjStr* p_obj2);	// オブジェクト1に対するオブジェクト2の方向ベクトルを戻す
-
 
 /*コリジョンリストに必要そうなもの
 obID/obType/pos/rot/scl/coltype
@@ -44,20 +46,7 @@ obID/obType/pos/rot/scl/coltype
 */
 
 
-void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float angle){
-
-	//p_stgobj->m_STAGE = stage;
-	//Stage *p_fromstage = get_g_pStage(stage);//今から取得するステージ
-	//p_stgobj->m_OBJNUM = p_fromstage->num_m_pObj + PLUS_OBJNUM;
-	//for (int i = 0; i < p_stgobj->m_OBJNUM; i++) {
-	//	if (NO_TYPE < i && i < FROMFILE_TYPE_MAX) {
-	
-	//↓ステージのテクスチャたちの初期値＝テクスチャリスト/実際には外からもらう値
-	//for (int j = 0; j < TYPE_MAX; j++) {
-	//	k = (objTypes)(j);
-	//	if (NO_TYPE < k && k < TYPE_MAX/* && k != FROMFILE_TYPE_MAX*/) {
-	//		StubTex[j].m_type = k;
-
+void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float angle,ObjStr* others,int otherNum){
 	//菅野：2019/5/26改修
 
 	//↓オブジェクトの初期値
@@ -67,45 +56,29 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 	obj->m_rot = angle;
 
 	switch (obj->m_type) {
-	case CHARA_PLAYER://星
-		obj->m_use = true;
-		obj->m_pos = D3DXVECTOR2{ 200.0f , 450.0f };
-		obj->m_speed.x = -1.0f;
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::STAR1), obj->m_pos.x, obj->m_pos.y,50.0f,50.0f);
-		break;
 	case CHARA_BLACKHOLE://ブラックホール
-		obj->m_use = true;
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::BLACK_HOLE), obj->m_pos.x, obj->m_pos.y, 80.0f, 80.0f);
+		initializeBlackHole(obj, others,otherNum);
 		break;
 	case CHARA_WHITEHOLE://ホワイトホール
-		obj->m_use = true;
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::WHITE_HOLE), obj->m_pos.x, obj->m_pos.y, 80.0f, 80.0f);
+		initializeWhiteHole(obj);
+		break;
+	case UI_CURSOR://西川0525
+		//カーソル
+		initializeCursor(obj);
+		break;
+	case CHARA_SMALL_STAR://星
+		initializeSmallStar(obj);
+		break;
+	case CHARA_BIG_STAR://星
+		initializeBigStar(obj);
 		break;
 	case CHARA_COMET://隕石
+		initializeComet(obj);
+		break;
+	case POP_SMALLSTAR://星（小）がポップする場所
+		initializePopSmallStar(obj);
+		break;
+	case POP_BIGSTAR://星（大）がポップする場所
 		obj->m_scl = { 1.0f,1.0f };
 		obj->m_speed = { 0.0f,0.0f };
 		obj->m_accel = { 0.0f,0.0f };
@@ -114,9 +87,9 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::BIG_STAR), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
 		break;
-	case CHARA_KEY://カギ
+	case POPCOMET://隕石発生場所
 		obj->m_scl = { 1.0f,1.0f };
 		obj->m_speed = { 0.0f,0.0f };
 		obj->m_accel = { 0.0f,0.0f };
@@ -125,9 +98,9 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET02), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
 		break;
-	case CHARA_COIN://収集アイテム
+	case CHARA_SMALL_STARFRAME://星（小）を嵌める型
 		obj->m_scl = { 1.0f,1.0f };
 		obj->m_speed = { 0.0f,0.0f };
 		obj->m_accel = { 0.0f,0.0f };
@@ -136,21 +109,9 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
 		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET01), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
 		break;
-	case STAGE_HURDLE://動かせる障害物
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
-		break;
-	case STAGE_WALL:			
-		//動かせない壁　地面とか
+	case CHARA_BIG_STARFRAME://星（大）を嵌める型
 		obj->m_use = true;
 		obj->m_scl = { 1.0f,1.0f };
 		obj->m_speed = { 0.0f,0.0f };
@@ -162,7 +123,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_rect = { 100.0f,100.0f };
 		InitImage(&obj->m_image, getTexture(textureLoaderNS::WALL), obj->m_pos.x, obj->m_pos.y, 40.0f, 300.0f);
 		break;
-	case UI_EFFECT:
+	case CHARA_STARDUST:
 		//エフェクト
 		obj->m_scl = { 1.0f,1.0f };
 		obj->m_speed = { 0.0f,0.0f };
@@ -174,44 +135,8 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_rect = { 100.0f,100.0f };
 		InitAnimeImage(&obj->m_image, getTexture(textureLoaderNS::BACK_GROUND), obj->m_pos.x, obj->m_pos.y, 160.0f, 80.0f,3,5,10,5);
 		break;
-	case UI_CURSOR://西川0525
-		//ブラックホール置くカーソル
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
-		break;
-	case STAGE_LOCK:
+	case STAGE_STARLINE:
 		//鍵で開けられる扉
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
-		break;
-	case EVENT_GOAL:
-		//ゴール
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
-		break;
-	case UI_HP:
-		//残機表示
 		obj->m_scl = { 1.0f,1.0f };
 		obj->m_speed = { 0.0f,0.0f };
 		obj->m_accel = { 0.0f,0.0f };
@@ -254,48 +179,14 @@ void uninitializeObject(ObjStr* obj) {
 }
 
 void updateObject(ObjStr* obj) {
-	if (obj->m_use == false) return;
 	switch (obj->m_type) {//タイプごとに処理分け
-	case CHARA_PLAYER:
-		//星
-		updatePlayer(obj->m_ptr);
-		break;
 	case CHARA_BLACKHOLE:
 		//ブラックホール
-		if (getMouseLButtonTrigger()) // 右クリックでセット
-			setBlackHole(obj->m_ptr);
-		updateBlackHole(obj->m_ptr);
+		updateBlackHole(obj);
 		break;
 	case CHARA_WHITEHOLE:
 		//ホワイトホール
-		if (getMouseRButtonTrigger()) // 右クリックでセット
-			setWhiteHole(obj->m_ptr);
-		updateWhiteHole(obj->m_ptr);
-		break;
-	case CHARA_COMET:
-		//隕石
-		break;
-	case CHARA_KEY:
-		//鍵
-		break;
-	case CHARA_COIN:
-		//収集アイテム
-		break;
-	case STAGE_HURDLE:
-		//動かせる障害物
-		break;
-	case STAGE_WALL:
-		//動かせない壁　地面とか
-		if (checkHitObjRR(obj->m_ptr, obj->m_ptr->m_tar))
-		{
-			resetStar(obj->m_ptr->m_tar);
-		};
-		break;
-	case STAGE_LOCK:
-		//鍵で開けられる扉
-		break;
-	case EVENT_GOAL:
-		//ゴール
+		updateWhiteHole(obj);
 		break;
 	case UI_CURSOR://西川 0525
 		//ブラックホール置くカーソル
@@ -317,20 +208,50 @@ void updateObject(ObjStr* obj) {
 			obj->m_image.height = obj->m_image.width;
 		}
 		break;
-	case UI_EFFECT:
-		//エフェクト
+	case CHARA_SMALL_STAR:
+		//星（小）
+		updateSmallStar(obj);
 		break;
-	case UI_HP:
-		//残機表示
+	case CHARA_BIG_STAR:
+		//星（大）
+		break;
+	case CHARA_COMET:
+		//隕石
+		break;
+	case POP_SMALLSTAR:
+		//星（小）が発生する場所
+		break;
+	case POP_BIGSTAR:
+		//星（大）が発生する場所
+		break;
+	case POPCOMET:
+		//隕石が発生する場所
+		break;
+	case CHARA_SMALL_STARFRAME:
+		//星（小）がはまる型
+		break;
+	case CHARA_BIG_STARFRAME:
+		//星（大）がはまる型
+		break;
+	case CHARA_STARDUST:
+		//星の壁
+		break;
+	case STAGE_STARLINE:
+		//星と星を結ぶ線
+		break;
+	default:
 		break;
 	}
+	//オブジェクトの基本処理
+	if (obj->m_use == false)return;
+	obj->m_pos += obj->m_accel;
+	setPosition(&(obj->m_image), obj->m_pos.x , obj->m_pos.y);
+	setAngle(&(obj->m_image), obj->m_image.angle + 1);
 }
 
 void drawObject(ObjStr* obj){
 	//全てのオブジェクトを描画　※これだと描画順をタイプごとに揃えたりできないので、描画用のリストを作ることになるのかも
 	if (obj->m_use == false) return;
-	setPosition(&(obj->m_image), obj->m_pos.x , obj->m_pos.y);
-	setAngle(&(obj->m_image), obj->m_image.angle + 1);
 	DrawImage(&(obj->m_image));
 }
 
@@ -377,26 +298,26 @@ float getObjectSizeLonger(ObjStr* obj) {
 
 /////以下オブジェクトセット系ローカル関数
 
-ObjStr cleanObj(int i) {//Objをリセット
-	return {
-		NO_TYPE,
-		short(i),
-		false,
-		NULL,
-		NULL,
-		{0.0f,0.0f},
-		0.0f,
-		{0.0f,0.0f},
-		{0.0f,0.0f},
-		{0.0f,0.0f},
-		{0.0f,0.0f},
-		int(0),
-		short(0),
-		0.0f,
-		{0.0f,0.0f}
-//		cleanTex()
-	};
-}
+//ObjStr cleanObj(int i) {//Objをリセット
+//	return {
+//		NO_TYPE,
+//		short(i),
+//		false,
+//		NULL,
+//		NULL,
+//		{0.0f,0.0f},
+//		0.0f,
+//		{0.0f,0.0f},
+//		{0.0f,0.0f},
+//		{0.0f,0.0f},
+//		{0.0f,0.0f},
+//		int(0),
+//		short(0),
+//		0.0f,
+//		{0.0f,0.0f}
+////		cleanTex()
+//	};
+//}
 
 Image cleanTex(void) {//Texをリセット
 	Image nullTex;
@@ -506,30 +427,8 @@ void updatePlayer(ObjStr* obj) {
 
 };
 
-void updateBlackHole(ObjStr* obj) {
-	// 引力を計算する
-	obj->m_attract = objectDirection(obj, obj->m_tar) * VALUE_ATTRACTION;
-	if (obj->m_use == true)// ブラックホールが有効ならば
-	{
-		if (objectLength(obj, obj->m_tar) <= RANGE_ATTRACTION) // プレイヤーの距離が引力の働く範囲内ならば
-			obj->m_tar->m_accel =
-			obj->m_attract * (1-(objectLength(obj, obj->m_tar) / RANGE_ATTRACTION));	// プレイヤーの加速度へ引力を加算する
-			// (引力) * (1 - プレイヤー距離/引力範囲)
-	}
-};
 
-void updateWhiteHole(ObjStr* p_obj) {
 
-};
-
-void  setBlackHole(ObjStr* p_obj) {
-	p_obj->m_use = true;
-	p_obj->m_pos = D3DXVECTOR2{ (float)getMouseX(),(float)getMouseY() };
-};
-
-void  setWhiteHole(ObjStr* p_obj) {
-	p_obj->m_pos = D3DXVECTOR2{ (float)getMouseX(),(float)getMouseY() };
-};
 
 // 2つのオブジェクト間の距離を(算出する/戻す/返す)
 float objectLength(ObjStr* p_obj1, ObjStr* p_obj2)

@@ -82,7 +82,7 @@ static int typeCompatCmp(const objTypes x, const objTypes y) {
 }
 // タイプが特殊なタイプであれば検出する
 static bool detectNoType(const objTypes t) {
-	if (t == NO_TYPE || t == FROMFILE_TYPE_MAX || t == TYPE_MAX) return false;
+	if (t == NO_TYPE || t == TYPE_MAX) return false;
 	return true;
 }
 //　タイプの大小をtype1が小さくなるように揃える
@@ -399,8 +399,10 @@ void Terminate(DataList* list)
 	if (list->head != NULL) {
 		Clear(list);			// 全ノードを削除
 		free(list->head);		// ダミーノードを削除
+		list->head = NULL;
 	}
 };
+
 
 // オブジェクト端リストをx昇順に並び替え
 void sortObjEdgeListByX(DataList* list) {

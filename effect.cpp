@@ -268,6 +268,7 @@ void Terminate(EffList* list)
 	if (list->head != NULL) {
 		Clear(list);			// 全ノードを削除
 		free(list->head);		// ダミーノードを削除
+		list->head = NULL;
 	}
 };
 
