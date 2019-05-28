@@ -24,7 +24,7 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.h" };
 	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
 	textureName[textureLoaderNS::MAGIC_CIRCLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
-	textureName[textureLoaderNS::STAGE_SELECT] = { "TEXTURE/stageSelectImage.png" };//êºêÏ0525
+	textureName[textureLoaderNS::FIRE] = { "TEXTURE/fire.png" };//êºêÏ0528
 
 	// îÛè¿í«â¡
 	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };

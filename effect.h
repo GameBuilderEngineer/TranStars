@@ -1,6 +1,7 @@
 #pragma once
 #include "main.h"
 #include "Image.h"
+#include "object.h"
 
 // エフェクトの
 
@@ -12,6 +13,7 @@ enum effTypes {
 		eSPLIT,//割れる
 		eTAIL,//隕石の尾
 		eMAGIC,//魔法陣
+		eDISTORT,//歪み
 	eTYPE_MAX
 };
 
@@ -32,6 +34,7 @@ typedef struct {
 	short	m_mode;						//段階
 
 	Image m_image;						//描画情報
+//	ObjStr* mp_obj;						//特定のオブジェクト
 }EffData;
 
 // ノード
@@ -49,8 +52,13 @@ typedef struct {
 
 void initializeEffect(EffList* eff);
 void uninitializeEffect(EffList* eff);
+void startEffect(EffList* eff);
+void finishEffect(EffList* eff);
+
 void updateEffect(EffList* eff);
 void drawEffect(EffList* eff);
 
 void makeParticle(EffList* eff, D3DXVECTOR2 pos);
 void makeMagic(EffList* eff, D3DXVECTOR2 pos);
+void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image* image);
+void makeTail(EffList* eff, D3DXVECTOR2 pos, D3DXVECTOR2 speed);

@@ -51,14 +51,18 @@ void DrawImage(Image* image);
 // Imageのテクスチャ位置をセットする
 void SetTexture(Image* image);
 void SetTexture(Image* image, float ratioU, float ratioV);
+void SetTexture(Image* image, D3DXVECTOR2 tex0, D3DXVECTOR2 tex1, D3DXVECTOR2 tex2, D3DXVECTOR2 tex3);//西川0527
 
 
 // Imageの位置を変更する
 void setPosition(Image* image, float _x, float _y);
+void setVertex(Image* image, D3DXVECTOR2 vtx0, D3DXVECTOR2 vtx1, D3DXVECTOR2 vtx2, D3DXVECTOR2 vtx3);//西川0528
+void movePosition(Image* image, float _x, float _y);//西川0528
 // Imageのサイズを変更する
 void setSize(Image* image, float _width, float _height);
 // Imageの回転を変更する
 void setAngle(Image* image, float _angle);
+void setAngleRad(Image* image, float _angleRad);//西川0528
 // Imageのカラーを変更する
 void SetColorImage(Image* image, D3DXCOLOR color);
 HRESULT MakeVertex(Image* image, LPDIRECT3DDEVICE9 pDevice);

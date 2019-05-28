@@ -27,7 +27,7 @@ typedef struct {
 	bool m_use;							// そのオブジェクト関係の判定結果がどうだったか
 }D_objCon;
 
-// データ型③(あるタイプのオブジェクトについて、ある処理が、タイプそれぞれと行われるかどうか)
+// データ型③(あるタイプのオブジェクトについて、ある処理が行われるかどうか)
 typedef struct {
 	dataTypes dType;					// データのタイプ
 
@@ -68,7 +68,7 @@ void PrintCurrent(const DataList *list);
 // 関数compareによって(x)/(x1,x2)とデータ内容が一致しているノードを探索
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x);
 DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2);
-DataNode* SearchTypeCompat(DataList *list, const objTypes x1, const objTypes x2);
+DataNode* SearchNextTypeCompat(DataList *list, const objTypes x1, const objTypes x2);
 DataNode* SearchNode(DataList *list, DataNode* n);
 
 // 全ノードのデータをリスト順に表示
@@ -123,3 +123,10 @@ void Terminate(DataList* list);
 
 // リストに登録されているオブジェクトの端を全てx順にソート
 void sortObjEdgeListByX(DataList* list);
+
+// 2つのタイプ、useフラグの初期状態、用いる関数をリストに登録
+void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
+// 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数をリストに登録
+void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
+
