@@ -23,7 +23,7 @@
     <ProjectGuid>{CFB0D1CE-C54D-4600-940E-3470527391A1}</ProjectGuid>
     <RootNamespace>ProtTypever000</RootNamespace>
     <ProjectName>GameProtType.ver.0.00</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="audio.cpp" />
+    <ClCompile Include="BigStar.cpp" />
+    <ClCompile Include="BlalckHole.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="comet.cpp" />
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="dataList.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="fileLoader.cpp" />
@@ -151,9 +155,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messageDialog.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="PopSmallStar.cpp" />
     <ClCompile Include="read_text.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Select_Game.cpp" />
+    <ClCompile Include="PopBigStar.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StageClass.cpp" />
     <ClCompile Include="textDX.cpp" />
@@ -161,11 +167,17 @@
     <ClCompile Include="textWindow.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="SmallStar.cpp" />
     <ClCompile Include="useList.cpp" />
+    <ClCompile Include="WhiteHole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
+    <ClInclude Include="BigStar.h" />
+    <ClInclude Include="BlackHole.h" />
     <ClInclude Include="collision.h" />
+    <ClInclude Include="comet.h" />
+    <ClInclude Include="Cursor.h" />
     <ClInclude Include="dataList.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="fileLoader.h" />
@@ -176,6 +188,8 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="messageDialog.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="PopBigStar.h" />
+    <ClInclude Include="PopSmallStar.h" />
     <ClInclude Include="read_text.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Select_Game.h" />
@@ -186,7 +200,9 @@
     <ClInclude Include="textWindow.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="SmallStar.h" />
     <ClInclude Include="useList.h" />
+    <ClInclude Include="WhiteHole.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

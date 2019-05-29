@@ -10,8 +10,16 @@ void StageClass::initialize(int stage)
 	Object* o = getFileLoader()->getObj();//省略するために、ポインタ取得
 	for (int i = 0; i < m_OBJNUM; i++)
 	{//確保されたオブジェクトの初期化
-		initializeObject(&m_Obj[i], o[i].id, o[i].objType, o[i].position, o[i].rotation);
+		initializeObject(&m_Obj[i], o[i].id, o[i].objType, o[i].position, o[i].rotation,m_Obj,m_OBJNUM);
 	}
+	for (int i = 0; i < m_OBJNUM; i++)
+	{
+		if (m_Obj[i].m_type == CHARA_BLACKHOLE)
+		{
+			
+		}
+	}
+
 }
 
 void StageClass::uninitialize()

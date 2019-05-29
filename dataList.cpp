@@ -430,9 +430,12 @@ void MoveDnodeAfter(DataNode* p_to, DataNode* p_is) {
 // 循環・重連結リストの後始末
 void Terminate(DataList* list)
 {
-	Clear(list);			// 全ノードを削除
-	free(list->head);		// ダミーノードを削除
+	if (list->head != NULL) {
+		Clear(list);			// 全ノードを削除
+		free(list->head);		// ダミーノードを削除
+	}
 };
+
 
 // オブジェクト端リストをx昇順に並び替え
 void sortObjEdgeListByX(DataList* list) {

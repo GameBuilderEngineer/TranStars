@@ -3,24 +3,24 @@
 
 #include "main.h"
 #include "Image.h"
+#include"textureLoader.h"
+
 enum objTypes{
 	NO_TYPE = -1,
-		CHARA_PLAYER,
 		CHARA_BLACKHOLE,
 		CHARA_WHITEHOLE,
-		CHARA_COMET,
-		CHARA_KEY,
-		CHARA_COIN,
-		STAGE_HURDLE,
-		STAGE_WALL,
-		STAGE_LOCK,
-		EVENT_GOAL,
-//	FROMFILE_TYPE_MAX,//西川0525
 		UI_CURSOR,
-		UI_EFFECT,
-		UI_HP,
-	TYPE_MAX,
-	FROMFILE_TYPE_MAX = UI_CURSOR//西川0525
+		CHARA_SMALL_STAR,
+		CHARA_BIG_STAR,
+		CHARA_COMET,
+		POP_SMALLSTAR,
+		POP_BIGSTAR,
+		POPCOMET,
+		CHARA_SMALL_STARFRAME,
+		CHARA_BIG_STARFRAME,
+		CHARA_STARDUST,
+		STAGE_STARLINE,
+	TYPE_MAX,//西川0525
 };
 
 //shortは-0.5±32767.5、intは-0.5±2147483647.5←うんち
@@ -36,6 +36,7 @@ typedef struct _obj{
 	bool	 m_use;						//useフラグ
 	_obj*	 m_ptr;						//自身へのポインタ
 	_obj*	 m_tar;						//ターゲットのポインタ(基本はブラックホール)
+	int		targetNum;					//ターゲットの数
 
 	D3DXVECTOR2	m_pos;					//座標
 	float		m_rot;					//角度
@@ -47,6 +48,7 @@ typedef struct _obj{
 
 	int		m_time;						//プレイヤーとは独立して勝手に動くオブジェクトがあれば使う(ステージギミック系)
 	short	m_mode;						//同上、行動パターンとかはこっち
+	bool	onAttract;					//引力の影響を受けるかどうか
 
 	float m_rad;						//半径(プレイヤーの当たり判定とか)
 	D3DXVECTOR2 m_rect;					//矩形の辺長(ステージの当たり判定とか)
@@ -63,11 +65,16 @@ typedef struct _obj{
 #define PLUS_OBJNUM (5)		//ステージ側で保存する必要のないオブジェクト情報(UIなど)があればそれの数
 
 
-void initializeObject(ObjStr *obj, int id, int objType, VECTOR2 position, float angle);
+void initializeObject(ObjStr *obj, int id, int objType, VECTOR2 position, float angle, ObjStr* others, int otherNum);
 void uninitializeObject(ObjStr* obj);
 void updateObject(ObjStr* obj);
 void drawObject(ObjStr* obj);
 void printObject(ObjStr* obj);
+
+// オブジェクト1に対するオブジェクト2の方向ベクトルを戻す
+D3DXVECTOR2 objectDirection(ObjStr* p_obj1, ObjStr* p_obj2);
+//2つのオブジェクト間の距離を計算
+float objectLength(ObjStr* p_obj1, ObjStr* p_obj2);				
 
 //西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
 float getObjectSizeLonger(ObjStr* obj);

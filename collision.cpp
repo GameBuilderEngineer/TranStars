@@ -73,17 +73,17 @@ D3DXVECTOR2 computeRotatedBox(ObjStr* p_obj)
 	D3DXVECTOR2 center = { (p_obj->m_pos.x + p_obj->m_rect.x / 2),(p_obj->m_pos.y + p_obj->m_rect.y / 2) };
 
 	// centerを中心としたローカル座標を用いて、回転後の座標を求める
-	p_obj->m_corner[0].x = center.x + ((p_obj->m_pos.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y - center.y) * sin(p_obj->m_rot));
-	p_obj->m_corner[0].y = center.y + ((p_obj->m_pos.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y - center.y) * cos(p_obj->m_rot));
+	p_obj->m_corner[0].x = (float)(center.x + ((p_obj->m_pos.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y - center.y) * sin(p_obj->m_rot)));
+	p_obj->m_corner[0].y = (float)(center.y + ((p_obj->m_pos.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y - center.y) * cos(p_obj->m_rot)));
 
-	p_obj->m_corner[1].x = center.x + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y - center.y) * sin(p_obj->m_rot));
-	p_obj->m_corner[1].y = center.y + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y - center.y) * cos(p_obj->m_rot));
+	p_obj->m_corner[1].x = (float)(center.x + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y - center.y) * sin(p_obj->m_rot)));
+	p_obj->m_corner[1].y = (float)(center.y + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y - center.y) * cos(p_obj->m_rot)));
 
-	p_obj->m_corner[2].x = center.x + ((p_obj->m_pos.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * sin(p_obj->m_rot));
-	p_obj->m_corner[2].y = center.y + ((p_obj->m_pos.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * cos(p_obj->m_rot));
+	p_obj->m_corner[2].x = (float)(center.x + ((p_obj->m_pos.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * sin(p_obj->m_rot)));
+	p_obj->m_corner[2].y = (float)(center.y + ((p_obj->m_pos.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * cos(p_obj->m_rot)));
 
-	p_obj->m_corner[3].x = center.x + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * sin(p_obj->m_rot));
-	p_obj->m_corner[3].y = center.y + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * cos(p_obj->m_rot));
+	p_obj->m_corner[3].x = (float)(center.x + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * cos(p_obj->m_rot) - (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * sin(p_obj->m_rot)));
+	p_obj->m_corner[3].y = (float)(center.y + ((p_obj->m_pos.x + p_obj->m_rect.x - center.x) * sin(p_obj->m_rot) + (p_obj->m_pos.y + p_obj->m_rect.y - center.y) * cos(p_obj->m_rot)));
 
 	return center;
 }
