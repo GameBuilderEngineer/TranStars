@@ -5,7 +5,7 @@
 //#include "time.h"
 
 Image eImage[eTYPE_MAX];//画像、最初に作って終わりなので
-#define SPLIT_NUM (15)//分割回数
+#define SPLIT_NUM (10)//分割回数
 
 #define TAIL_LENGTH (6)//軌跡１つのpixel数
 
@@ -381,13 +381,13 @@ void makeMagic(EffList* eff, D3DXVECTOR2 pos) {
 }
 
 float randSplit() {
-	return float(19 - rand() % 6) / 20.0f;
+	return float(18 - rand() % 6) / 20.0f;
 }//ローカル関数
 
 void splitSquare(D3DXVECTOR2 pos2[4], D3DXVECTOR2 posed[4], int n0, int n1, int n2, int n3) {
 	pos2[n0] = posed[n0] + (posed[n1] - posed[n0]) * randSplit();//古い方を割る
 	pos2[n2] = posed[n2] + (posed[n3] - posed[n2]) * randSplit();//古い方を割る
-	if (rand() % 4 != 0) {
+	if (rand() % 3 != 0) {
 		if (rand() % 2 == 0)
 			pos2[n0] = posed[n1];
 		else pos2[n2] = posed[n3];

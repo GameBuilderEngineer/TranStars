@@ -16,6 +16,7 @@ namespace textureLoaderNS
 		WITCH,//êºêÏ0525
 		MAGIC_CIRCLE,//êºêÏ0525
 		FIRE,//êºêÏ0528
+		TEXT_WINDOW,//êºêÏ0528
 		TITLE_LOGO,
 		TITLE_PRESS_ENTER,
 		TITLE_NEW_GAME,

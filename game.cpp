@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Result.h"
 #include "textureLoader.h"
+#include "textWindow.h"
 
 int scene;
 
@@ -13,6 +14,7 @@ void initializeGame() {
 	initializeTitle();
 	initializeStage();
 	initializeResult();
+//	initializeTextW();//êºêÏ0528
 };
 
 void updateGame() {
@@ -26,6 +28,7 @@ void updateGame() {
 	case RESULT:		updateResult();	changeScene(SELECT_MODE)/*êºêÏ0518*/;break;
 	default:	break;
 	}
+//	updateTextW();//êºêÏ0528
 };
 
 void drawGame() {
@@ -38,6 +41,7 @@ void drawGame() {
 	case RESULT:		drawResult(); break;
 	default:	break;
 	}
+//	drawTextW();//êºêÏ0528
 };
 
 void printGame()
@@ -45,12 +49,13 @@ void printGame()
 	switch (scene)
 	{
 	case TITLE:		printTitle(); break;
-	case SELECT_MODE: drawTitle(); break;	// îÛè¿í«â¡
-	case CHOOSE_STAGE: drawTitle(); break;	// îÛè¿í«â¡
+	case SELECT_MODE:/* drawTitle();*/ break;	// îÛè¿í«â¡
+	case CHOOSE_STAGE:/* drawTitle();*/ break;	// îÛè¿í«â¡
 	case STAGE:		printStage(); break;
 	case RESULT:	printResult(); break;
 	default:	break;
 	}
+	printTextW();//êºêÏ0528
 }
 
 void unInitializeGame() {
@@ -58,6 +63,7 @@ void unInitializeGame() {
 	unInitializeTitle();
 	unInitializeStage();
 	unInitializeResult();
+//	uninitializeTextW();//êºêÏ0528
 };
 
 //void changeScene()
