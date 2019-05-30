@@ -1,13 +1,13 @@
 #include "effect.h"
 #include "textDX.h"
-#include "image.h"
+#include "Image.h"
 #include "textureLoader.h"
 //#include "time.h"
 
 Image eImage[eTYPE_MAX];//画像、最初に作って終わりなので
 #define SPLIT_NUM (10)//分割回数
 
-#define TAIL_LENGTH (6)//軌跡１つのpixel数
+#define TAIL_LENGTH (1)//軌跡１つのpixel数
 
 // 一つのノードを動的に生成
 static EffNode* AllocDnode(void)
@@ -396,7 +396,7 @@ void splitSquare(D3DXVECTOR2 pos2[4], D3DXVECTOR2 posed[4], int n0, int n1, int 
 	posed[n1] = pos2[n0]; posed[n3] = pos2[n2];//新しい方をもらう
 }//ローカル関数
 
-void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image* image) {
+void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image image) {
 	Image img; D3DXVECTOR2 pos2[4]; D3DXVECTOR2 posed[4]; D3DXVECTOR2 speed; D3DXVECTOR2 accel;
 	for (int i = 0; i < 4; i++)
 		posed[i] = { 1.0f * float(i % 2),1.0f * float(i / 2) };//初期状態をZ字にセット
@@ -414,21 +414,21 @@ void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image* image) {
 			for (int j = 0; j < 4; j++)
 				pos2[j] = posed[j];
 
-		InitImage(&img, &image->g_pD3DTexture, 0.0f, 0.0f, image->width, image->height);
+		InitImage(&img, &image.g_pD3DTexture, 0.0f, 0.0f, image.width, image.height);
 		SetTexture(&img, pos2[0], pos2[1], pos2[2], pos2[3]);//テクスチャ頂点座標の変更
 
 		for (int j = 0; j < 4; j++) {
-			pos2[j].x *= image->width; pos2[j].y *= image->height;
+			pos2[j].x *= image.width; pos2[j].y *= image.height;
 			pos2[j] += pos;
 		}
 		setVertex(&img, pos2[0], pos2[1], pos2[2], pos2[3]);//描画頂点座標の変更
 
 		speed = (pos2[0] + pos2[1] + pos2[2] + pos2[3]) / 4.0f//四点の中心
-			- (pos + D3DXVECTOR2{ image->width / 2.0f,image->height / 2.0f });//図形の中心を引く
+			- (pos + D3DXVECTOR2{ image.width / 2.0f,image.height / 2.0f });//図形の中心を引く
 		speed /= 20.0f;//20で割る
 		accel = { cosf(atan2f(speed.y,speed.x) + D3DX_PI / 2.0f),sinf(atan2f(speed.y,speed.x) + D3DX_PI / 2.0f) };
 		accel *= sqrtf(speed.x * speed.x + speed.y * speed.y) / 45.0f;
-		InsertRear(eff, { eSPLIT, true, pos2[0] - D3DXVECTOR2{ image->width / 2.0f,image->height / 2.0f },
+		InsertRear(eff, { eSPLIT, true, pos2[0] - D3DXVECTOR2{ image.width / 2.0f,image.height / 2.0f },
 			0.0f,{ 1.0f, 1.0f}, speed, accel, 40, 40, 0, img });
 	}
 }
@@ -447,5 +447,22 @@ void makeTail(EffList* eff, D3DXVECTOR2 pos, D3DXVECTOR2 speed) {
 		pos += speed * float(1) / float(num);
 		InsertRear(eff, { eTAIL, true, pos,
 			r, { 1.0f, 1.0f}, {0.0f, 0.0f}, { 0.0f, 0.0f }, 60, 60, 0, eImage[eTAIL] });
+	}
+}
+void makeEffect(EffList* eff, effTypes eType, ObjStr* obj) {
+	switch (eType) {
+	case ePARTICLE:
+		makeParticle(eff, obj->m_pos);
+		break;
+	case eMAGIC:
+		makeMagic(eff, obj->m_pos);
+		break;
+	case eSPLIT:
+		makeSplit(eff, obj->m_pos, obj->m_image);
+		break;
+	case eTAIL:
+		makeTail(eff, { obj->m_pos.x + obj->m_image.width / 2.0f,
+			obj->m_pos.y + obj->m_image.height / 2.0f }, obj->m_speed);
+		break;
 	}
 }

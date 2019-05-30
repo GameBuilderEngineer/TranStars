@@ -88,7 +88,8 @@ void changeScene(SceneList newscene){
 	switch (scene)//êºêÏ0518
 	{
 	case TITLE: break;
-	case SELECT: break;
+	case SELECT_MODE: break;
+	case CHOOSE_STAGE: break;
 	case STAGE:	startStage(); break;
 	case RESULT: finishStage(); break;
 	default:	break;

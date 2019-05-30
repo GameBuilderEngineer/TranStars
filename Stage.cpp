@@ -5,20 +5,21 @@
 #include "Image.h"
 #include "textureLoader.h"
 #include "object.h"
-#include "SelectGame.h" // 樋沼追加
-#include "useList.h"//西川0518
-//#include "collision.h"//西川0518 コリジョン内の関数をリストに渡すため
-#include "effect.h"//西川0525 エフェクト
+#include "Select_Game.h" // 樋沼追加
+#include "useList.h"//西川0530
+#include "collision.h"//西川0530 コリジョン内の関数をリストに渡すため
+#include "effect.h"//西川0530 エフェクト
 #include "StageClass.h"
 #include "BlackHole.h"
 
 StageClass stage;//ステージ別データ
 
 Image gameBG;
-DataList typeCompatList;//西川0527 タイプ関係と実行する関数のリスト
-DataList xBasedList;//西川0518 x座標順・オブジェクト・リスト(initializeで作ってゲーム中通用)
-DataList resultList;//西川0518 確かめ結果・オブジェクト関係・リスト(updateで毎フレーム作って使い捨て)
-EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(initializeで作ってゲーム中通用)
+DataList collTypeList;//西川0530 コリジョン用 タイプ関係と実行する関数のリスト(initializeで作ってゲーム中通用)
+DataList actTypeList;//西川0530 アクション用 タイプリスト(通用)
+DataList xBasedList;//西川0518 x座標順 オブジェクトリスト(通用)
+DataList resultList;//西川0518 確かめ結果 オブジェクト関係リスト(updateで毎フレーム作って使い捨て)
+EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(通用)
 
 ObjStr blackHole;//ブラックホール
 ObjStr whiteHole;//ホワイトホール
@@ -29,7 +30,9 @@ ObjStr* comet = NULL;//隕石へのポインタ[]動的配列用
 
 void initializeStage() {
 	InitImage(&gameBG, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
-	initializeObjList(&typeCompatList, &xBasedList, &resultList);//西川0527
+	initializeObjList(&xBasedList, &resultList);//西川0527
+	initializeTypeCompatList(&collTypeList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjCC, false);
+	initializeTypeCompatList(&actTypeList, CHARA_SMALL_STAR, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject, false);
 	initializeEffect(&effectList);//西川0527
 };
 
@@ -46,13 +49,15 @@ void startStage() {
 	//initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 
 	startEffect(&effectList);//西川0527
-	startObjList(&stage, &typeCompatList, &xBasedList, &resultList);//西川0527
+	startObjList(&stage, &xBasedList, &resultList);//西川0527
 
 	setObjEdge(&xBasedList, &blackHole);
 
 };//西川0518 新しいステージに入る前に呼ぶ関数
 
 void updateStage() {
+	clearResultList(&resultList);//	前フレームの結果リストを廃棄
+
 	// 樋沼追加
 	// timerはmainにあるから、そこでif文するか、ここにtimerを持ってくるかどちらがいいか
 	// ↑新たにTimerクラスのインスタンスを作成すると良いと思います。
@@ -69,24 +74,23 @@ void updateStage() {
 		makeParticle(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0525
 	if (getMouseRButtonTrigger())
 //		makeMagic(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0526
-		makeSplit(&effectList, { (float)getMouseX(), (float)getMouseY() }, &stage.getObj()[0].m_image);//西川0527
-	makeTail(&effectList, { stage.getObj()[0].m_pos.x + stage.getObj()[0].m_image.width / 2.0f,
-		stage.getObj()[3].m_pos.y + stage.getObj()[3].m_image.height / 2.0f }, stage.getObj()[3].m_speed);//西川0528
+		makeSplit(&effectList, { (float)getMouseX(), (float)getMouseY() }, stage.getObj()[0].m_image);//西川0527
+	makeEffect(&effectList, eTAIL, &stage.getObj()[3]);//西川0528
 	updateEffect(&effectList);//西川0525
 
-	updateObjList(&typeCompatList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数を渡してその結果リストを取得
-//	cutResultList(&resultList, checkTypeComp_A);//西川0525
+	makeResultList(&collTypeList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数の入ったタイプリストを渡して結果リスト取得
+	checkResultList(&actTypeList, &resultList);//西川0530
 };
 
 void drawStage() {
 	DrawImage(&gameBG);
+	drawEffect(&effectList);//西川0530オブジェクトより先に描画
 
 	stage.draw();//菅野
 	drawObject(&whiteHole);
 	drawObject(&blackHole);
 	drawObject(&cursor);
 
-	drawEffect(&effectList);//西川0525
 	drawPause(); // 樋沼
 };
 
@@ -107,10 +111,12 @@ void printStage() {
 void unInitializeStage() {
 	stage.uninitialize();//菅野//西川0527
 	uninitializeEffect(&effectList);//西川0527
-	uninitializeObjList(&typeCompatList, &xBasedList, &resultList);//西川0527
+	uninitializeObjList(&xBasedList, &resultList);//西川0527
+	uninitializeTypeCompatList(&collTypeList);//西川0530
+	uninitializeTypeCompatList(&actTypeList);//西川0530
 };
 
 void finishStage() {
 	finishEffect(&effectList);//西川0527
-	finishObjList(&typeCompatList, &xBasedList, &resultList);//西川0527
+	finishObjList(&xBasedList, &resultList);//西川0527
 };//西川0518 今のステージをやめた後に呼ぶ関数

@@ -204,6 +204,21 @@ DataNode* SearchNextTypeCompat(DataList *list, const objTypes x1, const objTypes
 	}
 	return NULL;				// 探索失敗
 };
+DataNode* SearchTypeCompat(DataList *list, const objTypes x1, const objTypes x2)
+{
+	DataNode* ptr = list->crnt->next;//カレントの次から出発
+	if (ptr->d._tC.dType != DATA_TYPE_COMPAT) return NULL;//データ型が違ったら失敗
+	while (ptr != list->head)
+	{
+		if (typeCompatCmp(ptr->d._tC.m_type1, x1) == 0 && typeCompatCmp(ptr->d._tC.m_type2, x2) == 0)
+		{
+			list->crnt = ptr;
+			return ptr;			// 探索成功
+		}
+		ptr = ptr->next;
+	}
+	return NULL;				// 探索失敗
+};
 DataNode* SearchNode(DataList *list, DataNode* n)
 {
 	DataNode* ptr = list->head->next;
@@ -496,6 +511,7 @@ void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes t
 		}
 }
 
+// 2つのタイプ、useフラグの初期状態、用いる関数を削除
 void deleteTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	UnionData d = SetDataTypeCompat(type1, type2, use, p_func);
 	if (!detectNoType(type1) && !detectNoType(type2))//NoTypeならtrue
@@ -503,10 +519,22 @@ void deleteTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, 
 			Remove(list, list->crnt);
 }
 
+// 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数を削除
 void deleteTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	//setTypeCompatが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
 	for (int i = int(type1L); i <= int(type1H); i++)
 		for (int j = int(type2L); j <= int(type2H); j++)
 			deleteTypeCompat(list, (objTypes)i, (objTypes)j, use, p_func);
+}
+
+void optimizeTypeCompats(DataList* list) {
+	DataNode* n;
+	for (int i = int(NO_TYPE) + 1; i < int(TYPE_MAX); i++)
+		for (int j = i + 1; j < int(TYPE_MAX); j++) {
+			n = SearchNextTypeCompat(list, (objTypes)i, (objTypes)j);
+			if (n != NULL)
+				deleteTypeCompat(list, (objTypes)j, (objTypes)i, n->d._tC.m_use, n->d._tC.mp_func);
+				//タイプの組み合わせが逆で処理が一緒なものを探して削除
+		}
 }

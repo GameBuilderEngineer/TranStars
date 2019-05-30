@@ -201,11 +201,11 @@
     <ClCompile Include="Reflection.cpp">
       <Filter>アプリケーション\動的オブジェクト\反射壁</Filter>
     </ClCompile>
-    <ClCompile Include="Select.cpp">
-      <Filter>アプリケーション\シーン</Filter>
-    </ClCompile>
     <ClCompile Include="textWindow.cpp">
       <Filter>ドメイン\テキスト表示</Filter>
+    </ClCompile>
+    <ClCompile Include="Select_Game.cpp">
+      <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,11 +311,11 @@
     <ClInclude Include="Reflection.h">
       <Filter>アプリケーション\動的オブジェクト\反射壁</Filter>
     </ClInclude>
-    <ClInclude Include="Select.h">
-      <Filter>アプリケーション\シーン</Filter>
-    </ClInclude>
     <ClInclude Include="textWindow.h">
       <Filter>ドメイン\テキスト表示</Filter>
+    </ClInclude>
+    <ClInclude Include="Select_Game.h">
+      <Filter>アプリケーション\シーン</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

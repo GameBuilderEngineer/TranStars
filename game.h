@@ -3,7 +3,8 @@
 
 enum SceneList {
 	TITLE,
-	SELECT,
+	SELECT_MODE,
+	CHOOSE_STAGE,
 	STAGE,
 	RESULT,
 	SCENE_NUM,

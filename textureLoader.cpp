@@ -18,8 +18,8 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::STAR3] = { "TEXTURE/star3.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::BLACK_HOLE] = { "TEXTURE/BH_kari.png" };
 	textureName[textureLoaderNS::WHITE_HOLE] = { "TEXTURE/WH_kari.png" };
-	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.jpg" };
-	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.jpg" };
+	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.png" };
+	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.PNG" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.png" };
 	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
