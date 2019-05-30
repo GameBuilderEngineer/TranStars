@@ -25,6 +25,7 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
 	textureName[textureLoaderNS::MAGIC_CIRCLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::FIRE] = { "TEXTURE/fire.png" };//êºêÏ0528
+	textureName[textureLoaderNS::TEXT_WINDOW] = { "TEXTURE/text_window_.png" };//êºêÏ0528
 
 	// îÛè¿í«â¡
 	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };

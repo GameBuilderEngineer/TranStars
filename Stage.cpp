@@ -93,8 +93,8 @@ void drawStage() {
 void printStage() {
 	printTextDX(getDebugFont(), "Stage", 0, 0);
 	printTextDX(getDebugFont(), "マウス中ボタンを押下で入力ダイアログボックスを表示する", 500, 30);
-	printTextDX(getDebugFont(), "mouseX:", 1000, 0, getMouseX());
-	printTextDX(getDebugFont(), "mouseY:", 1000, 30, getMouseY());
+	printTextDX(getDebugFont(), "mX:", 1100, 0, getMouseX());
+	printTextDX(getDebugFont(), "mY:", 1100, 30, getMouseY());
 
 	if (GetKeyboardPress(DIK_LCONTROL)/*左CTRL*/) printList(&xBasedList);//西川0518 x順リストの中身を視覚化
 	if (GetKeyboardPress(DIK_M)/*右CTRL*/) printList(&resultList);//西川0518 結果リストの中身を視覚化

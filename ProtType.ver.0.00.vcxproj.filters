@@ -204,6 +204,9 @@
     <ClCompile Include="Select.cpp">
       <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
+    <ClCompile Include="textWindow.cpp">
+      <Filter>ドメイン\テキスト表示</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>アプリケーション\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="textWindow.h">
+      <Filter>ドメイン\テキスト表示</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
