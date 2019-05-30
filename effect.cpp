@@ -449,6 +449,7 @@ void makeTail(EffList* eff, D3DXVECTOR2 pos, D3DXVECTOR2 speed) {
 			r, { 1.0f, 1.0f}, {0.0f, 0.0f}, { 0.0f, 0.0f }, 60, 60, 0, eImage[eTAIL] });
 	}
 }
+
 void makeEffect(EffList* eff, effTypes eType, ObjStr* obj) {
 	switch (eType) {
 	case ePARTICLE:
@@ -462,7 +463,11 @@ void makeEffect(EffList* eff, effTypes eType, ObjStr* obj) {
 		break;
 	case eTAIL:
 		makeTail(eff, { obj->m_pos.x + obj->m_image.width / 2.0f,
-			obj->m_pos.y + obj->m_image.height / 2.0f }, obj->m_speed);
+			obj->m_pos.y + obj->m_image.height / 2.0f }, obj->m_speed + obj->m_accel);
 		break;
 	}
+}
+
+void setParticle(ObjStr* x, ObjStr* y) {
+
 }

@@ -207,6 +207,9 @@
     <ClCompile Include="Select_Game.cpp">
       <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
+    <ClCompile Include="action.cpp">
+      <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -316,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="Select_Game.h">
       <Filter>アプリケーション\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="action.h">
+      <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

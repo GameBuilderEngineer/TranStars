@@ -35,13 +35,13 @@ typedef struct {
 	objTypes m_type2;					// オブジェクトタイプ2
 	bool m_use;							// 下の関数で1から2に干渉するか
 	bool (*mp_func)(ObjStr* a, ObjStr* b);// 使う関数
-}D_typeCmp;
+}D_typeFunc;
 
 // 統一データ型
 typedef union {
 	D_objEdge _oE;
 	D_objCon _oC;
-	D_typeCmp _tC;
+	D_typeFunc _tC;
 }UnionData;
 
 
@@ -68,7 +68,7 @@ void PrintCurrent(const DataList *list);
 // 関数compareによって(x)/(x1,x2)とデータ内容が一致しているノードを探索
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x);
 DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2);
-DataNode* SearchNextTypeCompat(DataList *list, const objTypes x1, const objTypes x2);
+DataNode* SearchNextTypeFunc(DataList *list, const objTypes x1, const objTypes x2);
 DataNode* SearchNode(DataList *list, DataNode* n);
 
 // 全ノードのデータをリスト順に表示
@@ -81,7 +81,7 @@ void PrintReverse(const DataList* list);
 void PrintData(const DataNode* n);
 void PrintObjEdge(const DataNode* n);
 void PrintObjCon(const DataNode* n);
-void PrintTypeCompat(const DataNode* n);
+void PrintTypeFunc(const DataNode* n);
 
 // 着目ノードを一つ後方に進める
 int Next(DataList* list);
@@ -125,15 +125,15 @@ void Terminate(DataList* list);
 void sortObjEdgeListByX(DataList* list);
 
 // 2つのタイプ、useフラグの初期状態、用いる関数をリストに登録
-void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
+void setTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
 // 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数をリストに登録
-void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+void setTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
 // リストから消す
-void deleteTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));//
+void deleteTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));//
 // リストから消す
-void deleteTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+void deleteTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
 
 // タイプが逆なもだけのものをリストから消す
-void optimizeTypeCompats(DataList* list);
+void optimizeTypeFuncs(DataList* list);

@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="action.cpp" />
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="BigStar.cpp" />
     <ClCompile Include="BigStarFrame.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="WhiteHole.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="action.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="BigStar.h" />
     <ClInclude Include="BlackHole.h" />

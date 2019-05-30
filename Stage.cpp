@@ -15,8 +15,9 @@
 StageClass stage;//ステージ別データ
 
 Image gameBG;
-DataList collTypeList;//西川0530 コリジョン用 タイプ関係と実行する関数のリスト(initializeで作ってゲーム中通用)
-DataList actTypeList;//西川0530 アクション用 タイプリスト(通用)
+DataList collTFList;//西川0530 コリジョン用 タイプ関係と実行する関数のリスト(initializeで作ってゲーム中通用)
+DataList actTFList;//西川0530 アクション用 タイプリスト(通用)
+DataList effTFList;//西川0530 アクション用 タイプリスト(通用)
 DataList xBasedList;//西川0518 x座標順 オブジェクトリスト(通用)
 DataList resultList;//西川0518 確かめ結果 オブジェクト関係リスト(updateで毎フレーム作って使い捨て)
 EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(通用)
@@ -31,8 +32,11 @@ ObjStr* comet = NULL;//隕石へのポインタ[]動的配列用
 void initializeStage() {
 	InitImage(&gameBG, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
 	initializeObjList(&xBasedList, &resultList);//西川0527
-	initializeTypeCompatList(&collTypeList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjCC, false);
-	initializeTypeCompatList(&actTypeList, CHARA_SMALL_STAR, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject, false);
+
+	initializeTypeFuncList(&collTFList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjCC, false);
+	initializeTypeFuncList(&actTFList, CHARA_SMALL_STAR, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject, false);
+	//initializeTypeFuncList(&effTFList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &sendObject, false);
+
 	initializeEffect(&effectList);//西川0527
 };
 
@@ -78,8 +82,8 @@ void updateStage() {
 	makeEffect(&effectList, eTAIL, &stage.getObj()[3]);//西川0528
 	updateEffect(&effectList);//西川0525
 
-	makeResultList(&collTypeList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数の入ったタイプリストを渡して結果リスト取得
-	checkResultList(&actTypeList, &resultList);//西川0530
+	makeResultList(&collTFList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数の入ったタイプリストを渡して結果リスト取得
+	checkResultList(&actTFList, &resultList);//西川0530
 };
 
 void drawStage() {
@@ -112,8 +116,8 @@ void unInitializeStage() {
 	stage.uninitialize();//菅野//西川0527
 	uninitializeEffect(&effectList);//西川0527
 	uninitializeObjList(&xBasedList, &resultList);//西川0527
-	uninitializeTypeCompatList(&collTypeList);//西川0530
-	uninitializeTypeCompatList(&actTypeList);//西川0530
+	uninitializeTypeFuncList(&collTFList);//西川0530
+	uninitializeTypeFuncList(&actTFList);//西川0530
 };
 
 void finishStage() {

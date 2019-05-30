@@ -7,6 +7,7 @@
 #include "textWindow.h"
 
 int scene;
+TextW textW;
 
 void initializeGame() {
 	getTextureLoader()->load(getDevice());//テクスチャの読込
@@ -14,7 +15,7 @@ void initializeGame() {
 	initializeTitle();
 	initializeStage();
 	initializeResult();
-//	initializeTextW();//西川0528
+	initializeTextW(&textW);//西川0530
 };
 
 void updateGame() {
@@ -28,7 +29,7 @@ void updateGame() {
 	case RESULT:		updateResult();	changeScene(SELECT_MODE)/*西川0518*/;break;
 	default:	break;
 	}
-//	updateTextW();//西川0528
+	updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//西川0530
 };
 
 void drawGame() {
@@ -41,7 +42,7 @@ void drawGame() {
 	case RESULT:		drawResult(); break;
 	default:	break;
 	}
-//	drawTextW();//西川0528
+	drawTextW(&textW);//西川0530
 };
 
 void printGame()
@@ -55,7 +56,7 @@ void printGame()
 	case RESULT:	printResult(); break;
 	default:	break;
 	}
-	printTextW();//西川0528
+	printTextW(&textW);//西川0530
 }
 
 void unInitializeGame() {
@@ -63,7 +64,7 @@ void unInitializeGame() {
 	unInitializeTitle();
 	unInitializeStage();
 	unInitializeResult();
-//	uninitializeTextW();//西川0528
+	uninitializeTextW(&textW);//西川0530
 };
 
 //void changeScene()
@@ -89,7 +90,7 @@ void changeScene(SceneList newscene){
 	{
 	case TITLE: break;
 	case SELECT_MODE: break;
-	case CHOOSE_STAGE: break;
+	case CHOOSE_STAGE: setTextW(&textW, "ステージ選択です", 25, 0, 500)/*西川0530*/; break;
 	case STAGE:	startStage(); break;
 	case RESULT: finishStage(); break;
 	default:	break;

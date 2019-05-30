@@ -28,7 +28,7 @@ static UnionData SetDataObjectCon(ObjStr *p_objL, ObjStr *p_objR, bool use) {
 	d._oC.mp_objL = p_objL; d._oC.mp_objR = p_objR; d._oC.m_use = use;
 	return d;
 }
-static UnionData SetDataTypeCompat(objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
+static UnionData SetDataTypeFunc(objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	UnionData d;
 	d._tC.dType = DATA_TYPE_COMPAT;
 	d._tC.m_type1 = type1; d._tC.m_type2 = type2;
@@ -77,7 +77,7 @@ static int compareObjEdgeByX(const DataList* list, const DataNode* n1, const Dat
 
 
 // データ1とデータ2を、タイプについて比べる
-static int typeCompatCmp(const objTypes x, const objTypes y) {
+static int typeFuncCmp(const objTypes x, const objTypes y) {
 	return x < y ? -1 : x > y ? 1 : 0;	//2つのデータが同じタイプの組み合わせを持つものであれば
 }
 // タイプが特殊なタイプであれば検出(true)する
@@ -86,7 +86,7 @@ static bool detectNoType(const objTypes t) {
 	return false;
 }
 //　タイプの大小をtype1が小さくなるように揃える
-void sortTypeCompat(objTypes* t1,objTypes* t2) {
+void sortTypeFunc(objTypes* t1,objTypes* t2) {
 	if (int(*t1) > int(*t2)) {
 		objTypes s = *t1;
 		*t1 = *t2; *t2 = s;
@@ -102,14 +102,14 @@ static int dataObjectConCmp(const D_objCon* d1, const D_objCon* d2) {
 	return d1->dType != d2->dType ? 1 : d1->mp_objL != d2->mp_objL ? 1 : d1->mp_objR != d2->mp_objR ? 1 : d1->m_use != d2->m_use ? 1
 		: 0;
 };
-static int dataTypeCompatCmp(const D_typeCmp* d1, const D_typeCmp* d2) {
+static int dataTypeFuncCmp(const D_typeFunc* d1, const D_typeFunc* d2) {
 	return d1->dType != d2->dType ? 1 : d1->m_type1 != d2->m_type1 ? 1 : d1->m_type2 != d2->m_type2 ? 1 : d1->m_use != d2->m_use ? 1 : d1->mp_func != d2->mp_func ? 1
 		: 0;
 };
 static int dataCmp(const UnionData* d1, const UnionData* d2) {
 	if (d1->_oE.dType == DATA_OBJ_EDGE) return dataObjectEdgeCmp(&d1->_oE, &d2->_oE);
 	if (d1->_oC.dType == DATA_OBJ_CON) return dataObjectConCmp(&d1->_oC, &d2->_oC);
-	if (d1->_tC.dType == DATA_TYPE_COMPAT) return dataTypeCompatCmp(&d1->_tC, &d2->_tC);
+	if (d1->_tC.dType == DATA_TYPE_COMPAT) return dataTypeFuncCmp(&d1->_tC, &d2->_tC);
 	return 1;
 };
 
@@ -189,13 +189,13 @@ DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2)
 	}
 	return NULL;				// 探索失敗
 };
-DataNode* SearchNextTypeCompat(DataList *list, const objTypes x1, const objTypes x2)
+DataNode* SearchNextTypeFunc(DataList *list, const objTypes x1, const objTypes x2)
 {
 	DataNode* ptr = list->crnt->next;//カレントの次から出発
 	if (ptr->d._tC.dType != DATA_TYPE_COMPAT) return NULL;//データ型が違ったら失敗
 	while (ptr != list->head)
 	{
-		if (typeCompatCmp(ptr->d._tC.m_type1,x1) == 0 && typeCompatCmp(ptr->d._tC.m_type2, x2) == 0)
+		if (typeFuncCmp(ptr->d._tC.m_type1,x1) == 0 && typeFuncCmp(ptr->d._tC.m_type2, x2) == 0)
 		{
 			list->crnt = ptr;
 			return ptr;			// 探索成功
@@ -204,13 +204,13 @@ DataNode* SearchNextTypeCompat(DataList *list, const objTypes x1, const objTypes
 	}
 	return NULL;				// 探索失敗
 };
-DataNode* SearchTypeCompat(DataList *list, const objTypes x1, const objTypes x2)
+DataNode* SearchTypeFunc(DataList *list, const objTypes x1, const objTypes x2)
 {
 	DataNode* ptr = list->crnt->next;//カレントの次から出発
 	if (ptr->d._tC.dType != DATA_TYPE_COMPAT) return NULL;//データ型が違ったら失敗
 	while (ptr != list->head)
 	{
-		if (typeCompatCmp(ptr->d._tC.m_type1, x1) == 0 && typeCompatCmp(ptr->d._tC.m_type2, x2) == 0)
+		if (typeFuncCmp(ptr->d._tC.m_type1, x1) == 0 && typeFuncCmp(ptr->d._tC.m_type2, x2) == 0)
 		{
 			list->crnt = ptr;
 			return ptr;			// 探索成功
@@ -258,7 +258,7 @@ void Print(const DataList* list)
 		printTextDX(getDebugFont(), "ノードがありません。", WINDOW_CENTER_X, WINDOW_CENTER_Y);
 	else {
 		DataNode* ptr = list->head->next;
-		printTextDX(getDebugFont(), "【一覧表】", WINDOW_CENTER_X, WINDOW_CENTER_Y,int(sizeof(UnionData)));//データサイズ
+		printTextDX(getDebugFont(), "【一覧表】", WINDOW_CENTER_X, WINDOW_CENTER_Y,int(sizeof(NULL)));//データサイズ
 		while (ptr != list->head) {
 			PrintData(ptr);
 			ptr = ptr->next;		// 後続ノードに着目
@@ -292,7 +292,7 @@ void PrintData(const DataNode* n) {
 		PrintObjCon(n);
 		break;
 	case DATA_TYPE_COMPAT:
-		PrintTypeCompat(n);
+		PrintTypeFunc(n);
 		break;
 	default://存在しない型
 		printTextDX(getDebugFont(), "？", WINDOW_CENTER_X, txtLineReset(txtLineReset(0)));
@@ -322,7 +322,7 @@ void PrintObjCon(const DataNode* n)
 	if (n->d._oC.m_use) printTextDX(getDebugFont(), "接触", x, txtLineBreak());
 	else printTextDX(getDebugFont(), "非接触", x, txtLineBreak());
 };
-void PrintTypeCompat(const DataNode* n)
+void PrintTypeFunc(const DataNode* n)
 {
 	txtLineReset(txtLineReset(0));
 
@@ -494,47 +494,47 @@ void sortObjEdgeListByX(DataList* list) {
 //ifやwhileなどの条件式内で関数を呼んだ場合にも値は書き変わる。
 
 // 2つのタイプ、useフラグの初期状態、用いる関数を登録
-void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool (*p_func)(ObjStr* a, ObjStr* b)){
+void setTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bool (*p_func)(ObjStr* a, ObjStr* b)){
 	if (!detectNoType(type1) && !detectNoType(type2))//NoTypeならtrue
-		InsertRear(list, SetDataTypeCompat(type1, type2, use, p_func));
+		InsertRear(list, SetDataTypeFunc(type1, type2, use, p_func));
 }
 
 // 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数を登録
-void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+void setTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
-	//setTypeCompatが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
+	//setTypeFuncが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
 	for (int i = int(type1L); i <= int(type1H); i++)
 		for (int j = int(type2L); j <= int(type2H); j++) {
-			UnionData d = SetDataTypeCompat((objTypes)i, (objTypes)j, use, p_func);
+			UnionData d = SetDataTypeFunc((objTypes)i, (objTypes)j, use, p_func);
 			if (SearchData(list, &d) == NULL)//同じ処理はまだなかったら
-				setTypeCompat(list, (objTypes)i, (objTypes)j, use, p_func);
+				setTypeFunc(list, (objTypes)i, (objTypes)j, use, p_func);
 		}
 }
 
 // 2つのタイプ、useフラグの初期状態、用いる関数を削除
-void deleteTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
-	UnionData d = SetDataTypeCompat(type1, type2, use, p_func);
+void deleteTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
+	UnionData d = SetDataTypeFunc(type1, type2, use, p_func);
 	if (!detectNoType(type1) && !detectNoType(type2))//NoTypeならtrue
 		if (SearchData(list, &d) != NULL)//同じ処理があったら
 			Remove(list, list->crnt);
 }
 
 // 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数を削除
-void deleteTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+void deleteTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
-	//setTypeCompatが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
+	//setTypeFuncが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
 	for (int i = int(type1L); i <= int(type1H); i++)
 		for (int j = int(type2L); j <= int(type2H); j++)
-			deleteTypeCompat(list, (objTypes)i, (objTypes)j, use, p_func);
+			deleteTypeFunc(list, (objTypes)i, (objTypes)j, use, p_func);
 }
 
-void optimizeTypeCompats(DataList* list) {
+void optimizeTypeFuncs(DataList* list) {
 	DataNode* n;
 	for (int i = int(NO_TYPE) + 1; i < int(TYPE_MAX); i++)
 		for (int j = i + 1; j < int(TYPE_MAX); j++) {
-			n = SearchNextTypeCompat(list, (objTypes)i, (objTypes)j);
+			n = SearchNextTypeFunc(list, (objTypes)i, (objTypes)j);
 			if (n != NULL)
-				deleteTypeCompat(list, (objTypes)j, (objTypes)i, n->d._tC.m_use, n->d._tC.mp_func);
+				deleteTypeFunc(list, (objTypes)j, (objTypes)i, n->d._tC.m_use, n->d._tC.mp_func);
 				//タイプの組み合わせが逆で処理が一緒なものを探して削除
 		}
 }
