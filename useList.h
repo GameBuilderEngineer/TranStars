@@ -25,7 +25,8 @@ void updateObjList(DataList* typeCompat,DataList* xBased, DataList* result);
 	//結果リストの中で、funcの結果がfalseなものをfalseに書き換える
 	void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b));//戻り値bool
 
-
+//オブジェクトの端をx順リストに登録
+void setObjEdge(DataList* xBased, ObjStr* p_obj);
 
 //毎フレーム、リストの中身を全て描画
 void printList(DataList* draw);

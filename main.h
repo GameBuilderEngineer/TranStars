@@ -113,6 +113,7 @@ HWND getHWnd();
 Audio* getAudio();
 bool drawQuad(LPDIRECT3DVERTEXBUFFER9 vertexBuffer);
 HRESULT createVertexBuffer(VertexC verts[], UINT size, LPDIRECT3DVERTEXBUFFER9 &vertexBuffer);
+float getFrameTime();
 //=============================================================================
 // ポインタ参照項目を安全に処理するための関数テンプレート。
 // これらのテンプレートによって定義された関数は、

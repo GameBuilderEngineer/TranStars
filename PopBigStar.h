@@ -1,2 +1,5 @@
 #pragma once
-void initializPopBigStar();
+
+#include "object.h"
+
+void initializePopBigStar(ObjStr* popBigStar);

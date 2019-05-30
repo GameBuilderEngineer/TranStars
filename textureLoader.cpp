@@ -21,7 +21,7 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.jpg" };
 	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.jpg" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
-	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.h" };
+	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.png" };
 	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
 	textureName[textureLoaderNS::MAGIC_CIRCLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::FIRE] = { "TEXTURE/fire.png" };//êºêÏ0528
@@ -32,6 +32,7 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::TITLE_PRESS_ENTER] = { "TEXTURE/press_enter.png" };
 	textureName[textureLoaderNS::TITLE_NEW_GAME] = { "TEXTURE/new_game.png" };
 	textureName[textureLoaderNS::TITLE_SELECT_STAGE] = { "TEXTURE/stage_select.png" };
+	textureName[textureLoaderNS::STAGE_SELECT_IMAGE] = { "TEXTURE/stageSelectImage.png" };
 	textureName[textureLoaderNS::TITLE_CURSOR] = { "TEXTURE/cursor.png" };
 	textureName[textureLoaderNS::PAUSE] = { "TEXTURE/pause.png" };
 	textureName[textureLoaderNS::PAUSE_BLACK] = { "TEXTURE/black.png" };
@@ -47,6 +48,9 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::THUM_STAGE07] = { "TEXTURE/stage01.png" };
 	textureName[textureLoaderNS::THUM_STAGE08] = { "TEXTURE/stage01.png" };
 	textureName[textureLoaderNS::THUM_STAGE09] = { "TEXTURE/stage01.png" };
+	textureName[textureLoaderNS::THUM_STAGE10] = { "TEXTURE/stage01.png" };
+	textureName[textureLoaderNS::THUM_STAGE11] = { "TEXTURE/stage01.png" };
+	textureName[textureLoaderNS::THUM_STAGE12] = { "TEXTURE/stage01.png" };
 
 	//textureName[textureLoaderNS::THUM_STAGE02] = { "TEXTURE/stage02.png" };
 	//textureName[textureLoaderNS::THUM_STAGE03] = { "TEXTURE/stage03.png" };

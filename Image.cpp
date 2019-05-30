@@ -3,6 +3,7 @@
 void InitImage(Image* image, LPDIRECT3DTEXTURE9* texture,
 	float x, float y, float width, float height)
 {
+	if (texture == NULL) { image->renderFlag = false; return; }
 	LPDIRECT3DDEVICE9 pDevice = getDevice();
 	image->g_pD3DTexture = *texture;
 	image->position = D3DXVECTOR3(x, y, 0.0f);
@@ -115,6 +116,7 @@ void setSize(Image* image, float _width, float _height) {
 
 void setPosition(Image* image, float _x, float _y)
 {
+	if(image->renderFlag == false)return;
 	image->position.x = _x;
 	image->position.y = _y;
 	float x = image->position.x;
@@ -186,6 +188,8 @@ void movePosition(Image* image, float _x, float _y)
 
 void setAngle(Image* image, float _angle)
 {
+	if(image->renderFlag == false)return;
+
 	image->angle = _angle;
 	float angle = image->angle;
 	float width = image->width;

@@ -16,7 +16,6 @@ void StageClass::initialize(int stage)
 	{
 		if (m_Obj[i].m_type == CHARA_BLACKHOLE)
 		{
-			
 		}
 	}
 

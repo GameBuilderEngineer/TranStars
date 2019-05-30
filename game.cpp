@@ -1,6 +1,7 @@
 #include "game.h"
 #include "input.h"
 #include "Title.h"
+#include "Select.h"
 #include "Stage.h"
 #include "Result.h"
 #include "textureLoader.h"
@@ -45,8 +46,7 @@ void printGame()
 	switch (scene)
 	{
 	case TITLE:		printTitle(); break;
-	case SELECT_MODE: drawTitle(); break;	// îÛè¿í«â¡
-	case CHOOSE_STAGE: drawTitle(); break;	// îÛè¿í«â¡
+	case SELECT:	printSelect(); break;
 	case STAGE:		printStage(); break;
 	case RESULT:	printResult(); break;
 	default:	break;
@@ -82,6 +82,7 @@ void changeScene(SceneList newscene){
 	switch (scene)//êºêÏ0518
 	{
 	case TITLE: break;
+	case SELECT: break;
 	case STAGE:	startStage(); break;
 	case RESULT: finishStage(); break;
 	default:	break;

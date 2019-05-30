@@ -7,3 +7,4 @@ const float RANGE_ATTRACTION = 800.0f;	// ˆø—Í‚Ì“­‚­”ÍˆÍ
 void initializeBlackHole(ObjStr* blackHole, ObjStr* others,int targetNum);
 void setBlackHole(ObjStr* blackHole);
 void updateBlackHole(ObjStr* blackHole);
+bool sendObject(ObjStr* collisionObject, ObjStr* blackHole);

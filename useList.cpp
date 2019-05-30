@@ -2,6 +2,7 @@
 #include "useList.h"
 #include "collision.h"//西川0527 コリジョン内の関数をリストに渡すため
 #include "effect.h"//西川0527 エフェクト
+#include "BlackHole.h"//西川0527 エフェクト
 
 void optimizeObjList_getResult(DataList* typeCompat, DataList* xBased, DataList* result);
 void checkCheckList(DataList* checkList, DataList* typeCompat, DataList* result);
@@ -19,8 +20,7 @@ void uninitializeObjList(DataList* typeCompat,DataList* xBased, DataList* result
 }
 void startObjList(StageClass* stage, DataList* typeCompat, DataList* xBased, DataList* result) {
 	for (int i = 0; i < stage->getObjNum(); i++) {
-		float size = getObjectSizeLonger(&stage->getObj()[i]);//半径と辺、どちらが当たり判定かはともかく長い方
-		InsertRearEdges(xBased, &stage->getObj()[i], stage->getObj()[i].m_image.width / 2.0f - size, stage->getObj()[i].m_image.width / 2.0f + size);
+		setObjEdge(xBased, &stage->getObj()[i]);
 		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
 	}
 	startTypeCompatList(typeCompat);
@@ -61,6 +61,12 @@ void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 	result->crnt = result->head;// リストの着目ノードをリセット
 	while (Next(result))
 		if (result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+}
+
+//オブジェクトの端をx順リストに登録
+void setObjEdge(DataList* xBased, ObjStr* p_obj) {
+	float size = getObjectSizeLonger(p_obj);//半径と辺、どちらが当たり判定かはともかく長い方
+	InsertRearEdges(xBased, p_obj, p_obj->m_image.width / 2.0f - size, p_obj->m_image.width / 2.0f + size);
 }
 
 //リストの中身を画面に表示
@@ -122,4 +128,10 @@ void checkCheckList(DataList* checkList, DataList* typeCompat, DataList* result)
 
 void startTypeCompatList(DataList* typeCompat) {
 	setTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, true, &checkHitObjRR);//全タイプ
+
+	deleteTypeCompats(typeCompat, CHARA_BLACKHOLE, CHARA_BLACKHOLE, NO_TYPE, TYPE_MAX, true, &checkHitObjRR);//ブラックホールと全タイプ
+
+	deleteTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, true, &checkHitObjRR);//全タイプとブラックホール
+	setTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, true, &sendObject);//全タイプとブラックホール
 }
+

@@ -8,7 +8,7 @@
 #include <string>
 using namespace std;
 #include "read_text.h"
-#include "Select_Game.h"
+#include "SelectGame.h"
 // ‚±‚±‚Ü‚Å
 
 Image back;

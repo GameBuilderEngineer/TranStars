@@ -129,4 +129,8 @@ void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, boo
 // 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数をリストに登録
 void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
-
+//リストから消す
+void deleteTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));//
+//リストから消す
+void deleteTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));

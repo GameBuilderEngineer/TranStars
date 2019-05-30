@@ -13,9 +13,14 @@
 #include "SmallStar.h"
 #include "BigStar.h"
 #include "comet.h"
-#include "PopSmallStar.h"
-#include "PopBigStar.h"
+#include "PopStar.h"
 #include "Cursor.h"
+#include "PopComet.h"
+#include "BigStarFrame.h"
+#include "SmallStarFrame.h"
+#include "StarDust.h"
+#include "StarLine.h"
+#include "Reflection.h"
 
 //菅野
 //改造しました。
@@ -75,77 +80,26 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 	case CHARA_COMET://隕石
 		initializeComet(obj);
 		break;
-	case POP_SMALLSTAR://星（小）がポップする場所
-		initializePopSmallStar(obj);
+	case POP_STAR://星がポップする場所
+		initializePopStar(obj);
 		break;
-	case POP_BIGSTAR://星（大）がポップする場所
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::BIG_STAR), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
-		break;
-	case POPCOMET://隕石発生場所
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET02), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
+	case POP_COMET://隕石発生場所
+		initializePopComet(obj);
 		break;
 	case CHARA_SMALL_STARFRAME://星（小）を嵌める型
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::COMET01), obj->m_pos.x, obj->m_pos.y, 100.0f, 100.0f);
+		initializeSmallStarFrame(obj);
 		break;
 	case CHARA_BIG_STARFRAME://星（大）を嵌める型
-		obj->m_use = true;
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::WALL), obj->m_pos.x, obj->m_pos.y, 40.0f, 300.0f);
+		initializeBigStarFrame(obj);
 		break;
-	case CHARA_STARDUST:
-		//エフェクト
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitAnimeImage(&obj->m_image, getTexture(textureLoaderNS::BACK_GROUND), obj->m_pos.x, obj->m_pos.y, 160.0f, 80.0f,3,5,10,5);
+	case CHARA_STARDUST://壁・星のくずの障害物
+		initializeStarDust(obj);
 		break;
-	case STAGE_STARLINE:
-		//鍵で開けられる扉
-		obj->m_scl = { 1.0f,1.0f };
-		obj->m_speed = { 0.0f,0.0f };
-		obj->m_accel = { 0.0f,0.0f };
-		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
-		obj->m_mode = -1;
-		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
-		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
+	case STAGE_STARLINE://星と星を結ぶ線
+		initializeStarLine(obj);
+		break;
+	case STAGE_REFLECTION://物体を反射する壁
+		initializeReflection(obj);
 		break;
 	default:
 		obj->m_scl = { 1.0f,1.0f };
@@ -164,6 +118,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_image.ANIME_PATTERN = 1;
 		obj->m_image.DIVIDE_U = 1;
 		obj->m_image.DIVIDE_V = 1;
+		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
 		break;
 	}
 }
@@ -190,23 +145,7 @@ void updateObject(ObjStr* obj) {
 		break;
 	case UI_CURSOR://西川 0525
 		//ブラックホール置くカーソル
-		if (getMouseLButtonTrigger() || getMouseRButtonTrigger()) {
-			obj->m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
-			obj->m_pos.y += obj->m_image.height;
-			obj->m_image.height = 0.0f;
-
-			setAngle(&obj->m_image, 0.0f);
-		}
-		if ((obj->m_image.height < obj->m_image.width)) {
-			obj->m_pos.y -= (float)obj->m_image.width / 25.0f;
-			obj->m_image.height += (float)obj->m_image.width / 25.0f;
-
-			obj->m_image.angle -= 2.0f;//回転の相殺
-		}
-		else {
-			obj->m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
-			obj->m_image.height = obj->m_image.width;
-		}
+		updateCursor(obj);
 		break;
 	case CHARA_SMALL_STAR:
 		//星（小）
@@ -218,13 +157,10 @@ void updateObject(ObjStr* obj) {
 	case CHARA_COMET:
 		//隕石
 		break;
-	case POP_SMALLSTAR:
+	case POP_STAR:
 		//星（小）が発生する場所
 		break;
-	case POP_BIGSTAR:
-		//星（大）が発生する場所
-		break;
-	case POPCOMET:
+	case POP_COMET:
 		//隕石が発生する場所
 		break;
 	case CHARA_SMALL_STARFRAME:
@@ -237,6 +173,9 @@ void updateObject(ObjStr* obj) {
 		//星の壁
 		break;
 	case STAGE_STARLINE:
+		//星と星を結ぶ線
+		break;
+	case STAGE_REFLECTION:
 		//星と星を結ぶ線
 		break;
 	default:
@@ -457,3 +396,5 @@ void resetStar(ObjStr* p_obj)
 	p_obj->m_speed = D3DXVECTOR2{ -1.0f,0.0f };
 	p_obj->m_accel = D3DXVECTOR2{ 0.0f,0.0f };
 }
+void setWhiteHole(ObjStr* obj, ObjStr* whiteHole)
+{ obj->whiteHole = whiteHole; }

@@ -13,13 +13,13 @@ enum objTypes{
 		CHARA_SMALL_STAR,
 		CHARA_BIG_STAR,
 		CHARA_COMET,
-		POP_SMALLSTAR,
-		POP_BIGSTAR,
-		POPCOMET,
+		POP_STAR,
+		POP_COMET,
 		CHARA_SMALL_STARFRAME,
 		CHARA_BIG_STARFRAME,
 		CHARA_STARDUST,
 		STAGE_STARLINE,
+		STAGE_REFLECTION,
 	TYPE_MAX,//西川0525
 };
 
@@ -37,6 +37,8 @@ typedef struct _obj{
 	_obj*	 m_ptr;						//自身へのポインタ
 	_obj*	 m_tar;						//ターゲットのポインタ(基本はブラックホール)
 	int		targetNum;					//ターゲットの数
+	_obj*	 whiteHole;						//ホワイトホールへのポインタ
+
 
 	D3DXVECTOR2	m_pos;					//座標
 	float		m_rot;					//角度
@@ -78,3 +80,5 @@ float objectLength(ObjStr* p_obj1, ObjStr* p_obj2);
 
 //西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
 float getObjectSizeLonger(ObjStr* obj);
+
+void setWhiteHole(ObjStr* obj, ObjStr* whiteHole);

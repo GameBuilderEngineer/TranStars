@@ -40,9 +40,6 @@
     <Filter Include="ドメイン\メッセージダイアログ">
       <UniqueIdentifier>{07793791-7ab6-41de-87c8-c890aeb80160}</UniqueIdentifier>
     </Filter>
-    <Filter Include="アプリケーション\シーン\ステージ管理">
-      <UniqueIdentifier>{72ddab81-4ee4-442b-85cb-68de9da41b48}</UniqueIdentifier>
-    </Filter>
     <Filter Include="アプリケーション\ステージクラス">
       <UniqueIdentifier>{1305c1d2-186e-4a3d-bfa3-eb4b73997dbd}</UniqueIdentifier>
     </Filter>
@@ -73,14 +70,32 @@
     <Filter Include="アプリケーション\動的オブジェクト\カーソル">
       <UniqueIdentifier>{ba65f10f-50d9-4d26-8974-ed92cd2d229c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="アプリケーション\動的オブジェクト\星（小）生成地">
-      <UniqueIdentifier>{2ea8d77e-fd56-4a25-861c-252a94edd1ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="アプリケーション\動的オブジェクト\星（大）生成地">
-      <UniqueIdentifier>{9c21f5c5-7eb1-4c13-b0c9-03af561f6a94}</UniqueIdentifier>
-    </Filter>
     <Filter Include="アプリケーション\動的オブジェクト\隕石">
       <UniqueIdentifier>{3dc1c0ba-9acd-47d1-bd0a-9a1039700d5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\隕石生成地">
+      <UniqueIdentifier>{b3b9fc96-9631-4dec-896d-af2673749e33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星の枠（小）">
+      <UniqueIdentifier>{cc60a5ff-c53e-4f47-85d9-7639d708c852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星の枠（大）">
+      <UniqueIdentifier>{6b1c9167-f8f3-4fbc-8814-c881473dec43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星くずの壁">
+      <UniqueIdentifier>{271666a0-c4d9-41cf-874c-ccacc861b61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星の間の線">
+      <UniqueIdentifier>{74a1f4ed-9923-4fd8-b3c1-25677818de42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\ステージ管理">
+      <UniqueIdentifier>{72ddab81-4ee4-442b-85cb-68de9da41b48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\星生成地">
+      <UniqueIdentifier>{2ea8d77e-fd56-4a25-861c-252a94edd1ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\反射壁">
+      <UniqueIdentifier>{81ec01a9-9bc1-4dc9-8a4e-aebb44103ab7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,16 +136,13 @@
       <Filter>ドメイン\メッセージダイアログ</Filter>
     </ClCompile>
     <ClCompile Include="read_text.cpp">
-      <Filter>アプリケーション\シーン\ステージ管理</Filter>
+      <Filter>アプリケーション\ステージ管理</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>アプリケーション\ゲーム管理</Filter>
     </ClCompile>
     <ClCompile Include="collision.cpp">
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
-    </ClCompile>
-    <ClCompile Include="Select_Game.cpp">
-      <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
     <ClCompile Include="useList.cpp">
       <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
@@ -142,7 +154,7 @@
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClCompile>
     <ClCompile Include="fileLoader.cpp">
-      <Filter>アプリケーション\シーン\ステージ管理</Filter>
+      <Filter>アプリケーション\ステージ管理</Filter>
     </ClCompile>
     <ClCompile Include="SmallStar.cpp">
       <Filter>アプリケーション\動的オブジェクト\星（小）</Filter>
@@ -156,12 +168,6 @@
     <ClCompile Include="StageClass.cpp">
       <Filter>アプリケーション\ステージクラス</Filter>
     </ClCompile>
-    <ClCompile Include="PopBigStar.cpp">
-      <Filter>アプリケーション\動的オブジェクト\星（大）生成地</Filter>
-    </ClCompile>
-    <ClCompile Include="PopSmallStar.cpp">
-      <Filter>アプリケーション\動的オブジェクト\星（小）生成地</Filter>
-    </ClCompile>
     <ClCompile Include="Cursor.cpp">
       <Filter>アプリケーション\動的オブジェクト\カーソル</Filter>
     </ClCompile>
@@ -173,6 +179,30 @@
     </ClCompile>
     <ClCompile Include="comet.cpp">
       <Filter>アプリケーション\動的オブジェクト\隕石</Filter>
+    </ClCompile>
+    <ClCompile Include="PopComet.cpp">
+      <Filter>アプリケーション\動的オブジェクト\隕石生成地</Filter>
+    </ClCompile>
+    <ClCompile Include="BigStarFrame.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星の枠（大）</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallStarFrame.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星の枠（小）</Filter>
+    </ClCompile>
+    <ClCompile Include="StarDust.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星くずの壁</Filter>
+    </ClCompile>
+    <ClCompile Include="StarLine.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星の間の線</Filter>
+    </ClCompile>
+    <ClCompile Include="PopStar.cpp">
+      <Filter>アプリケーション\動的オブジェクト\星生成地</Filter>
+    </ClCompile>
+    <ClCompile Include="Reflection.cpp">
+      <Filter>アプリケーション\動的オブジェクト\反射壁</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,13 +246,10 @@
       <Filter>ドメイン\メッセージダイアログ</Filter>
     </ClInclude>
     <ClInclude Include="read_text.h">
-      <Filter>アプリケーション\シーン\ステージ管理</Filter>
+      <Filter>アプリケーション\ステージ管理</Filter>
     </ClInclude>
     <ClInclude Include="collision.h">
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
-    </ClInclude>
-    <ClInclude Include="Select_Game.h">
-      <Filter>アプリケーション\シーン</Filter>
     </ClInclude>
     <ClInclude Include="useList.h">
       <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
@@ -234,7 +261,7 @@
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClInclude>
     <ClInclude Include="fileLoader.h">
-      <Filter>アプリケーション\シーン\ステージ管理</Filter>
+      <Filter>アプリケーション\ステージ管理</Filter>
     </ClInclude>
     <ClInclude Include="SmallStar.h">
       <Filter>アプリケーション\動的オブジェクト\星（小）</Filter>
@@ -248,12 +275,6 @@
     <ClInclude Include="StageClass.h">
       <Filter>アプリケーション\ステージクラス</Filter>
     </ClInclude>
-    <ClInclude Include="PopBigStar.h">
-      <Filter>アプリケーション\動的オブジェクト\星（大）生成地</Filter>
-    </ClInclude>
-    <ClInclude Include="PopSmallStar.h">
-      <Filter>アプリケーション\動的オブジェクト\星（小）生成地</Filter>
-    </ClInclude>
     <ClInclude Include="Cursor.h">
       <Filter>アプリケーション\動的オブジェクト\カーソル</Filter>
     </ClInclude>
@@ -265,6 +286,30 @@
     </ClInclude>
     <ClInclude Include="comet.h">
       <Filter>アプリケーション\動的オブジェクト\隕石</Filter>
+    </ClInclude>
+    <ClInclude Include="PopComet.h">
+      <Filter>アプリケーション\動的オブジェクト\隕石生成地</Filter>
+    </ClInclude>
+    <ClInclude Include="BIgStarFrame.h">
+      <Filter>アプリケーション\動的オブジェクト\星の枠（大）</Filter>
+    </ClInclude>
+    <ClInclude Include="SmallStarFrame.h">
+      <Filter>アプリケーション\動的オブジェクト\星の枠（小）</Filter>
+    </ClInclude>
+    <ClInclude Include="StarDust.h">
+      <Filter>アプリケーション\動的オブジェクト\星くずの壁</Filter>
+    </ClInclude>
+    <ClInclude Include="StarLine.h">
+      <Filter>アプリケーション\動的オブジェクト\星の間の線</Filter>
+    </ClInclude>
+    <ClInclude Include="PopStar.h">
+      <Filter>アプリケーション\動的オブジェクト\星生成地</Filter>
+    </ClInclude>
+    <ClInclude Include="Reflection.h">
+      <Filter>アプリケーション\動的オブジェクト\反射壁</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>アプリケーション\シーン</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
