@@ -8,7 +8,7 @@
 #include "game.h"
 #include "object.h"
 
-int cursor = STAGE01;
+int cursor = STAGE02;
 int getSelectStage() { return cursor; }
 
 Image terrene;//ínè„äG
@@ -56,7 +56,7 @@ void initializeSelect()
 void updateSelect()
 {
 	VECTOR2 claculationVector;
-	if (getMouseLButtonTrigger())
+	if (getMouseLButtonTrigger() || GetKeyboardDebugEnter())
 	{
 		VECTOR2 mouse(getMouseX(), getMouseY());
 		//âEë§
@@ -90,7 +90,7 @@ void updateSelect()
 			}
 		}
 		//åàíË
-		if (onImage(mouse, decisionCursor))
+		if (onImage(mouse, decisionCursor) || GetKeyboardDebugEnter())
 		{
 			changeScene(STAGE);
 		}

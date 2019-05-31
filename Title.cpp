@@ -65,8 +65,8 @@ void updateTitle() {
 		setPosition(&backStars[i], v.x, v.y);
 		setAngle(&backStars[i], backStars[i].angle + 1);
 	}
-	if (getMouseLButtonTrigger()) {
-		if (onImage(D3DXVECTOR2((float)getMouseX(), (float)getMouseY()), titleItem[START_LOGO].image))
+	if (getMouseLButtonTrigger() || GetKeyboardDebugEnter()) {
+		if (onImage(D3DXVECTOR2((float)getMouseX(), (float)getMouseY()), titleItem[START_LOGO].image) || GetKeyboardDebugEnter())
 		{
 			changeScene(SELECT);//ステージ選択画面へ遷移
 		}

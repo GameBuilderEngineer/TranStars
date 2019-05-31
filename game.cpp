@@ -30,7 +30,7 @@ void updateGame() {
 	case RESULT:	updateResult();break;
 	default:	break;
 	}
-	updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//西川0530
+	updateTextW(&textW, getMouseLButtonTrigger());//西川0530
 };
 
 void drawGame() {
@@ -60,8 +60,8 @@ void printGame()
 
 void unInitializeGame() {
 	getTextureLoader()->release();//テクスチャの解放
-	unInitializeSelect();
 	unInitializeTitle();
+	unInitializeSelect();
 	unInitializeStage();
 	unInitializeResult();
 	uninitializeTextW(&textW);//西川0530
@@ -76,10 +76,10 @@ void changeScene(SceneList newscene){
 	switch (scene)//西川0518
 	{
 	case TITLE: break;
-	case SELECT:releaseTextW(&textW); setTextW(&textW, "ステージ選択です", 25, 0, 500)/*西川0530*/; break;
+	case SELECT:releaseTextW(&textW); setTextW(&textW, "ステージ選択です", 25, 0, WINDOW_HEIGHT - WINDOW_WIDTH / 771 * 112)/*西川0530*/; break;
 	case STAGE:releaseTextW(&textW); startStage(); break;
 	case RESULT: finishStage(); break;
-	default:	break;
+	default: break;
 	}
 }//西川0518 ++以外の方法でシーン遷移 ステージに入る直前・直後にだけしたい処理(↑のswitch内)があるのでgameを通さずにシーンを変えないでほしい
 

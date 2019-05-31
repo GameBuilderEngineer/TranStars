@@ -1,5 +1,7 @@
 
 #include "comet.h"
+#include "effect.h"
+#include "Stage.h"
 
 void initializeComet(ObjStr* comet)
 {
@@ -18,5 +20,5 @@ void initializeComet(ObjStr* comet)
 
 void updateComet(ObjStr* comet)
 {
-
+	makeEffect(getEffect(), eTAIL, comet);//êºêÏ0531
 }
