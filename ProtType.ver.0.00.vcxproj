@@ -150,6 +150,7 @@
     <ClCompile Include="dataList.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="fileLoader.cpp" />
+    <ClCompile Include="funcTypeList.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="input.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="dataList.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="fileLoader.h" />
+    <ClInclude Include="funcTypeList.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="input.h" />

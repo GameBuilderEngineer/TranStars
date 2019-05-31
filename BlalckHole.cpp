@@ -43,8 +43,7 @@ void updateBlackHole(ObjStr* blackHole) {
 	}
 };
 
-bool sendObject(ObjStr* collisionObject,ObjStr* blackHole)
+void sendObject(ObjStr* collisionObject,ObjStr* blackHole)
 {
 	collisionObject->m_pos = blackHole->whiteHole->m_pos;
-	return true;
-}
+}//¼ì

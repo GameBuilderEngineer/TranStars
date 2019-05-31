@@ -210,6 +210,9 @@
     <ClCompile Include="action.cpp">
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClCompile>
+    <ClCompile Include="funcTypeList.cpp">
+      <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="action.h">
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
+    </ClInclude>
+    <ClInclude Include="funcTypeList.h">
+      <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

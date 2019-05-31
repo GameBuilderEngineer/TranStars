@@ -1,21 +1,20 @@
 #include "action.h"
-#include "effect.h"
 #include "stage.h"
 
 float resetRot(float r);
 
-bool actFitStar(ObjStr* star, ObjStr* frame) {
-//	¯‚ðŒÅ’è‚·‚éˆ—
-//	˜g‚ðˆê”t‚É‚·‚éˆ—
-	makeEffect(getEffect(), ePARTICLE, star);
+void actFitStar(ObjStr* star, ObjStr* frame, EffList* eff) {
+//	¯‚ðŒÅ’è‚·‚éˆ—(mode•Ï‚¦‚é‚È‚Ç)
+//	˜g‚ðˆê”t‚É‚·‚éˆ—(mode•Ï‚¦‚é‚È‚Ç)
+	makeEffect(eff, ePARTICLE, star);
 }
 
-bool actSplit(ObjStr* collisionObject, ObjStr* stardust) {
-//	collisionObject->m_use = false;//“–‚½‚Á‚½‘¤‚ð‰ó‚·ˆ—
-	makeEffect(getEffect(), eSPLIT, collisionObject);
+void actSplit(ObjStr* collisionObject, ObjStr* stardust, EffList* eff) {
+	collisionObject->m_use = false;//“–‚½‚Á‚½‘¤‚ð‰ó‚·ˆ—
+	makeEffect(eff, eSPLIT, collisionObject);
 }
 
-bool actReflect(ObjStr* collisionObject, ObjStr* reflection) {
+void actReflect(ObjStr* collisionObject, ObjStr* reflection) {
 	float rCol, rRef;
 	if (reflection->m_rect.x > reflection->m_rect.y) rRef = reflection->m_rot + D3DX_PI / 2.0f;
 	else rRef = reflection->m_rot;
@@ -27,7 +26,6 @@ bool actReflect(ObjStr* collisionObject, ObjStr* reflection) {
 
 	collisionObject->m_speed = { cosf(rCol) * sCol,sinf(rCol) * sCol };
 	collisionObject->m_rot = rCol;
-	return true;
 }
 
 float resetRot(float r) {

@@ -1,6 +1,9 @@
 #pragma once
 #include "object.h"
+#include "effect.h"
 
 //２つのオブジェクトに対してやる処理を書く
 
-bool actReflect(ObjStr* collisionObject, ObjStr* reflection);
+void actFitStar(ObjStr* star, ObjStr* frame, EffList* eff);
+void actSplit(ObjStr* collisionObject, ObjStr* stardust, EffList* eff);
+void actReflect(ObjStr* collisionObject, ObjStr* reflection);

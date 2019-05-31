@@ -8,7 +8,6 @@
 #include "Select_Game.h" // 樋沼追加
 #include "useList.h"//西川0530
 #include "collision.h"//西川0530 コリジョン内の関数をリストに渡すため
-#include "effect.h"//西川0530 エフェクト
 #include "StageClass.h"
 #include "BlackHole.h"
 #include "action.h"
@@ -16,8 +15,8 @@
 StageClass stage;//ステージ別データ
 
 Image gameBG;
-DataList collTFList;//西川0530 コリジョン用 タイプ関係と実行する関数のリスト(initializeで作ってゲーム中通用)
-DataList actTFList;//西川0530 アクション用 タイプリスト(通用)
+TF_List typeCollisionList;//西川0530 コリジョン用 タイプ関係と実行する関数のリスト(initializeで作ってゲーム中通用)
+TF_List typeActionList;//西川0530 アクション用 タイプリスト(通用)
 DataList xBasedList;//西川0518 x座標順 オブジェクトリスト(通用)
 DataList resultList;//西川0518 確かめ結果 オブジェクト関係リスト(updateで毎フレーム作って使い捨て)
 EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(通用)
@@ -33,8 +32,8 @@ void setTFLists();
 void initializeStage() {
 	InitImage(&gameBG, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
 	initializeObjList(&xBasedList, &resultList);//西川0527
-	initializeTypeFuncList(&collTFList);
-	initializeTypeFuncList(&actTFList);
+	initializeTypeFuncList(&typeCollisionList);
+	initializeTypeFuncList(&typeActionList);
 	initializeEffect(&effectList);//西川0527
 
 	setTFLists();//西川0531
@@ -74,16 +73,16 @@ void updateStage() {
 	updateObject(&blackHole);
 	updateObject(&cursor);
 	
-	if (getMouseLButtonTrigger())
-		makeParticle(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0525
-	if (getMouseRButtonTrigger())
+//	if (getMouseLButtonTrigger())
+//		makeParticle(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0525
+//	if (getMouseRButtonTrigger())
 //		makeMagic(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0526
-		makeSplit(&effectList, { (float)getMouseX(), (float)getMouseY() }, stage.getObj()[0].m_image);//西川0527
-	makeEffect(&effectList, eTAIL, &stage.getObj()[3]);//西川0528
+//		makeSplit(&effectList, { (float)getMouseX(), (float)getMouseY() }, stage.getObj()[0].m_image);//西川0527
+//	makeEffect(&effectList, eTAIL, &stage.getObj()[3]);//西川0528
 	updateEffect(&effectList);//西川0525
 
-	makeResultList(&collTFList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数の入ったタイプリストを渡して結果リスト取得
-	checkResultList(&actTFList, &resultList);//西川0530
+	makeResultList(&typeCollisionList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数の入ったタイプリストを渡して結果リスト取得
+	checkResultList(&typeActionList, &resultList,&effectList);//西川0530
 };
 
 void drawStage() {
@@ -118,8 +117,8 @@ void unInitializeStage() {
 	stage.uninitialize();//菅野//西川0527
 	uninitializeEffect(&effectList);//西川0527
 	uninitializeObjList(&xBasedList, &resultList);//西川0527
-	uninitializeTypeFuncList(&collTFList);//西川0530
-	uninitializeTypeFuncList(&actTFList);//西川0530
+	uninitializeTypeFuncList(&typeCollisionList);//西川0530
+	uninitializeTypeFuncList(&typeActionList);//西川0530
 };
 
 void finishStage() {
@@ -127,12 +126,16 @@ void finishStage() {
 	finishObjList(&xBasedList, &resultList);//西川0527
 };//西川0518 今のステージをやめた後に呼ぶ関数
 
-void setTFLists() {
-	setTypeFuncList(&collTFList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR, false);
-//	setTypeFuncList(&actTFList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject, false);
-//	setTypeFuncList(&actTFList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION, STAGE_REFLECTION, &actReflect, false);
-}
-
 EffList* getEffect() {
 	return &effectList;
-};//西川0530
+}//西川0530
+
+void setTFLists() {
+	setCollisionsList(&typeCollisionList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR);//重複があるが、これでよい
+	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject);
+//	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION, STAGE_REFLECTION, &actReflect);
+	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_WHITEHOLE, &actSplit);
+	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_BLACKHOLE, &actReflect);
+
+	optimizeActionList(&typeActionList);//同じタイプで同じ処理があれば削除
+}
