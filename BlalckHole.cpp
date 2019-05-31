@@ -1,6 +1,7 @@
 #include "BlackHole.h"
 #include "input.h"
-
+#include "effect.h"
+#include "stage.h"
 
 void initializeBlackHole(ObjStr* blackHole, ObjStr* others,int targetNum)
 {
@@ -20,9 +21,16 @@ void initializeBlackHole(ObjStr* blackHole, ObjStr* others,int targetNum)
 	blackHole->targetNum = targetNum;
 }
 
-void setBlackHole(ObjStr* obj) {
-	obj->m_use = !obj->m_use;
-	obj->m_pos = D3DXVECTOR2{ (float)getMouseX(),(float)getMouseY() };
+void setBlackHole(ObjStr* blackHole) {
+	blackHole->m_use = !blackHole->m_use;
+
+	if (blackHole->m_use)
+		makeMagic(getEffect(), { (float)getMouseX(), (float)getMouseY() });//西川0531 マウスの位置に魔法陣配置
+	else
+		makeMagic(getEffect(), blackHole->m_pos);//西川0531 BHがいた位置に魔法陣配置
+
+	blackHole->m_pos = D3DXVECTOR2{
+		(float)getMouseX() - blackHole->m_image.width / 2.0f,(float)getMouseY() - blackHole->m_image.height / 2.0f };
 };
 
 void updateBlackHole(ObjStr* blackHole) {

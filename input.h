@@ -69,6 +69,7 @@ char getCharIn();
 
 //---------------------------- keyboard
 bool GetKeyboardPress(int nKey);
+bool GetKeyboardDebugEnter();//¼ì0531
 bool GetKeyboardTrigger(int nKey);
 bool GetKeyboardRepeat(int nKey);
 bool GetKeyboardRelease(int nKey);

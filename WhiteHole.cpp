@@ -1,5 +1,7 @@
 #include "WhiteHole.h"
 #include "input.h"
+#include "effect.h"
+#include "stage.h"
 
 void initializeWhiteHole(ObjStr* whiteHole)
 {
@@ -26,5 +28,13 @@ void updateWhiteHole(ObjStr* whiteHole) {
 
 void  setWhiteHole(ObjStr* whiteHole) {
 	whiteHole->m_use = !whiteHole->m_use;
-	whiteHole->m_pos = D3DXVECTOR2{ (float)getMouseX(),(float)getMouseY() };
+
+	if (whiteHole->m_use)
+		makeMagic(getEffect(), { (float)getMouseX(), (float)getMouseY() });//西川0531 マウスの位置に魔法陣配置
+	else
+		makeMagic(getEffect(), whiteHole->m_pos);//西川0531 BHがいた位置に魔法陣配置
+
+
+	whiteHole->m_pos = D3DXVECTOR2{ 
+		(float)getMouseX() - whiteHole->m_image.width / 2.0f,(float)getMouseY() - whiteHole->m_image.height / 2.0f };
 };

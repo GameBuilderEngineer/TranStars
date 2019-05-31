@@ -72,13 +72,7 @@ void updateStage() {
 	updateObject(&whiteHole);
 	updateObject(&blackHole);
 	updateObject(&cursor);
-	
-//	if (getMouseLButtonTrigger())
-//		makeParticle(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0525
-//	if (getMouseRButtonTrigger())
-//		makeMagic(&effectList, { (float)getMouseX(), (float)getMouseY() });//西川0526
-//		makeSplit(&effectList, { (float)getMouseX(), (float)getMouseY() }, stage.getObj()[0].m_image);//西川0527
-//	makeEffect(&effectList, eTAIL, &stage.getObj()[3]);//西川0528
+
 	updateEffect(&effectList);//西川0525
 
 	makeResultList(&typeCollisionList, &xBasedList, &resultList);//西川0527 x順リストを更新、同時進行的にコリジョン関数の入ったタイプリストを渡して結果リスト取得
@@ -125,12 +119,23 @@ void finishStage() {
 	finishObjList(&xBasedList, &resultList);//西川0527
 };//西川0518 今のステージをやめた後に呼ぶ関数
 
+EffList* getEffect() {
+	return &effectList;
+}
+
 void setTFLists() {
 	setCollisionsList(&typeCollisionList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR);//重複があるが、これでよい
-	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject);
-	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION, STAGE_REFLECTION, &actReflect);
-	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_WHITEHOLE, &actSplit);
-	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_WHITEHOLE, &actSplit);
+	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE,
+		CHARA_BLACKHOLE, &sendObject);//ブラックホールに当たったらホワイトホールに飛ぶ
+
+	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION,
+		STAGE_REFLECTION, &actReflect);//反射する
+
+	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, 
+		CHARA_STARDUST, CHARA_STARDUST, &actSplit);//星が割れる
+
+	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_SMALL_STARFRAME, &actFitStar);//はまる
+	setActionList(&typeActionList, CHARA_BIG_STAR, CHARA_BIG_STARFRAME, &actFitStar);//はまる
 
 	optimizeActionList(&typeActionList);//同じタイプで同じ処理があれば削除
 }

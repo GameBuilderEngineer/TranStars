@@ -1,6 +1,7 @@
 
 #include "Cursor.h"
 #include "input.h"
+#include "effect.h"
 
 void initializeCursor(ObjStr* cursor)
 {
@@ -19,6 +20,7 @@ void initializeCursor(ObjStr* cursor)
 
 void updateCursor(ObjStr* cursor)
 {
+/*
 	if (getMouseLButtonTrigger() || getMouseRButtonTrigger()) {
 		cursor->m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
 		cursor->m_pos.y += cursor->m_image.height;
@@ -36,5 +38,5 @@ void updateCursor(ObjStr* cursor)
 		cursor->m_pos = { (float)getMouseX() - 40.0f, (float)getMouseY() - 40.0f };
 		cursor->m_image.height = cursor->m_image.width;
 	}
-
+*/
 }

@@ -183,7 +183,8 @@ void updateObject(ObjStr* obj) {
 	}
 	//オブジェクトの基本処理
 	if (obj->m_use == false)return;
-	obj->m_pos += obj->m_accel;
+	obj->m_speed = (obj->m_speed + obj->m_accel) * SPEED_MASATU;
+	obj->m_pos += obj->m_speed;
 	setPosition(&(obj->m_image), obj->m_pos.x , obj->m_pos.y);
 	setAngle(&(obj->m_image), obj->m_image.angle);
 }
@@ -337,6 +338,7 @@ Image cleanTex(void) {//Texをリセット
 //		obj->m_image = cleanTex();
 //	}
 //}
+
 
 void updatePlayer(ObjStr* obj) {
 	//p_obj->m_rot = D3DX_PI / 4;

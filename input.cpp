@@ -289,6 +289,14 @@ bool GetKeyboardPress(int key)
 	return (g_keyState[key] & 0x80) ? true : false;
 }
 
+bool GetKeyboardDebugEnter()
+{
+#ifndef DEBUG
+	return GetKeyboardPress(DIK_RETURN);
+#endif
+	return false;
+}//西川0531
+
 //=============================================================================
 // キーボードのトリガー状態を取得
 //=============================================================================
