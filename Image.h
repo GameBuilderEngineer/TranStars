@@ -66,4 +66,5 @@ void setAngleRad(Image* image, float _angleRad);//¼ì0528
 // Image‚ÌƒJƒ‰[‚ğ•ÏX‚·‚é
 void SetColorImage(Image* image, D3DXCOLOR color);
 HRESULT MakeVertex(Image* image, LPDIRECT3DDEVICE9 pDevice);
-
+// ‰æ‘œ‚Ìã‚É‚ ‚é‚©‚Ç‚¤‚©
+bool onImage(D3DXVECTOR2 point, Image image);

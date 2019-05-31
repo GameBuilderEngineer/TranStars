@@ -407,3 +407,15 @@ HRESULT MakeVertex(Image* image, LPDIRECT3DDEVICE9 pDevice)
 
 	return S_OK;
 }
+
+bool onImage(D3DXVECTOR2 point, Image image)
+{
+	if (image.position.x < point.x&&
+		image.position.x + image.width > point.x&&
+		image.position.y < point.y&&
+		image.position.y + image.height > point.y)
+	{
+		return true;
+	}
+	return false;
+}

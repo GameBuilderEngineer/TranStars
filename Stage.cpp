@@ -5,12 +5,12 @@
 #include "Image.h"
 #include "textureLoader.h"
 #include "object.h"
-#include "SelectGame.h" // 樋沼追加
+#include "Select.h"
 #include "useList.h"//西川0518
-//#include "collision.h"//西川0518 コリジョン内の関数をリストに渡すため
 #include "effect.h"//西川0525 エフェクト
 #include "StageClass.h"
 #include "BlackHole.h"
+#include "Select.h"
 
 StageClass stage;//ステージ別データ
 
@@ -35,7 +35,7 @@ void initializeStage() {
 
 void startStage() {	
 	//ステージセレクトで、ステージ変数から初期化するようにする:とりあえずステージ１
-	stage.initialize(stageNS::STAGE01);//菅野
+	stage.initialize(getSelectStage());//菅野
 	initializeObject(&whiteHole, 10000, CHARA_WHITEHOLE, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 	initializeObject(&blackHole, 10000, CHARA_BLACKHOLE, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 	initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
@@ -57,8 +57,6 @@ void updateStage() {
 	// timerはmainにあるから、そこでif文するか、ここにtimerを持ってくるかどちらがいいか
 	// ↑新たにTimerクラスのインスタンスを作成すると良いと思います。
 
-	bool p_pause = *getPause();
-	updatePause();
 	// 大体ここまで
 	stage.update();//菅野
 	updateObject(&whiteHole);
@@ -87,7 +85,6 @@ void drawStage() {
 	drawObject(&cursor);
 
 	drawEffect(&effectList);//西川0525
-	drawPause(); // 樋沼
 };
 
 void printStage() {

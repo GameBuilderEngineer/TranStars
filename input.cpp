@@ -67,8 +67,7 @@ bool mouseX1Button;								// X1のマウスボタンが押されている場合はtrue
 bool mouseX2Button;								// X2のマウスボタンが押されている場合はtrue
 
 bool flag[5] = { false,false,false,false,false };
-bool mouseButtonTrigger[5] = { false,false,false,false,false };						// マウスのボタンが押された時一度だけtrue,順番は上準拠;						// マウスのボタンが押された時一度だけtrue,順番は上準拠
-
+bool mouseButtonTrigger[5] = { false,false,false,false,false };						// マウスのボタンが押された時一度だけtrue,順番は上準拠;
 
 //--------------------------------- game pad
 static LPDIRECTINPUTDEVICE8	pGamePad[GAMEPADMAX] = { NULL,NULL,NULL,NULL };// パッドデバイス
