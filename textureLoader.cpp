@@ -12,32 +12,33 @@ LPDIRECT3DTEXTURE9* getTexture(int i)
 
 TextureLoader::TextureLoader()
 {
-	textureName[textureLoaderNS::SMALL_STAR] = { "TEXTURE/star1.PNG" };	//êºêÏ0525
-	textureName[textureLoaderNS::BIG_STAR] = { "TEXTURE/star2.PNG" };	//êºêÏ0525
-	textureName[textureLoaderNS::STAR3] = { "TEXTURE/star3.PNG" };		//êºêÏ0525
-	textureName[textureLoaderNS::BLACK_HOLE] = { "TEXTURE/BH_kari.png" };
-	textureName[textureLoaderNS::WHITE_HOLE] = { "TEXTURE/WH_kari.png" };
-	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.jpg" };
-	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.jpg" };
+//êºêÏ 0.22
+	textureName[textureLoaderNS::SMALL_STAR] = { "TEXTURE/star1.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::BIG_STAR] = { "TEXTURE/star2.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::STAR3] = { "TEXTURE/star3.PNG" };//êºêÏ0525
+	textureName[textureLoaderNS::BLACK_HOLE] = { "TEXTURE/BH.png" };//êºêÏ0530
+	textureName[textureLoaderNS::WHITE_HOLE] = { "TEXTURE/WH.PNG" };//êºêÏ0530
+	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.png" };
+	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.PNG" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/WALL_kari.png" };
-	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };		//êºêÏ0525
+	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
 	textureName[textureLoaderNS::MAGIC_CIRCLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::FIRE] = { "TEXTURE/fire.png" };//êºêÏ0528
 	textureName[textureLoaderNS::TEXT_WINDOW] = { "TEXTURE/text_window_.png" };//êºêÏ0528
 
-	textureName[textureLoaderNS::CONSTELLATION01] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION02] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION03] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION04] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION05] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION06] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION07] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION08] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION09] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION10] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION11] = { "TEXTURE/star_.jpg" };
-	textureName[textureLoaderNS::CONSTELLATION12] = { "TEXTURE/star_.jpg" };
+	textureName[textureLoaderNS::CONSTELLATION01] = { "TEXTURE/ohitsuji.png" };
+	textureName[textureLoaderNS::CONSTELLATION02] = { "TEXTURE/oushi.png" };
+	textureName[textureLoaderNS::CONSTELLATION03] = { "TEXTURE/hutago.png" };
+	textureName[textureLoaderNS::CONSTELLATION04] = { "TEXTURE/tenbin.png" };
+	textureName[textureLoaderNS::CONSTELLATION05] = { "TEXTURE/kani.png" };
+	textureName[textureLoaderNS::CONSTELLATION06] = { "TEXTURE/shishi.png" };
+	textureName[textureLoaderNS::CONSTELLATION07] = { "TEXTURE/otome.png" };
+	textureName[textureLoaderNS::CONSTELLATION08] = { "TEXTURE/sasori.png" };
+	textureName[textureLoaderNS::CONSTELLATION09] = { "TEXTURE/ite.png" };
+	textureName[textureLoaderNS::CONSTELLATION10] = { "TEXTURE/yagi.png" };
+	textureName[textureLoaderNS::CONSTELLATION11] = { "TEXTURE/mizugame.png" };
+	textureName[textureLoaderNS::CONSTELLATION12] = { "TEXTURE/uo.png" };
 	
 	// îÛè¿í«â¡
 	textureName[textureLoaderNS::BACK_GROUND] = { "TEXTURE/gameBG.png" };

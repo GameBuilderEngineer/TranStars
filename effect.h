@@ -1,6 +1,5 @@
 #pragma once
 #include "main.h"
-#include "Image.h"
 #include "object.h"
 
 // エフェクトの
@@ -58,7 +57,9 @@ void finishEffect(EffList* eff);
 void updateEffect(EffList* eff);
 void drawEffect(EffList* eff);
 
+
 void makeParticle(EffList* eff, D3DXVECTOR2 pos);
 void makeMagic(EffList* eff, D3DXVECTOR2 pos);
-void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image* image);
+void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image image);
 void makeTail(EffList* eff, D3DXVECTOR2 pos, D3DXVECTOR2 speed);
+void makeEffect(EffList* eff, effTypes eType, ObjStr* obj);

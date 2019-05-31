@@ -1,49 +1,111 @@
 //西川
 #include "useList.h"
-#include "collision.h"//西川0527 コリジョン内の関数をリストに渡すため
-#include "effect.h"//西川0527 エフェクト
-#include "BlackHole.h"//西川0527 エフェクト
 
-void optimizeObjList_getResult(DataList* typeCompat, DataList* xBased, DataList* result);
-void checkCheckList(DataList* checkList, DataList* typeCompat, DataList* result);
-void startTypeCompatList(DataList* typeCompat);
+void checkCheckList(DataList* checkList, TF_List* col, DataList* result);
+void checkCollision_updateResult(TF_List* col, DataList* result, ObjStr* x, ObjStr* y);
 
-void initializeObjList(DataList* typeCompat, DataList* xBased, DataList* result) {
+void checkTypeFunc(TF_List* typeFunc, ObjStr* x, ObjStr* y, EffList* eff);
+void checkTypeFuncEach(TF_List* typeFunc, ObjStr* x, ObjStr* y, EffList* eff);
+
+//初期化↓
+
+void initializeObjList(DataList* xBased, DataList* result) {
 	Initialize(xBased);
 	Initialize(result);
-	Initialize(typeCompat);
 }
-void uninitializeObjList(DataList* typeCompat,DataList* xBased, DataList* result) {
-	Terminate(typeCompat);
+void initializeTypeFuncList(TF_List* typeFunc) {
+	Initialize(typeFunc);
+}
+
+//タイプファンクリストを設定
+void setCollisionList(TF_List* typeFunc, objTypes type1, objTypes type2, bool(*p_func)(ObjStr* a, ObjStr* b)) {
+	setTypeFunc(typeFunc, type1, type2, true,FUNC_COLLISION, castFunc(p_func));
+}
+void setCollisionsList(TF_List* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H,
+	bool(*p_func)(ObjStr* a, ObjStr* b)) {
+	setTypeFuncs(typeFunc, type1L, type1H, type2L, type2H, true, FUNC_COLLISION, castFunc(p_func));
+}
+void setActionList(TF_List* typeFunc, objTypes type1, objTypes type2, void(*p_func)(ObjStr* a, ObjStr* b)) {
+	setTypeFunc(typeFunc, type1, type2, true, FUNC_ACTION, castFunc(p_func));
+}
+void setActionsList(TF_List* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H,
+	void(*p_func)(ObjStr* a, ObjStr* b)) {
+	setTypeFuncs(typeFunc, type1L, type1H, type2L, type2H, true, FUNC_ACTION, castFunc(p_func));
+}
+void setActionList(TF_List* typeFunc, objTypes type1, objTypes type2, void(*p_func)(ObjStr* a, ObjStr* b, EffList* eff)) {
+	setTypeFunc(typeFunc, type1, type2, true, FUNC_ACTION_EFFECT, castFunc(p_func));
+}
+void setActionsList(TF_List* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H,
+	void(*p_func)(ObjStr* a, ObjStr* b, EffList* eff)) {
+	setTypeFuncs(typeFunc, type1L, type1H, type2L, type2H, true, FUNC_ACTION_EFFECT, castFunc(p_func));
+}
+void optimizeActionList(TF_List* typeFunc) {
+	optimizeTypeFuncs(typeFunc);//type1,2に、組み合わせ一緒で順序が逆、同じ関数が登録されてしまうのを避ける
+}
+
+//初期化↑
+
+void uninitializeObjList(DataList* xBased, DataList* result) {
 	Terminate(xBased);
 	Terminate(result);
 }
-void startObjList(StageClass* stage, DataList* typeCompat, DataList* xBased, DataList* result) {
-	for (int i = 0; i < stage->getObjNum(); i++) {
+void uninitializeTypeFuncList(TF_List* typeFunc) {
+	Terminate(typeFunc);
+}
+
+void startObjList(StageClass* stage, DataList* xBased, DataList* result) {
+	for (int i = 0; i < stage->getObjNum(); i++)
 		setObjEdge(xBased, &stage->getObj()[i]);
 		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
-	}
-	startTypeCompatList(typeCompat);
 }
-void finishObjList(DataList* typeCompat, DataList* xBased, DataList* result) {
-	Clear(typeCompat);
+
+void finishObjList(DataList* xBased, DataList* result) {
 	Clear(xBased);
 	Clear(result);
 }
 
-void updateObjList(DataList* typeCompat,DataList* xBased, DataList* result) {
-	Clear(result);//毎フレーム、前のresultを(要らない＋次作るまでに消しとかなきゃいけないので)消去
+//毎フレーム初め、xBasedを維持し、typeFuncが持つfunc(コリジョン判定)をもとにresultを作成
+void makeResultList(TF_List* col, DataList* xBased, DataList* result) {
 	sortObjEdgeListByX(xBased);//x端リストにオブジェクトの移動を反映
-	optimizeObjList_getResult(typeCompat, xBased, result);
+
+	DataList checkList; Initialize(&checkList);// チェックリスト(xBasedを見る間だけ必要なリスト)作成
+
+	xBased->crnt = xBased->head;// x順リストの着目ノードをリセット
+	while (Next(xBased)) {
+		if (!xBased->crnt->d._oE.mp_obj->m_use) continue;//useがfalseなら考えない
+
+		if (xBased->crnt->d._oE.mp_L == NULL) {// 調べたオブジェクト端がオブジェクトの左端だった
+			InsertRear(&checkList, xBased->crnt->d);//そのオブジェクトをチェックリストに登録(右端は登録しない)
+
+			//チェックリストに新しいオブジェクト端が追加されていないならば
+			//リザルトリストに新しいものが増える訳はないので調べ直す必要はない
+
+			checkCheckList(&checkList, col, result);//チェックリストをチェック
+		}
+		if (xBased->crnt->d._oE.mp_L != NULL) {// 調べたオブジェクト端がオブジェクトの右端だった
+			checkList.crnt = SearchObjEdge(&checkList, xBased->crnt->d._oE.mp_L->mp_obj);
+			RemoveCurrent(&checkList);
+			// 右端まで来たので、対応する左端ノードをチェックリストから探して消す
+			// NULLであることはない筈
+		}
+	}
+
+	Terminate(&checkList);//チェックリスト撲滅
 }
 
-//既に作った結果リストを全部funcで参照する
-void checkResultList(DataList* result, void func(ObjStr* a, ObjStr* b)) {
+void clearResultList(DataList* result) {
+	Clear(result);//毎フレーム、前のresultを(要らない＋次作るまでに消しとかなきゃいけないので)消去
+}
+
+//既に作った結果リストを、typeFuncListの関数に通す
+void checkResultList(TF_List* typeFunc, DataList* result, EffList* eff){
 	result->crnt = result->head;// リストの着目ノードをリセット
 	while (Next(result))
-		func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+		if (result->crnt->d._oC.m_use == true)
+			checkTypeFuncEach(typeFunc, result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR, eff);
 }
 
+/*
 //結果リストから、funcの結果がfalseなノードを削除
 void cutResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 	result->crnt = result->head;// リストの着目ノードをリセット
@@ -61,7 +123,7 @@ void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 	result->crnt = result->head;// リストの着目ノードをリセット
 	while (Next(result))
 		if (result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
-}
+}*/
 
 //オブジェクトの端をx順リストに登録
 void setObjEdge(DataList* xBased, ObjStr* p_obj) {
@@ -74,64 +136,46 @@ void printList(DataList* draw) {
 	Print(draw);
 }
 
-//毎フレーム、xBasedとfunc(なんらかの処理)をもとにresultを作成
-void optimizeObjList_getResult(DataList* typeCompat, DataList* xBased, DataList* result) {
 
-	//compatとは？…タイプ関係。余裕があったらタイプ関係による効率化もしたい
+//////////////////ローカル
 
-	DataList checkList; Initialize(&checkList);// チェックリスト(xBasedを見る間だけ必要なリスト)作成
-
-	xBased->crnt = xBased->head;// x順リストの着目ノードをリセット
-	while (Next(xBased)) {
-		if (!xBased->crnt->d._oE.mp_obj->m_use) continue;//useがfalseなら考えない
-
-		if (xBased->crnt->d._oE.mp_L == NULL) {// 調べたオブジェクト端がオブジェクトの左端だった
-			InsertRear(&checkList, xBased->crnt->d);//そのオブジェクトをチェックリストに登録(右端は登録しない)
-
-			//チェックリストに新しいオブジェクト端が追加されていないならば
-			//リザルトリストに新しいものが増える訳はないので調べ直す必要はない
-
-			checkCheckList(&checkList, typeCompat, result);//チェックリストをチェック
-		}
-		if (xBased->crnt->d._oE.mp_L != NULL) {// 調べたオブジェクト端がオブジェクトの右端だった
-			checkList.crnt = SearchObjEdge(&checkList, xBased->crnt->d._oE.mp_L->mp_obj);
-			RemoveCurrent(&checkList);
-			// 右端まで来たので、対応する左端ノードをチェックリストから探して消す
-			// NULLであることはない筈
-		}
-	}
-
-	Terminate(&checkList);//チェックリスト撲滅
-}
-
-//チェックリストとタイプ相性リストを見つつ、タイプ相性リストに登録された関数の結果をリザルトリストに記録
-void checkCheckList(DataList* checkList, DataList* typeCompat, DataList* result) {
+//チェックリストとタイプ相性リストを見つつ、タイプ相性リストに登録された関数の結果を結果リストに記録
+void checkCheckList(DataList* checkList, TF_List* col, DataList* result) {
 	DataNode *sub_crnt; checkList->crnt = checkList->head;
 	while (Next(checkList)) {//リストがダミーのみだったり見終わったら脱出
 		sub_crnt = checkList->crnt;
-		while (Next(checkList)) {
+		while (Next(checkList))
 			//カレント以前のノードは一つ大きいループで調べ終わっている筈なので比べるのはcrntの次からでよい
-			if (SearchObjCon(result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj) == NULL) {// まだ結果リストにないものだったら
-				typeCompat->crnt = typeCompat->head;//タイプ表のカレントをリセット
-				while (SearchNextTypeCompat(typeCompat, sub_crnt->d._oE.mp_obj->m_type, checkList->crnt->d._oE.mp_obj->m_type)
-					!= NULL) {//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
-					InsertRearCon(result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj, 
-						(*typeCompat->crnt->d._tC.mp_func)(sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj));
-						// チェックリストに登録されていた関数(*mp_func)で得た結果(bool)を登録
-				}
-			}
-		}
+			if (SearchObjCon(result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj) == NULL)// まだ結果リストにないものだったら
+				checkCollision_updateResult(col, result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj);
+
 		checkList->crnt = sub_crnt;//大きいwhileのカレントまで戻す
 	}
 }
 
+//２つのオブジェクトをタイプリスト(に登録された関数)に通し、結果を結果リストに記録
+void checkCollision_updateResult(TF_List* col, DataList* result, ObjStr* x, ObjStr* y) {
+	col->crnt = col->head;//タイプ表のカレントをリセット
+	while (SearchNextTF_byObjType(col, x->m_type, y->m_type)
+		!= NULL)//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
 
-void startTypeCompatList(DataList* typeCompat) {
-	setTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, true, &checkHitObjRR);//全タイプ
-
-	deleteTypeCompats(typeCompat, CHARA_BLACKHOLE, CHARA_BLACKHOLE, NO_TYPE, TYPE_MAX, true, &checkHitObjRR);//ブラックホールと全タイプ
-
-	deleteTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, true, &checkHitObjRR);//全タイプとブラックホール
-	setTypeCompats(typeCompat, NO_TYPE, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, true, &sendObject);//全タイプとブラックホール
+			InsertRearCon(result, x, y, (*col->crnt->d.mp_func._b)(x, y));
+				// 結果リストにオブジェクトの組み合わせと、それをタイプリスト(の関数)に通して得たbool結果を登録
 }
 
+//２つのオブジェクトをタイプ相性リストに登録された関数全てに通す(記録なし)
+void checkTypeFunc(TF_List* typeFunc, ObjStr* x, ObjStr* y, EffList* eff) {
+	typeFunc->crnt = typeFunc->head;//タイプ表のカレントをリセット
+	while (SearchNextTF_byObjType(typeFunc, x->m_type, y->m_type)
+		!= NULL)//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
+		if (typeFunc->crnt->d.fType != FUNC_ACTION_EFFECT) (*typeFunc->crnt->d.mp_func._v)(x, y);
+		else (*typeFunc->crnt->d.mp_func._ef)(x, y, eff);
+}
+
+//x,yを順不同に
+void checkTypeFuncEach(TF_List* typeFunc, ObjStr* x, ObjStr* y, EffList* eff) {
+	checkTypeFunc(typeFunc, x, y, eff);
+
+	if (x->m_type != y->m_type)//タイプが同じでなければ逆にしてもう一回確かめる
+		checkTypeFunc(typeFunc, y, x, eff);
+}

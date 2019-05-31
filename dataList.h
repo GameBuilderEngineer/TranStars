@@ -4,10 +4,15 @@
 #include "object.h"
 
 enum dataTypes {
-	DATA_OBJ_EDGE = 0,
+	DATA_NO_TYPE = -1,
+	DATA_OBJ_EDGE,
 	DATA_OBJ_CON,
-	DATA_TYPE_COMPAT
 };
+
+// データ型(0)(ダミーノード用)
+typedef struct __data_noType {
+	dataTypes dType;					// データのタイプ
+}D_noType;
 
 // データ型①(オブジェクト端のx座標)
 typedef struct __data_objEdge {
@@ -26,24 +31,12 @@ typedef struct {
 	ObjStr *mp_objR;					// データ2(右にいるオブジェクト)
 	bool m_use;							// そのオブジェクト関係の判定結果がどうだったか
 }D_objCon;
-
-// データ型③(あるタイプのオブジェクトについて、ある処理が行われるかどうか)
-typedef struct {
-	dataTypes dType;					// データのタイプ
-
-	objTypes m_type1;					// オブジェクトタイプ1
-	objTypes m_type2;					// オブジェクトタイプ2
-	bool m_use;							// 下の関数で1から2に干渉するか
-	bool (*mp_func)(ObjStr* a, ObjStr* b);// 使う関数
-}D_typeCmp;
-
 // 統一データ型
 typedef union {
+	D_noType _nT;
 	D_objEdge _oE;
 	D_objCon _oC;
-	D_typeCmp _tC;
 }UnionData;
-
 
 // ノード
 typedef struct __node_obj {
@@ -68,8 +61,8 @@ void PrintCurrent(const DataList *list);
 // 関数compareによって(x)/(x1,x2)とデータ内容が一致しているノードを探索
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x);
 DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2);
-DataNode* SearchNextTypeCompat(DataList *list, const objTypes x1, const objTypes x2);
 DataNode* SearchNode(DataList *list, DataNode* n);
+DataNode* SearchData(DataList *list, UnionData* d);
 
 // 全ノードのデータをリスト順に表示
 void Print(const DataList* list);
@@ -81,7 +74,6 @@ void PrintReverse(const DataList* list);
 void PrintData(const DataNode* n);
 void PrintObjEdge(const DataNode* n);
 void PrintObjCon(const DataNode* n);
-void PrintTypeCompat(const DataNode* n);
 
 // 着目ノードを一つ後方に進める
 int Next(DataList* list);
@@ -115,6 +107,8 @@ void RemoveCurrent(DataList* list);
 // 全ノードを削除
 void Clear(DataList* list);
 
+// ノード1をノード2の直前に移動
+void MoveDnodeBefore(DataNode* p_is, DataNode* p_to);
 // ノード1をノード2の直後に移動
 void MoveDnodeAfter(DataNode* p_is, DataNode* p_to);
 
@@ -123,14 +117,3 @@ void Terminate(DataList* list);
 
 // リストに登録されているオブジェクトの端を全てx順にソート
 void sortObjEdgeListByX(DataList* list);
-
-// 2つのタイプ、useフラグの初期状態、用いる関数をリストに登録
-void setTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
-// 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数をリストに登録
-void setTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
-	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
-//リストから消す
-void deleteTypeCompat(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));//
-//リストから消す
-void deleteTypeCompats(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
-	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));

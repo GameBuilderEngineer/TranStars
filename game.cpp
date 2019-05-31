@@ -9,6 +9,8 @@
 
 int scene;
 bool doChangeScene = false;
+TextW textW;
+
 void initializeGame() {
 	getTextureLoader()->load(getDevice());//テクスチャの読込
 	scene = TITLE;
@@ -16,6 +18,7 @@ void initializeGame() {
 	initializeStage();
 	initializeSelect();
 	initializeResult();
+	initializeTextW(&textW);//西川0530
 };
 
 void updateGame() {
@@ -27,6 +30,7 @@ void updateGame() {
 	case RESULT:	updateResult();break;
 	default:	break;
 	}
+	updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//西川0530
 };
 
 void drawGame() {
@@ -38,11 +42,11 @@ void drawGame() {
 	case RESULT:	drawResult(); break;
 	default:	break;
 	}
+	drawTextW(&textW);//西川0530
 };
 
 void printGame()
 {
-#if 0
 	switch (scene)
 	{
 	case TITLE:		printTitle(); break;
@@ -51,8 +55,7 @@ void printGame()
 	case RESULT:	printResult(); break;
 	default:	break;
 	}
-	printTextW();//西川0528
-#endif
+	printTextW(&textW);//西川0530
 }
 
 void unInitializeGame() {
@@ -61,7 +64,7 @@ void unInitializeGame() {
 	unInitializeTitle();
 	unInitializeStage();
 	unInitializeResult();
-//	uninitializeTextW();//西川0528
+	uninitializeTextW(&textW);//西川0530
 };
 
 void changeScene(SceneList newscene){
@@ -73,7 +76,7 @@ void changeScene(SceneList newscene){
 	switch (scene)//西川0518
 	{
 	case TITLE: break;
-	case SELECT: break;
+	case SELECT: setTextW(&textW, "ステージ選択です", 25, 0, 500)/*西川0530*/; break;
 	case STAGE:	startStage(); break;
 	case RESULT: finishStage(); break;
 	default:	break;
