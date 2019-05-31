@@ -97,7 +97,7 @@ void drawStage() {
 };
 
 void printStage() {
-#ifndef DEBUG
+#ifdef _DEBUG
 	printTextDX(getDebugFont(), "Stage", 0, 0);
 	printTextDX(getDebugFont(), "マウス中ボタンを押下で入力ダイアログボックスを表示する", 500, 30);
 	printTextDX(getDebugFont(), "mX:", 1100, 0, getMouseX());

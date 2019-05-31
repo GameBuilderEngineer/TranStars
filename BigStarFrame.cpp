@@ -13,5 +13,5 @@ void initializeBigStarFrame(ObjStr* bigStarFrame)
 	bigStarFrame->m_mode = -1;
 	bigStarFrame->m_rad = 50.0f;
 	bigStarFrame->m_rect = { 100.0f,100.0f };
-	InitImage(&bigStarFrame->m_image, getTexture(textureLoaderNS::WALL), bigStarFrame->m_pos.x, bigStarFrame->m_pos.y, 40.0f, 300.0f);
+	InitImage(&bigStarFrame->m_image, getTexture(textureLoaderNS::BIG_STAR_FRAME), bigStarFrame->m_pos.x, bigStarFrame->m_pos.y, 100.0f, 100.0f);
 }

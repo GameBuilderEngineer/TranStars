@@ -43,11 +43,6 @@ void InitAnimeImage(Image* image, LPDIRECT3DTEXTURE9* texture,
 
 void UninitImage(Image* image)
 {
-	if (image->g_pD3DTexture != NULL)
-	{// テクスチャの開放
-		image->g_pD3DTexture->Release();
-		image->g_pD3DTexture = NULL;
-	}
 	if (image->g_pD3DVtxBuffer != NULL)
 	{// テクスチャの開放
 		image->g_pD3DVtxBuffer->Release();

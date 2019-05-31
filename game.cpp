@@ -30,7 +30,7 @@ void updateGame() {
 	case RESULT:	updateResult();break;
 	default:	break;
 	}
-	updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//êºêÏ0530
+	//updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//êºêÏ0530
 };
 
 void drawGame() {
@@ -42,11 +42,12 @@ void drawGame() {
 	case RESULT:	drawResult(); break;
 	default:	break;
 	}
-	drawTextW(&textW);//êºêÏ0530
+	//drawTextW(&textW);//êºêÏ0530
 };
 
 void printGame()
 {
+#ifdef _DEBUG
 	switch (scene)
 	{
 	case TITLE:		printTitle(); break;
@@ -55,7 +56,8 @@ void printGame()
 	case RESULT:	printResult(); break;
 	default:	break;
 	}
-	printTextW(&textW);//êºêÏ0530
+#endif // DEBUG
+	//printTextW(&textW);//êºêÏ0530
 }
 
 void unInitializeGame() {

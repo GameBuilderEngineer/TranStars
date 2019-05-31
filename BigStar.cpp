@@ -12,9 +12,9 @@ void initializeBigStar(ObjStr* bigStar)
 	bigStar->m_attract = { 0.0f,0.0f };
 	bigStar->m_time = -1;
 	bigStar->m_mode = -1;
-	bigStar->m_rad = 50.0f;
+	bigStar->m_rad = 100.0f;
 	bigStar->m_rect = { 100.0f,100.0f };
-	InitImage(&bigStar->m_image, getTexture(textureLoaderNS::BIG_STAR), bigStar->m_pos.x, bigStar->m_pos.y, 50.0f, 50.0f);
+	InitImage(&bigStar->m_image, getTexture(textureLoaderNS::BIG_STAR), bigStar->m_pos.x, bigStar->m_pos.y, 100.0f, 100.0f);
 }
 
 void updateBigStar(ObjStr* bigStar)

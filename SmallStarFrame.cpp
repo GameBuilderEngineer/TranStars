@@ -12,5 +12,5 @@ void initializeSmallStarFrame(ObjStr* smallStarFrame)
 	smallStarFrame->m_mode = -1;
 	smallStarFrame->m_rad = 50.0f;
 	smallStarFrame->m_rect = { 100.0f,100.0f };
-	InitImage(&smallStarFrame->m_image, getTexture(textureLoaderNS::COMET01), smallStarFrame->m_pos.x, smallStarFrame->m_pos.y, 100.0f, 100.0f);
+	InitImage(&smallStarFrame->m_image, getTexture(textureLoaderNS::SMALL_STAR_FRAME), smallStarFrame->m_pos.x, smallStarFrame->m_pos.y, 100.0f, 100.0f);
 }

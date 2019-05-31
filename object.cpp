@@ -185,7 +185,7 @@ void updateObject(ObjStr* obj) {
 	if (obj->m_use == false)return;
 	obj->m_pos += obj->m_accel;
 	setPosition(&(obj->m_image), obj->m_pos.x , obj->m_pos.y);
-	setAngle(&(obj->m_image), obj->m_image.angle + 1);
+	setAngle(&(obj->m_image), obj->m_image.angle);
 }
 
 void drawObject(ObjStr* obj){

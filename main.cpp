@@ -154,7 +154,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 HRESULT InitWindow(HINSTANCE hInstance, int nCmdShow)
 {
 	// ウィンドウの初期化
-	static char szAppName[] = "GameProtType.ver.0.02";
+	static char szAppName[] = "TranStars";
 
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(wc));
@@ -336,12 +336,16 @@ void draw()
 
 void printText() 
 {
+#ifdef _DEBUG
+
+
 	int base = 0;
 	int line = 30;
 	base += line;
 	printTextDX(getDebugFont(), "gameTime:", 0, base,gameTimer.getTime()); base += line;
 	printTextDX(getDebugFont(), "FPS:", 0, base,(int)fps); base += line;
 	printGame();
+#endif // DEBUG
 }
 
 // 終了処理

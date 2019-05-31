@@ -34,7 +34,7 @@ Item titleItem[TITLE_ITEM_NUM] =
 {
 	{Image(),getTexture(textureLoaderNS::BACK_GROUND),0,0,1200,900},//背景
 	{Image(),getTexture(textureLoaderNS::TITLE_LOGO),0,-100,1200,900},//タイトルロゴ
-	{Image(),getTexture(textureLoaderNS::TITLE_START),(float)(WINDOW_CENTER_X-130), 700, 260, 40},//ゲームスタート
+	{Image(),getTexture(textureLoaderNS::TITLE_START),(float)(WINDOW_CENTER_X-217.5), 700, 435, 100},//ゲームスタート
 };
 
 const int BACK_STAR_NUM = 100;

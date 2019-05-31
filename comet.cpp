@@ -4,7 +4,7 @@
 void initializeComet(ObjStr* comet)
 {
 	comet->m_use = true;
-	comet->onAttract = false;
+	comet->onAttract = true;
 	comet->m_scl = { 1.0f,1.0f };
 	comet->m_speed = { 0.0f,0.0f };
 	comet->m_accel = { 0.0f,0.0f };

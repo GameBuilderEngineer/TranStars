@@ -274,7 +274,7 @@ void initializeEffect(EffList* eff) {
 
 	Initialize(eff);
 
-	InitImage(&eImage[ePARTICLE], getTexture(textureLoaderNS::STAR3), 0.0f,0.0f, 20, 20);
+	InitImage(&eImage[ePARTICLE], getTexture(textureLoaderNS::BIG_STAR), 0.0f,0.0f, 20, 20);
 	InitImage(&eImage[eMAGIC], getTexture(textureLoaderNS::MAGIC_CIRCLE), 0.0f,0.0f, 100, 100);
 //	eSPLITÇÕç”Ç≠ë§Ç©ÇÁâÊëúÇñ·Ç§ÇÃÇ≈ãÛ
 	InitImage(&eImage[eTAIL], getTexture(textureLoaderNS::FIRE), 0.0f, 0.0f, TAIL_LENGTH, 39);
