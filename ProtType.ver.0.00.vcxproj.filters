@@ -204,14 +204,14 @@
     <ClCompile Include="textWindow.cpp">
       <Filter>ドメイン\テキスト表示</Filter>
     </ClCompile>
-    <ClCompile Include="Select_Game.cpp">
-      <Filter>アプリケーション\シーン</Filter>
-    </ClCompile>
     <ClCompile Include="action.cpp">
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClCompile>
     <ClCompile Include="funcTypeList.cpp">
       <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,14 +320,14 @@
     <ClInclude Include="textWindow.h">
       <Filter>ドメイン\テキスト表示</Filter>
     </ClInclude>
-    <ClInclude Include="Select_Game.h">
-      <Filter>アプリケーション\シーン</Filter>
-    </ClInclude>
     <ClInclude Include="action.h">
       <Filter>アプリケーション\動的オブジェクト\更新処理</Filter>
     </ClInclude>
     <ClInclude Include="funcTypeList.h">
       <Filter>アプリケーション\動的オブジェクト\リスト化</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>アプリケーション\シーン</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
