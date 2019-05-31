@@ -1,5 +1,8 @@
 #include "PopComet.h"
 
+float popTimeComet = 0;
+
+
 void initializePopComet(ObjStr* popComet)
 {
 	popComet->m_use = true;
@@ -13,5 +16,17 @@ void initializePopComet(ObjStr* popComet)
 	popComet->m_rad = 50.0f;
 	popComet->m_rect = { 100.0f,100.0f };
 	InitImage(&popComet->m_image, NULL, popComet->m_pos.x, popComet->m_pos.y, 100.0f, 100.0f);
-
+	popComet->m_image.renderFlag = false;
 }
+
+void updatePopComet(ObjStr* popComet)
+{
+	popTimeComet += getFrameTime();
+	if (popTimeComet >= 1.0f)
+	{
+		popTimeComet = 0;
+
+	}
+}
+
+
