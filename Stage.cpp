@@ -133,9 +133,9 @@ EffList* getEffect() {
 void setTFLists() {
 	setCollisionsList(&typeCollisionList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR);//重複があるが、これでよい
 	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject);
-//	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION, STAGE_REFLECTION, &actReflect);
+	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION, STAGE_REFLECTION, &actReflect);
 	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_WHITEHOLE, &actSplit);
-	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_BLACKHOLE, &actReflect);
+	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_WHITEHOLE, &actSplit);
 
 	optimizeActionList(&typeActionList);//同じタイプで同じ処理があれば削除
 }

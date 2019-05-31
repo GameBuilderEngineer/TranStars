@@ -5,6 +5,20 @@
 
 void updateIcon(TextW* textW);
 void setIcon();
+float powf_(float b, float p) {
+	float minus = 1.0f;
+	if (b < 0.0f) minus = -1.0f;
+
+	return powf(b * minus, p) * minus;
+}
+float resetRot(float r) {
+	for (;;) {
+		if (r < 0.0f) r += D3DX_PI * 2.0f;
+		if (r > D3DX_PI * 2.0f) r -= D3DX_PI * 2.0f;
+		break;
+	}
+	return r;
+}
 
 TextDX font;//フォント
 Image imageW;//ウィンドウ画像
@@ -61,17 +75,18 @@ void updateTextW(TextW* textW,bool key){
 
 void updateIcon(TextW* textW) {
 	float size = (ICON_SIZE_MIN + ICON_SIZE_MAX) /2.0f + (ICON_SIZE_MAX - ICON_SIZE_MIN) * sinf(Icon.m_c1);
-	Icon.m_c1 += 0.010f; Icon.m_c2 += 0.006f;
+	Icon.m_c1 = resetRot(Icon.m_c1 + 0.01f); Icon.m_c2 = resetRot(Icon.m_c2 + 0.006f);
 	Icon.m_pos = { float(textW->m_x) + float(imageW.width) - 200.0f + cosf(Icon.m_c2) * imageW.height /2.0f,
 		float(textW->m_y) + float(imageW.height) / 2.0f + cosf(Icon.m_c1) * (imageW.height / 2.0f + size / 3.0f),
 		sinf(Icon.m_c1) };
 
-	float l= cosf(Icon.m_c2),r;
+	float l = cosf(Icon.m_c2), r;
 	if (l < -0.6f) r = -1.0f;
 	else if (l > -0.4f) r = 1.0f;
-	else r = (l + 0.5f) * 10.0f;
+	else r = powf_((l + 0.5f) * 11.0f ,0.5f);
 	setSize(&Icon.m_img, size * r, size);
 	setPosition(&Icon.m_img, Icon.m_pos.x - size * r / 2.0f , Icon.m_pos.y - size / 2.0f);
+	setAngle(&Icon.m_img, r * 5.0f);
 }
 
 void drawTextW(TextW* textW) {

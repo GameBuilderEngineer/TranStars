@@ -1,8 +1,6 @@
 #include "action.h"
 #include "stage.h"
 
-float resetRot(float r);
-
 void actFitStar(ObjStr* star, ObjStr* frame, EffList* eff) {
 //	¯‚ðŒÅ’è‚·‚éˆ—(mode•Ï‚¦‚é‚È‚Ç)
 //	˜g‚ðˆê”t‚É‚·‚éˆ—(mode•Ï‚¦‚é‚È‚Ç)
@@ -26,13 +24,4 @@ void actReflect(ObjStr* collisionObject, ObjStr* reflection) {
 
 	collisionObject->m_speed = { cosf(rCol) * sCol,sinf(rCol) * sCol };
 	collisionObject->m_rot = rCol;
-}
-
-float resetRot(float r) {
-	for (;;) {
-		if (r < 0.0f) r += D3DX_PI * 2.0f;
-		if (r > D3DX_PI * 2.0f) r -= D3DX_PI * 2.0f;
-		break;
-	}
-	return r;
 }
