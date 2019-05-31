@@ -163,7 +163,7 @@
     <ClCompile Include="read_text.cpp" />
     <ClCompile Include="Reflection.cpp" />
     <ClCompile Include="Result.cpp" />
-    <ClCompile Include="Select_Game.cpp" />
+    <ClCompile Include="Select.cpp" />
     <ClCompile Include="SmallStarFrame.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StageClass.cpp" />
@@ -202,7 +202,7 @@
     <ClInclude Include="read_text.h" />
     <ClInclude Include="Reflection.h" />
     <ClInclude Include="Result.h" />
-    <ClInclude Include="Select_Game.h" />
+    <ClInclude Include="Select.h" />
     <ClInclude Include="SmallStarFrame.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="StageClass.h" />
