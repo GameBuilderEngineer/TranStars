@@ -11,13 +11,13 @@
 #include "effect.h"//西川0530 エフェクト
 #include "StageClass.h"
 #include "BlackHole.h"
+#include "action.h"
 
 StageClass stage;//ステージ別データ
 
 Image gameBG;
 DataList collTFList;//西川0530 コリジョン用 タイプ関係と実行する関数のリスト(initializeで作ってゲーム中通用)
 DataList actTFList;//西川0530 アクション用 タイプリスト(通用)
-DataList effTFList;//西川0530 アクション用 タイプリスト(通用)
 DataList xBasedList;//西川0518 x座標順 オブジェクトリスト(通用)
 DataList resultList;//西川0518 確かめ結果 オブジェクト関係リスト(updateで毎フレーム作って使い捨て)
 EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(通用)
@@ -28,16 +28,16 @@ ObjStr cursor;//カーソル
 ObjStr* star = NULL;//星へのポインタ[]動的配列用
 ObjStr* comet = NULL;//隕石へのポインタ[]動的配列用
 
+void setTFLists();
 
 void initializeStage() {
 	InitImage(&gameBG, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
 	initializeObjList(&xBasedList, &resultList);//西川0527
-
-	initializeTypeFuncList(&collTFList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjCC, false);
-	initializeTypeFuncList(&actTFList, CHARA_SMALL_STAR, TYPE_MAX, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject, false);
-	//initializeTypeFuncList(&effTFList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &sendObject, false);
-
+	initializeTypeFuncList(&collTFList);
+	initializeTypeFuncList(&actTFList);
 	initializeEffect(&effectList);//西川0527
+
+	setTFLists();//西川0531
 };
 
 void startStage() {	
@@ -99,6 +99,7 @@ void drawStage() {
 };
 
 void printStage() {
+//#ifndef DEBUG
 	printTextDX(getDebugFont(), "Stage", 0, 0);
 	printTextDX(getDebugFont(), "マウス中ボタンを押下で入力ダイアログボックスを表示する", 500, 30);
 	printTextDX(getDebugFont(), "mX:", 1100, 0, getMouseX());
@@ -110,6 +111,7 @@ void printStage() {
 	printObject(&whiteHole);
 	printObject(&blackHole);
 	printObject(&cursor);
+//#endif
 };
 
 void unInitializeStage() {
@@ -124,3 +126,13 @@ void finishStage() {
 	finishEffect(&effectList);//西川0527
 	finishObjList(&xBasedList, &resultList);//西川0527
 };//西川0518 今のステージをやめた後に呼ぶ関数
+
+void setTFLists() {
+	setTypeFuncList(&collTFList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR, false);
+//	setTypeFuncList(&actTFList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE, CHARA_BLACKHOLE, &sendObject, false);
+//	setTypeFuncList(&actTFList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION, STAGE_REFLECTION, &actReflect, false);
+}
+
+EffList* getEffect() {
+	return &effectList;
+};//西川0530

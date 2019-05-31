@@ -7,10 +7,12 @@
 
 //起動時
 void initializeObjList(DataList* xBased, DataList* result);
-void initializeTypeFuncList(DataList* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+void initializeTypeFuncList(DataList* typeFunc);
+
+void setTypeFuncList(DataList* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool(*p_func)(ObjStr* a, ObjStr* b)
 	, bool optimizeUse);
-	//終了時
+//終了時
 void uninitializeObjList(DataList* xBased, DataList* result);
 void uninitializeTypeFuncList(DataList* typeFunc);
 //ステージ開始時、xBased/resultにダミーノードを登録、xBasedにオブジェクトの端を全て登録

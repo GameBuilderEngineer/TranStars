@@ -58,9 +58,6 @@
     <Filter Include="アプリケーション\動的オブジェクト\星（大）">
       <UniqueIdentifier>{95280b4d-6504-4118-a5d0-60a8cc640a59}</UniqueIdentifier>
     </Filter>
-    <Filter Include="アプリケーション\動的オブジェクト\ベース">
-      <UniqueIdentifier>{f351704f-faf4-492d-89eb-fc1f7c2f595b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="アプリケーション\動的オブジェクト\ブラックホール">
       <UniqueIdentifier>{19957b4a-b57b-4888-a92e-be2c9022644e}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="アプリケーション\動的オブジェクト\反射壁">
       <UniqueIdentifier>{81ec01a9-9bc1-4dc9-8a4e-aebb44103ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="アプリケーション\動的オブジェクト\ベース">
+      <UniqueIdentifier>{f351704f-faf4-492d-89eb-fc1f7c2f595b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -4,10 +4,17 @@
 #include "object.h"
 
 enum dataTypes {
-	DATA_OBJ_EDGE = 0,
+	DATA_NO_TYPE = -1,
+	DATA_OBJ_EDGE,
 	DATA_OBJ_CON,
-	DATA_TYPE_COMPAT
+	DATA_TYPE_FUNC
 };
+
+
+// データ型(0)(ダミーノード)
+typedef struct __data_noType {
+	dataTypes dType;					// データのタイプ
+}D_noType;
 
 // データ型①(オブジェクト端のx座標)
 typedef struct __data_objEdge {
@@ -37,11 +44,18 @@ typedef struct {
 	bool (*mp_func)(ObjStr* a, ObjStr* b);// 使う関数
 }D_typeFunc;
 
+/*typedef union {
+	bool (*_b)(ObjStr* a, ObjStr* b);
+	void (*_v)(ObjStr* a, ObjStr* b);
+	void (*_ef)(ObjStr* a, ObjStr* b,EffList* eff);
+}UnionFunc;*/
+
 // 統一データ型
 typedef union {
+	D_noType _nT;
 	D_objEdge _oE;
 	D_objCon _oC;
-	D_typeFunc _tC;
+	D_typeFunc _tF;
 }UnionData;
 
 
@@ -129,11 +143,11 @@ void setTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bool(
 // 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数をリストに登録
 void setTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
-// リストから消す
+// 条件に合うものをタイプリストから消す
 void deleteTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));//
-// リストから消す
+// 条件に合うものをタイプリストから消す
 void deleteTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b));
 
-// タイプが逆なもだけのものをリストから消す
+// タイプリストから、タイプが順序逆になってるだけなものを消す
 void optimizeTypeFuncs(DataList* list);

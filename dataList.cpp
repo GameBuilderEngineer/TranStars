@@ -16,6 +16,11 @@ static void SetDnode(DataNode* n, const UnionData x, DataNode* prev, DataNode* n
 }
 
 // データ型ごとのデータをセット
+static UnionData SetDataNoType() {
+	UnionData d;
+	d._nT.dType = DATA_NO_TYPE;
+	return d;
+}
 static UnionData SetDataObjectEdge(ObjStr *p_obj, float dst, __data_objEdge *p_L) {
 	UnionData d;
 	d._oE.dType = DATA_OBJ_EDGE;
@@ -30,10 +35,10 @@ static UnionData SetDataObjectCon(ObjStr *p_objL, ObjStr *p_objR, bool use) {
 }
 static UnionData SetDataTypeFunc(objTypes type1, objTypes type2, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
 	UnionData d;
-	d._tC.dType = DATA_TYPE_COMPAT;
-	d._tC.m_type1 = type1; d._tC.m_type2 = type2;
-	d._tC.m_use = use;
-	d._tC.mp_func = p_func;
+	d._tF.dType = DATA_TYPE_FUNC;
+	d._tF.m_type1 = type1; d._tF.m_type2 = type2;
+	d._tF.m_use = use;
+	d._tF.mp_func = p_func;
 	return d;
 }
 
@@ -109,8 +114,8 @@ static int dataTypeFuncCmp(const D_typeFunc* d1, const D_typeFunc* d2) {
 static int dataCmp(const UnionData* d1, const UnionData* d2) {
 	if (d1->_oE.dType == DATA_OBJ_EDGE) return dataObjectEdgeCmp(&d1->_oE, &d2->_oE);
 	if (d1->_oC.dType == DATA_OBJ_CON) return dataObjectConCmp(&d1->_oC, &d2->_oC);
-	if (d1->_tC.dType == DATA_TYPE_COMPAT) return dataTypeFuncCmp(&d1->_tC, &d2->_tC);
-	return 1;
+	if (d1->_tF.dType == DATA_TYPE_FUNC) return dataTypeFuncCmp(&d1->_tF, &d2->_tF);
+	return 1;//それ以外なら常に同じではない
 };
 
 
@@ -130,7 +135,7 @@ int NodeCmp(const DataNode* x, const DataNode* y)
 // データ型の確認関数
 int DataTypeCmp(const UnionData* x, const UnionData* y)
 {
-	return x->_oE.dType < y->_oE.dType ? -1 : x->_oE.dType > y->_oE.dType ? 1 : 0;
+	return x->_nT.dType < y->_nT.dType ? -1 : x->_oE.dType > y->_oE.dType ? 1 : 0;
 };
 // リストの確認関数
 int DataListCmp(const DataList* x, const DataList* y)
@@ -146,6 +151,8 @@ void Initialize(DataList* list)
 	DataNode* dummyNode = AllocDnode(); // ダミーノードを生成
 	list->head = list->crnt = dummyNode;
 	dummyNode->prev = dummyNode->next = dummyNode;
+
+	dummyNode->d = SetDataNoType();
 }
 
 // 着目ノードのデータを表示
@@ -192,10 +199,10 @@ DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2)
 DataNode* SearchNextTypeFunc(DataList *list, const objTypes x1, const objTypes x2)
 {
 	DataNode* ptr = list->crnt->next;//カレントの次から出発
-	if (ptr->d._tC.dType != DATA_TYPE_COMPAT) return NULL;//データ型が違ったら失敗
+	if (ptr->d._tF.dType != DATA_TYPE_FUNC) return NULL;//データ型が違ったら失敗
 	while (ptr != list->head)
 	{
-		if (typeFuncCmp(ptr->d._tC.m_type1,x1) == 0 && typeFuncCmp(ptr->d._tC.m_type2, x2) == 0)
+		if (typeFuncCmp(ptr->d._tF.m_type1,x1) == 0 && typeFuncCmp(ptr->d._tF.m_type2, x2) == 0)
 		{
 			list->crnt = ptr;
 			return ptr;			// 探索成功
@@ -207,10 +214,10 @@ DataNode* SearchNextTypeFunc(DataList *list, const objTypes x1, const objTypes x
 DataNode* SearchTypeFunc(DataList *list, const objTypes x1, const objTypes x2)
 {
 	DataNode* ptr = list->crnt->next;//カレントの次から出発
-	if (ptr->d._tC.dType != DATA_TYPE_COMPAT) return NULL;//データ型が違ったら失敗
+	if (ptr->d._tF.dType != DATA_TYPE_FUNC) return NULL;//データ型が違ったら失敗
 	while (ptr != list->head)
 	{
-		if (typeFuncCmp(ptr->d._tC.m_type1, x1) == 0 && typeFuncCmp(ptr->d._tC.m_type2, x2) == 0)
+		if (typeFuncCmp(ptr->d._tF.m_type1, x1) == 0 && typeFuncCmp(ptr->d._tF.m_type2, x2) == 0)
 		{
 			list->crnt = ptr;
 			return ptr;			// 探索成功
@@ -284,14 +291,14 @@ void PrintReverse(const DataList* list)
 
 // データの表示
 void PrintData(const DataNode* n) {
-	switch (n->d._oE.dType) {
+	switch (n->d._nT.dType) {
 	case DATA_OBJ_EDGE:
 		PrintObjEdge(n);
 		break;
 	case DATA_OBJ_CON:
 		PrintObjCon(n);
 		break;
-	case DATA_TYPE_COMPAT:
+	case DATA_TYPE_FUNC:
 		PrintTypeFunc(n);
 		break;
 	default://存在しない型
@@ -326,9 +333,9 @@ void PrintTypeFunc(const DataNode* n)
 {
 	txtLineReset(txtLineReset(0));
 
-	printTextDX(getDebugFont(), "主type：", 0, txtLineBreak(), int(n->d._tC.m_type1));
-	printTextDX(getDebugFont(), "受type：", 0, txtLineBreak(), int(n->d._tC.m_type2));
-	if (n->d._tC.m_use == true) printTextDX(getDebugFont(), "有効", 0, txtLineBreak());
+	printTextDX(getDebugFont(), "主type：", 0, txtLineBreak(), int(n->d._tF.m_type1));
+	printTextDX(getDebugFont(), "受type：", 0, txtLineBreak(), int(n->d._tF.m_type2));
+	if (n->d._tF.m_use == true) printTextDX(getDebugFont(), "有効", 0, txtLineBreak());
 	else printTextDX(getDebugFont(), "無効", 0, txtLineBreak());
 };
 
@@ -522,19 +529,20 @@ void deleteTypeFunc(DataList* list, objTypes type1, objTypes type2, bool use, bo
 // 複数対複数(type1L<=type1<=type1Hとtype2L<=type2<=type2H)のタイプ関係群と、useフラグの初期状態、用いる関数を削除
 void deleteTypeFuncs(DataList* list, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool use, bool(*p_func)(ObjStr* a, ObjStr* b)) {
-	//setTypeFuncが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
+	//deleteTypeFuncが個別に除外するので、両端にはNO_TYPEとかを入れても構わない
 	for (int i = int(type1L); i <= int(type1H); i++)
 		for (int j = int(type2L); j <= int(type2H); j++)
 			deleteTypeFunc(list, (objTypes)i, (objTypes)j, use, p_func);
 }
 
+//最適化
 void optimizeTypeFuncs(DataList* list) {
 	DataNode* n;
-	for (int i = int(NO_TYPE) + 1; i < int(TYPE_MAX); i++)
-		for (int j = i + 1; j < int(TYPE_MAX); j++) {
-			n = SearchNextTypeFunc(list, (objTypes)i, (objTypes)j);
-			if (n != NULL)
-				deleteTypeFunc(list, (objTypes)j, (objTypes)i, n->d._tC.m_use, n->d._tC.mp_func);
+	for (int i = int(NO_TYPE) + 1; i <= int(TYPE_MAX) - 1; i++)
+		for (int j = i + 1; j < int(TYPE_MAX); j++)
+			do{
+				n = SearchNextTypeFunc(list, (objTypes)i, (objTypes)j);
+				deleteTypeFunc(list, (objTypes)j, (objTypes)i, n->d._tF.m_use, n->d._tF.mp_func);
 				//タイプの組み合わせが逆で処理が一緒なものを探して削除
-		}
+			} while (n != NULL);
 }

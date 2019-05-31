@@ -4,19 +4,23 @@
 void checkCheckList(DataList* checkList, DataList* typeFunc, DataList* result);
 void checkTypeFunc_updateResult(DataList* typeFunc, DataList* result, ObjStr* x, ObjStr* y);
 void checkTypeFunc(DataList* typeFunc, ObjStr* x, ObjStr* y);
+void checkTypeFuncEach(DataList* typeFunc, ObjStr* x, ObjStr* y);
 
 void initializeObjList(DataList* xBased, DataList* result) {
 	Initialize(xBased);
 	Initialize(result);
 }
-void initializeTypeFuncList(DataList* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
+void initializeTypeFuncList(DataList* typeFunc) {
+	Initialize(typeFunc);
+}
+void setTypeFuncList(DataList* typeFunc, objTypes type1L, objTypes type1H, objTypes type2L, objTypes type2H
 	, bool(*p_func)(ObjStr* a, ObjStr* b)
 	, bool optimizeUse) {
-	Initialize(typeFunc);
 	setTypeFuncs(typeFunc, type1L, type1H, type2L, type2H, true, p_func);
 	if (optimizeUse)
-		optimizeTypeFuncs(typeFunc);
+		optimizeTypeFuncs(typeFunc);//type1,2に、組み合わせ一緒で順序が逆、同じ関数が登録されてしまうのを避ける
 }
+
 void uninitializeObjList(DataList* xBased, DataList* result) {
 	Terminate(xBased);
 	Terminate(result);
@@ -26,12 +30,10 @@ void uninitializeTypeFuncList(DataList* typeFunc) {
 }
 
 void startObjList(StageClass* stage, DataList* xBased, DataList* result) {
-	for (int i = 0; i < stage->getObjNum(); i++) {
+	for (int i = 0; i < stage->getObjNum(); i++)
 		setObjEdge(xBased, &stage->getObj()[i]);
 		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
-	}
 }
-
 
 void finishObjList(DataList* xBased, DataList* result) {
 	Clear(xBased);
@@ -71,11 +73,12 @@ void clearResultList(DataList* result) {
 	Clear(result);//毎フレーム、前のresultを(要らない＋次作るまでに消しとかなきゃいけないので)消去
 }
 
-//既に作った結果リストを全部funcで参照する
+//既に作った結果リストを、typeFuncListの関数に通す
 void checkResultList(DataList* typeFunc, DataList* result){
 	result->crnt = result->head;// リストの着目ノードをリセット
 	while (Next(result))
-		if (result->crnt->d._oC.m_use==true) checkTypeFunc(typeFunc, result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
+		if (result->crnt->d._oC.m_use == true)
+			checkTypeFuncEach(typeFunc, result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
 }
 
 /*
@@ -121,17 +124,18 @@ void checkCheckList(DataList* checkList, DataList* typeFunc, DataList* result) {
 			//カレント以前のノードは一つ大きいループで調べ終わっている筈なので比べるのはcrntの次からでよい
 			if (SearchObjCon(result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj) == NULL)// まだ結果リストにないものだったら
 				checkTypeFunc_updateResult(typeFunc, result, sub_crnt->d._oE.mp_obj, checkList->crnt->d._oE.mp_obj);
+
 		checkList->crnt = sub_crnt;//大きいwhileのカレントまで戻す
 	}
 }
 
-//２つのオブジェクトをタイプリスト(に登録された関数)に通し、結果を結果リストのカレントに記録
+//２つのオブジェクトをタイプリスト(に登録された関数)に通し、結果を結果リストに記録
 void checkTypeFunc_updateResult(DataList* typeFunc, DataList* result, ObjStr* x, ObjStr* y) {
 	typeFunc->crnt = typeFunc->head;//タイプ表のカレントをリセット
 	while (SearchNextTypeFunc(typeFunc, x->m_type, y->m_type)
 		!= NULL)//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
 
-			InsertRearCon(result, x, y, (*typeFunc->crnt->d._tC.mp_func)(x, y));
+			InsertRearCon(result, x, y, (*typeFunc->crnt->d._tF.mp_func)(x, y));
 				// 結果リストにオブジェクトの組み合わせと、それをタイプリスト(の関数)に通して得た結果を登録
 }
 
@@ -140,12 +144,13 @@ void checkTypeFunc(DataList* typeFunc, ObjStr* x, ObjStr* y) {
 	typeFunc->crnt = typeFunc->head;//タイプ表のカレントをリセット
 	while (SearchNextTypeFunc(typeFunc, x->m_type, y->m_type)
 		!= NULL)//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
-		(*typeFunc->crnt->d._tC.mp_func)(x, y);
-	if (x->m_type != y->m_type) {//両方確かめる
-		typeFunc->crnt = typeFunc->head;//タイプ表のカレントをリセット
-		while (SearchNextTypeFunc(typeFunc, y->m_type, x->m_type)
-			!= NULL)//毎回カレントから出発し、見つかったらカレントを動かす検索。ヘッダに辿り着いたらNULL
-			(*typeFunc->crnt->d._tC.mp_func)(y, x);
-	}
+		(*typeFunc->crnt->d._tF.mp_func)(x, y);
+}
 
+//x,yを交換してもう一回
+void checkTypeFuncEach(DataList* typeFunc, ObjStr* x, ObjStr* y) {
+	checkTypeFunc(typeFunc, x, y);
+
+	if (x->m_type != y->m_type)//両方確かめる
+		checkTypeFunc(typeFunc, y, x);
 }
