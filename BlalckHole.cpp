@@ -27,7 +27,7 @@ void setBlackHole(ObjStr* blackHole) {
 	if (blackHole->m_use)
 		makeMagic(getEffect(), { (float)getMouseX(), (float)getMouseY() });//西川0531 マウスの位置に魔法陣配置
 	else
-		makeMagic(getEffect(), blackHole->m_pos);//西川0531 BHがいた位置に魔法陣配置
+		makeMagic(getEffect(), blackHole->m_pos + D3DXVECTOR2(blackHole->m_image.width/2,blackHole->m_image.height/2));//西川0531 BHがいた位置に魔法陣配置
 
 	blackHole->m_pos = D3DXVECTOR2{
 		(float)getMouseX() - blackHole->m_image.width / 2.0f,(float)getMouseY() - blackHole->m_image.height / 2.0f };

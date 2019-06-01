@@ -78,7 +78,6 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		initializeBigStar(obj);
 		break;
 	case CHARA_COMET://隕石
-		initializeComet(obj);
 		break;
 	case POP_STAR://星がポップする場所
 		initializePopStar(obj);
@@ -156,12 +155,14 @@ void updateObject(ObjStr* obj) {
 		break;
 	case CHARA_COMET:
 		//隕石
+		updateComet(obj);
 		break;
 	case POP_STAR:
 		//星（小）が発生する場所
 		break;
 	case POP_COMET:
 		//隕石が発生する場所
+		updatePopComet(obj);
 		break;
 	case CHARA_SMALL_STARFRAME:
 		//星（小）がはまる型
@@ -185,7 +186,7 @@ void updateObject(ObjStr* obj) {
 	if (obj->m_use == false)return;
 	obj->m_speed = (obj->m_speed + obj->m_accel) * SPEED_MASATU;
 	obj->m_pos += obj->m_speed;
-	setPosition(&(obj->m_image), obj->m_pos.x , obj->m_pos.y);
+	setPosition(&obj->m_image, obj->m_pos.x , obj->m_pos.y);
 	setAngle(&(obj->m_image), obj->m_image.angle);
 }
 

@@ -26,8 +26,8 @@ EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(通用)
 ObjStr blackHole;//ブラックホール
 ObjStr whiteHole;//ホワイトホール
 ObjStr cursor;//カーソル
-ObjStr* star = NULL;//星へのポインタ[]動的配列用
-ObjStr* comet = NULL;//隕石へのポインタ[]動的配列用
+//ObjStr* star = NULL;//星へのポインタ[]動的配列用
+//ObjStr* comet = NULL;//隕石へのポインタ[]動的配列用
 
 void setTFLists();
 

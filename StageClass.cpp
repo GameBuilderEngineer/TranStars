@@ -1,4 +1,5 @@
 #include "StageClass.h"
+#include "PopComet.h"
 using namespace stageNS;
 
 void StageClass::initialize(int stage)
@@ -33,6 +34,7 @@ void StageClass::update()
 	{
 		updateObject(&m_Obj[i]);
 	}
+
 }
 
 void StageClass::draw()
@@ -41,6 +43,7 @@ void StageClass::draw()
 	{
 		drawObject(&m_Obj[i]);
 	}
+	drawComet();
 }
 void StageClass::print()
 {

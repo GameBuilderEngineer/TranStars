@@ -8,7 +8,7 @@
 #include "game.h"
 #include "object.h"
 
-int cursor = STAGE02;
+int cursor = STAGE01;
 int getSelectStage() { return cursor; }
 
 Image terrene;//ínè„äG
