@@ -4,6 +4,8 @@
 
 //２つのオブジェクトに対してやる処理を書く
 
-void actFitStar(ObjStr* star, ObjStr* frame, EffList* eff);
+void actFitSmallStar(ObjStr* smallstar, ObjStr* smallframe, EffList* eff);
+void actFitBigStar(ObjStr* bigstar, ObjStr* bigframe, EffList* eff);
+
 void actSplit(ObjStr* collisionObject, ObjStr* stardust, EffList* eff);
 void actReflect(ObjStr* collisionObject, ObjStr* reflection);

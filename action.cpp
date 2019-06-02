@@ -1,10 +1,28 @@
 #include "action.h"
-#include "stage.h"
+#include "SmallStarFrame.h"
+#include "BigStarFrame.h"
+#include "Stage.h"
+#include "game.h"
 
 void actFitStar(ObjStr* star, ObjStr* frame, EffList* eff) {
-//	êØÇå≈íËÇ∑ÇÈèàóù(modeïœÇ¶ÇÈÇ»Ç«)
-//	ògÇàÍîtÇ…Ç∑ÇÈèàóù(modeïœÇ¶ÇÈÇ»Ç«)
-	makeEffect(eff, ePARTICLE, star);
+	//	êØÇå≈íËÇ∑ÇÈèàóù(modeïœÇ¶ÇÈÇ»Ç«)
+	//	ògÇàÍîtÇ…Ç∑ÇÈèàóù(modeïœÇ¶ÇÈÇ»Ç«)
+
+	star->m_use = 0;//êØÇè¡ñ≈
+	getStageClass()->m_starNum++;//ÇÕÇ‹Ç¡ÇΩêØÇÃêî++
+	if (getStageClass()->m_starNum >= getStageClass()->getClearNum())
+		changeScene(RESULT);//ÉVÅ[Éì
+
+	makeEffect(eff, ePARTICLE, star);//ÉGÉtÉFÉNÉgî≠ê∂
+}
+
+void actFitSmallStar(ObjStr* star, ObjStr* frame, EffList* eff) {
+	fixSmallStar(star, frame);
+	actFitStar(star, frame, eff);
+}
+void actFitBigStar(ObjStr* star, ObjStr* frame, EffList* eff) {
+	fixBigStar(star, frame);
+	actFitStar(star, frame, eff);
 }
 
 void actSplit(ObjStr* collisionObject, ObjStr* stardust, EffList* eff) {

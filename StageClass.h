@@ -44,8 +44,10 @@ private:
 	int m_STAGE;		//ステージ番号
 	int m_OBJNUM;		//オブジェクト数
 	ObjStr *m_Obj;		//オブジェクト
+	int m_CLEARNUM;		//西川0531 クリアに必要な星の数
 public:
 	//int stage:ステージ番号
+	int m_starNum;		//西川0531 枠にはまった星の数
 	void initialize(int stage);
 	void uninitialize();
 	void update();
@@ -53,4 +55,5 @@ public:
 	void print();
 	int getObjNum() { return m_OBJNUM;}
 	ObjStr* getObj() { return m_Obj;}
+	int getClearNum() { return m_CLEARNUM; }//西川0531 クリアに必要な星の数取得
 };

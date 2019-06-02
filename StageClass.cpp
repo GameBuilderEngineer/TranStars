@@ -8,17 +8,15 @@ void StageClass::initialize(int stage)
 	SAFE_DELETE_ARRAY (m_Obj);//新規初期化する前に削除
 	m_Obj = new ObjStr[m_OBJNUM];//動的確保
 	Object* o = getFileLoader()->getObj();//省略するために、ポインタ取得
+	m_CLEARNUM = 0; m_starNum = 0;
 	for (int i = 0; i < m_OBJNUM; i++)
 	{//確保されたオブジェクトの初期化
 		initializeObject(&m_Obj[i], o[i].id, o[i].objType, o[i].position, o[i].rotation,m_Obj,m_OBJNUM);
-	}
-	for (int i = 0; i < m_OBJNUM; i++)
-	{
-		if (m_Obj[i].m_type == CHARA_BLACKHOLE)
-		{
+
+		if (m_Obj[i].m_type == CHARA_SMALL_STARFRAME || m_Obj[i].m_type == CHARA_SMALL_STARFRAME) {
+			m_CLEARNUM++;//クリアに必要な枠の数++
 		}
 	}
-
 }
 
 void StageClass::uninitialize()

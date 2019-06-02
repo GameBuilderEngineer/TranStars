@@ -1,5 +1,4 @@
-
-#include "BIgStarFrame.h"
+#include "BigStarFrame.h"
 
 void initializeBigStarFrame(ObjStr* bigStarFrame)
 {
@@ -15,3 +14,9 @@ void initializeBigStarFrame(ObjStr* bigStarFrame)
 	bigStarFrame->m_rect = { 100.0f,100.0f };
 	InitImage(&bigStarFrame->m_image, getTexture(textureLoaderNS::BIG_STAR_FRAME), bigStarFrame->m_pos.x, bigStarFrame->m_pos.y, 100.0f, 100.0f);
 }
+
+void fixBigStar(ObjStr* bigStar, ObjStr* bigStarFrame)
+{
+	bigStarFrame->m_image = bigStar->m_image;//‰æ‘œ‚ð–á‚¤
+	bigStarFrame->m_mode = 1;
+}//¼ì0531

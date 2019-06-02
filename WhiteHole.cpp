@@ -32,7 +32,7 @@ void  setWhiteHole(ObjStr* whiteHole) {
 	if (whiteHole->m_use)
 		makeMagic(getEffect(), { (float)getMouseX(), (float)getMouseY() });//西川0531 マウスの位置に魔法陣配置
 	else
-		makeMagic(getEffect(), whiteHole->m_pos);//西川0531 BHがいた位置に魔法陣配置
+		makeMagic(getEffect(), whiteHole->m_pos + D3DXVECTOR2{whiteHole->m_image.width / 2.0f, whiteHole->m_image.height / 2.0f});//西川0531 BHがいた位置に魔法陣配置
 
 
 	whiteHole->m_pos = D3DXVECTOR2{ 

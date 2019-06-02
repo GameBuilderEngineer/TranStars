@@ -9,7 +9,6 @@
 #include "effect.h"//西川0525 エフェクト
 #include "useList.h"//西川0530
 #include "collision.h"//西川0530 コリジョン内の関数をリストに渡すため
-#include "StageClass.h"
 #include "BlackHole.h"
 #include "Select.h"
 #include "action.h"
@@ -122,6 +121,9 @@ void finishStage() {
 EffList* getEffect() {
 	return &effectList;
 }
+StageClass* getStageClass() {
+	return &stage;
+}
 
 void setTFLists() {
 	setCollisionsList(&typeCollisionList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR);//重複があるが、これでよい
@@ -134,8 +136,8 @@ void setTFLists() {
 	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, 
 		CHARA_STARDUST, CHARA_STARDUST, &actSplit);//星が割れる
 
-	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_SMALL_STARFRAME, &actFitStar);//はまる
-	setActionList(&typeActionList, CHARA_BIG_STAR, CHARA_BIG_STARFRAME, &actFitStar);//はまる
+	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_SMALL_STARFRAME, &actFitSmallStar);//はまる
+	setActionList(&typeActionList, CHARA_BIG_STAR, CHARA_BIG_STARFRAME, &actFitBigStar);//はまる
 
 	optimizeActionList(&typeActionList);//同じタイプで同じ処理があれば削除
 }

@@ -78,7 +78,7 @@ void changeScene(SceneList newscene){
 	switch (scene)//西川0518
 	{
 	case TITLE: break;
-	case SELECT:releaseTextW(&textW); setTextW(&textW, "ステージ選択です", 25, 0, WINDOW_HEIGHT - WINDOW_WIDTH / 771 * 112)/*西川0530*/; break;
+	case SELECT:setTextW(&textW, "ステージ選択です", 25, 0, WINDOW_HEIGHT - WINDOW_WIDTH / 771 * 112)/*西川0530*/; break;
 	case STAGE:releaseTextW(&textW); startStage(); break;
 	case RESULT: finishStage(); break;
 	default: break;

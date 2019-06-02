@@ -14,3 +14,9 @@ void initializeSmallStarFrame(ObjStr* smallStarFrame)
 	smallStarFrame->m_rect = { 100.0f,100.0f };
 	InitImage(&smallStarFrame->m_image, getTexture(textureLoaderNS::SMALL_STAR_FRAME), smallStarFrame->m_pos.x, smallStarFrame->m_pos.y, 100.0f, 100.0f);
 }
+
+void fixSmallStar(ObjStr* smallStar, ObjStr* smallStarFrame)
+{
+	smallStarFrame->m_image = smallStar->m_image;//‰æ‘œ‚ð–á‚¤
+	smallStarFrame->m_mode = 1;
+}//¼ì0531
