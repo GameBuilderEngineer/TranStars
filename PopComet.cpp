@@ -1,7 +1,10 @@
 #include "PopComet.h"
+#include <vector>
+#include "comet.h"
 
 float popTimeComet = 0;
 
+std::vector<ObjStr> comet;
 
 void initializePopComet(ObjStr* popComet)
 {
@@ -24,9 +27,24 @@ void updatePopComet(ObjStr* popComet)
 	popTimeComet += getFrameTime();
 	if (popTimeComet >= 1.0f)
 	{
-		popTimeComet = 0;
+		ObjStr data;
 
+		initializeComet(&data,01,CHARA_COMET,popComet->m_pos,0);
+		comet.push_back(data);
+		popTimeComet = 0;
+	}
+
+	for (ObjStr i : comet)
+	{
+		updateObject(&i);
 	}
 }
 
+void drawComet()
+{
+	for (ObjStr i : comet)
+	{
+		drawObject(&i);
+	}	
+}
 

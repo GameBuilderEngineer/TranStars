@@ -5,3 +5,5 @@
 void initializePopComet(ObjStr* popcomet);
 
 void updatePopComet(ObjStr* popComet);
+
+void drawComet();
