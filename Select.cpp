@@ -60,9 +60,9 @@ void initializeSelect()
 void updateSelect()
 {
 	VECTOR2 claculationVector;
-	if (getMouseLButtonTrigger() || GetKeyboardDebugEnter())
+	if (getMouseLButtonTrigger())
 	{
-		VECTOR2 mouse(getMouseX(), getMouseY());
+		VECTOR2 mouse((float)getMouseX(), (float)getMouseY());
 		//‰E‘¤
 		if (onImage(mouse, rightCursor) || getMouseX() > WINDOW_CENTER_X+300) {
 			setAngle(&selectBackGround, selectBackGround.angle + 30);
@@ -94,7 +94,7 @@ void updateSelect()
 			}
 		}
 		//Œˆ’è
-		if (onImage(mouse, decisionCursor) || GetKeyboardDebugEnter())
+		if (onImage(mouse, decisionCursor))
 		{
 			changeScene(STAGE);
 		}

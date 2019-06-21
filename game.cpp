@@ -8,7 +8,7 @@
 #include "textWindow.h"
 
 int scene;
-bool doChangeScene = false;
+//bool doChangeScene = false;
 TextW textW;
 
 void initializeGame() {
@@ -30,7 +30,8 @@ void updateGame() {
 	case RESULT:	updateResult();break;
 	default:	break;
 	}
-	//updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//êºêÏ0530
+	updateTextW(&textW,GetKeyboardPress(DIK_SPACE));//êºêÏ0530
+	if (GetKeyboardDebugEnter()) changeScene(SceneList(scene + 1));
 };
 
 void drawGame() {
@@ -42,7 +43,7 @@ void drawGame() {
 	case RESULT:	drawResult(); break;
 	default:	break;
 	}
-	//drawTextW(&textW);//êºêÏ0530
+	drawTextW(&textW);//êºêÏ0530
 };
 
 void printGame()
@@ -57,7 +58,7 @@ void printGame()
 	default:	break;
 	}
 #endif // DEBUG
-	//printTextW(&textW);//êºêÏ0530
+	printTextW(&textW);//êºêÏ0530
 }
 
 void unInitializeGame() {

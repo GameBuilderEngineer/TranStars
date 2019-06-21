@@ -5,27 +5,25 @@
 #include "game.h"
 
 void actFitStar(ObjStr* star, ObjStr* frame, EffList* eff) {
-	//	星を固定する処理(mode変えるなど)
-	//	枠を一杯にする処理(mode変えるなど)
+	star->m_use = false;//星を消滅
 
-	star->m_use = 0;//星を消滅
-	getStageClass()->m_starNum++;//はまった星の数++
-	if (getStageClass()->m_starNum >= getStageClass()->getClearNum())
-		changeScene(RESULT);//シーン
+	if (getStageClass()->starNumPluss()) changeScene(RESULT);//星の数が規定値に達していたらシーン変更
 
 	makeEffect(eff, ePARTICLE, star);//エフェクト発生
 }
 
 void actFitSmallStar(ObjStr* star, ObjStr* frame, EffList* eff) {
+	if (frame->m_mode >= 0) return;
 	fixSmallStar(star, frame);
 	actFitStar(star, frame, eff);
 }
 void actFitBigStar(ObjStr* star, ObjStr* frame, EffList* eff) {
+	if (frame->m_mode >= 0) return;
 	fixBigStar(star, frame);
 	actFitStar(star, frame, eff);
 }
 
-void actSplit(ObjStr* collisionObject, ObjStr* stardust, EffList* eff) {
+void actSplit(ObjStr* collisionObject, ObjStr* sweeper, EffList* eff) {
 	collisionObject->m_use = false;//当たった側を壊す処理
 	makeEffect(eff, eSPLIT, collisionObject);
 }

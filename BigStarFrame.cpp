@@ -8,7 +8,7 @@ void initializeBigStarFrame(ObjStr* bigStarFrame)
 	bigStarFrame->m_speed = { 0.0f,0.0f };
 	bigStarFrame->m_accel = { 0.0f,0.0f };
 	bigStarFrame->m_attract = { 0.0f,0.0f };
-	bigStarFrame->m_time = -1;
+	bigStarFrame->m_time = -1.0f;
 	bigStarFrame->m_mode = -1;
 	bigStarFrame->m_rad = 50.0f;
 	bigStarFrame->m_rect = { 100.0f,100.0f };

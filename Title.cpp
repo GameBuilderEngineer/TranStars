@@ -51,22 +51,23 @@ void initializeTitle() {
 	for (int i = 0; i < BACK_STAR_NUM; i++)
 	{
 		InitImage(&backStars[i], getTexture(textureLoaderNS::SMALL_STAR), (float)(rand() % WINDOW_WIDTH), (float)(rand() % WINDOW_HEIGHT), 32, 32);
+		SetColorImage(&backStars[i], { (0.5f + float(i) / float(BACK_STAR_NUM)) ,(0.5f + float(i) / float(BACK_STAR_NUM)) ,(0.5f + float(i) / float(BACK_STAR_NUM)) ,(0.5f + float(i) / float(BACK_STAR_NUM)) });
 	}
 };
 
 void updateTitle() {
 	for (int i = 0; i < BACK_STAR_NUM; i++)
 	{
-		VECTOR2 v = moveDirectionStar + (VECTOR2)backStars[i].position;
-		if (v.x > WINDOW_WIDTH)v.x = 0;
-		if (v.x < 0)v.x = WINDOW_WIDTH;
-		if (v.y > WINDOW_HEIGHT)v.y = 0;
-		if (v.y < 0)v.y = WINDOW_HEIGHT;
+		VECTOR2 v = moveDirectionStar * (0.5f + float(i) / float(BACK_STAR_NUM)) + (VECTOR2)backStars[i].position;
+		if (v.x > WINDOW_WIDTH)v.x = -backStars[i].width;
+		if (v.x < -backStars[i].width)v.x = WINDOW_WIDTH;
+		if (v.y > WINDOW_HEIGHT)v.y = -backStars[i].height;
+		if (v.y < -backStars[i].height)v.y = WINDOW_HEIGHT;
 		setPosition(&backStars[i], v.x, v.y);
 		setAngle(&backStars[i], backStars[i].angle + 1);
 	}
-	if (getMouseLButtonTrigger() || GetKeyboardDebugEnter()) {
-		if (onImage(D3DXVECTOR2((float)getMouseX(), (float)getMouseY()), titleItem[START_LOGO].image) || GetKeyboardDebugEnter())
+	if (getMouseLButtonTrigger()) {
+		if (onImage(D3DXVECTOR2((float)getMouseX(), (float)getMouseY()), titleItem[START_LOGO].image))
 		{
 			changeScene(SELECT);//ステージ選択画面へ遷移
 		}

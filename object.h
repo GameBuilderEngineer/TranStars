@@ -48,7 +48,7 @@ typedef struct _obj{
 	D3DXVECTOR2 m_accel;				//加速度(他のオブジェクトから及ぼされる力、慣性とか)
 	D3DXVECTOR2 m_attract;				//引力　(自分以外のオブジェクトに及ぼす力とか)
 
-	int		m_time;						//プレイヤーとは独立して勝手に動くオブジェクトがあれば使う(ステージギミック系)
+	float	m_time;						//プレイヤーとは独立して勝手に動くオブジェクトがあれば使う(ステージギミック系)
 	short	m_mode;						//同上、行動パターンとかはこっち
 	bool	onAttract;					//引力の影響を受けるかどうか
 
@@ -61,7 +61,7 @@ typedef struct _obj{
 	Image m_image;						//描画情報
 }ObjStr;//Structure
 
-#define SPEED_MASATU (0.65f)
+#define SPEED_FRICTION (0.85f)
 
 #define STUB_OBJNUM (100)	//ステージのデータ内にあるオブジェクトの総数/実際には外からもらう値
 #define PLUS_OBJNUM (5)		//ステージ側で保存する必要のないオブジェクト情報(UIなど)があればそれの数
@@ -73,12 +73,15 @@ void updateObject(ObjStr* obj);
 void drawObject(ObjStr* obj);
 void printObject(ObjStr* obj);
 
+float getObjectHarfSizeLonger(ObjStr* obj);//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+D3DXVECTOR2 getImageHarf(Image* image);//画像の半分のサイズ(中心点)を得る
+D3DXVECTOR2 getObjectFar_PosToCenter(ObjStr* obj);//オブジェクトの左上と中心の距離
+D3DXVECTOR2 getObjectFar_PosToCorner(ObjStr* obj);//オブジェクトの左上と右下の距離
+D3DXVECTOR2 getObjectCenter(ObjStr* obj);//オブジェクトの中心(統一見解)
+
 // オブジェクト1に対するオブジェクト2の方向ベクトルを戻す
 D3DXVECTOR2 objectDirection(ObjStr* p_obj1, ObjStr* p_obj2);
 //2つのオブジェクト間の距離を計算
 float objectLength(ObjStr* p_obj1, ObjStr* p_obj2);				
-
-//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
-float getObjectSizeLonger(ObjStr* obj);
 
 void setWhiteHole(ObjStr* obj, ObjStr* whiteHole);

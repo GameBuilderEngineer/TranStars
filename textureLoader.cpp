@@ -20,14 +20,15 @@ TextureLoader::TextureLoader()
 	textureName[textureLoaderNS::REFLECTION ] = { "TEXTURE/wall01.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::BLACK_HOLE] = { "TEXTURE/BH.png" };//êºêÏ0530
 	textureName[textureLoaderNS::WHITE_HOLE] = { "TEXTURE/WH.PNG" };//êºêÏ0530
-	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001.png" };
-	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002.PNG" };
+	textureName[textureLoaderNS::COMET01] = { "TEXTURE/comet001_.png" };
+	textureName[textureLoaderNS::COMET02] = { "TEXTURE/comet002_.PNG" };
 	textureName[textureLoaderNS::PLANET] = { "TEXTURE/planet.jpg" };
 	textureName[textureLoaderNS::WALL] = { "TEXTURE/block.png" };
 	textureName[textureLoaderNS::WITCH] = { "TEXTURE/witch.png" };//êºêÏ0525
 	textureName[textureLoaderNS::MAGIC_CIRCLE] = { "TEXTURE/magic_circle.PNG" };//êºêÏ0525
 	textureName[textureLoaderNS::FIRE] = { "TEXTURE/fire.png" };//êºêÏ0528
 	textureName[textureLoaderNS::TEXT_WINDOW] = { "TEXTURE/text_window_.png" };//êºêÏ0528
+	textureName[textureLoaderNS::PARTICLE_STAR] = { "TEXTURE/star3.PNG" };//êºêÏ0528
 
 	textureName[textureLoaderNS::CONSTELLATION01] = { "TEXTURE/ohitsuji.png" };
 	textureName[textureLoaderNS::CONSTELLATION02] = { "TEXTURE/oushi.png" };

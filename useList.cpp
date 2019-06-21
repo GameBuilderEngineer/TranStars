@@ -9,9 +9,8 @@ void checkTypeFuncEach(TF_List* typeFunc, ObjStr* x, ObjStr* y, EffList* eff);
 
 //初期化↓
 
-void initializeObjList(DataList* xBased, DataList* result) {
-	Initialize(xBased);
-	Initialize(result);
+void initializeObjList(DataList* data) {
+	Initialize(data);
 }
 void initializeTypeFuncList(TF_List* typeFunc) {
 	Initialize(typeFunc);
@@ -45,23 +44,21 @@ void optimizeActionList(TF_List* typeFunc) {
 
 //初期化↑
 
-void uninitializeObjList(DataList* xBased, DataList* result) {
-	Terminate(xBased);
-	Terminate(result);
+void uninitializeObjList(DataList* data) {
+	Terminate(data);
 }
 void uninitializeTypeFuncList(TF_List* typeFunc) {
 	Terminate(typeFunc);
 }
 
-void startObjList(StageClass* stage, DataList* xBased, DataList* result) {
-	for (int i = 0; i < stage->getObjNum(); i++)
-		setObjEdge(xBased, &stage->getObj()[i]);
-		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
-}
+//void startObjList(StageClass* stage, DataList* xBased, DataList* result) {
+//	for (int i = 0; i < stage->getObjNum(); i++)
+//		setObjEdge(xBased, &stage->getObj()[i]);
+//		//オブジェクト全ての左端・右端それぞれをノードとしてリストに登録
+//}
 
-void finishObjList(DataList* xBased, DataList* result) {
-	Clear(xBased);
-	Clear(result);
+void finishObjList(DataList* data) {
+	Clear(data);
 }
 
 //毎フレーム初め、xBasedを維持し、typeFuncが持つfunc(コリジョン判定)をもとにresultを作成
@@ -127,8 +124,8 @@ void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 
 //オブジェクトの端をx順リストに登録
 void setObjEdge(DataList* xBased, ObjStr* p_obj) {
-	float size = getObjectSizeLonger(p_obj);//半径と辺、どちらが当たり判定かはともかく長い方
-	InsertRearEdges(xBased, p_obj, p_obj->m_image.width / 2.0f - size, p_obj->m_image.width / 2.0f + size);
+	float size = getObjectHarfSizeLonger(p_obj);//半径と辺、どちらが当たり判定かはともかく長い方
+	InsertRearEdges(xBased, p_obj, getObjectFar_PosToCenter(p_obj).x - size, getObjectFar_PosToCenter(p_obj).x + size);
 }
 
 //リストの中身を画面に表示

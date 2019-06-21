@@ -7,7 +7,7 @@
 #include "StageClass.h"
 
 //起動時
-void initializeObjList(DataList* xBased, DataList* result);
+void initializeObjList(DataList* data);
 void initializeTypeFuncList(TF_List* typeFunc);
 
 void setCollisionList(TF_List* typeFunc, objTypes type1, objTypes type2, bool(*p_func)(ObjStr* a, ObjStr* b));
@@ -22,13 +22,13 @@ void setActionsList(TF_List* typeFunc, objTypes type1L, objTypes type1H, objType
 
 void optimizeActionList(TF_List* typeFunc);
 //終了時
-void uninitializeObjList(DataList* xBased, DataList* result);
+void uninitializeObjList(DataList* data);
 void uninitializeTypeFuncList(TF_List* typeFunc);
 
 //ステージ開始時、xBasedにオブジェクトの端を全て登録
-void startObjList(StageClass* stage, DataList* xBased, DataList* result);
+//void startObjList(StageClass* stage, DataList* xBased, DataList* result);
 //ステージ終了時、xBasedとresultの中身を空に
-void finishObjList(DataList* xBased, DataList* result);
+void finishObjList(DataList* data);
 
 //毎フレーム、リストの中身を全て描画
 void printList(DataList* draw);

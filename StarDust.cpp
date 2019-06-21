@@ -8,7 +8,7 @@ void initializeStarDust(ObjStr* starDust)
 	starDust->m_speed = { 0.0f,0.0f };
 	starDust->m_accel = { 0.0f,0.0f };
 	starDust->m_attract = { 0.0f,0.0f };
-	starDust->m_time = -1;
+	starDust->m_time = -1.0f;
 	starDust->m_mode = -1;
 	starDust->m_rad = 50.0f;
 	starDust->m_rect = { 100.0f,100.0f };

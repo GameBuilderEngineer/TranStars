@@ -7,7 +7,8 @@
 Image eImage[eTYPE_MAX];//画像、最初に作って終わりなので
 #define SPLIT_NUM (10)//分割回数
 
-#define TAIL_LENGTH (1)//軌跡１つのpixel数
+#define TAIL_LENGTH (2)//軌跡１つのpixel数
+#define TAIL_RATE (3.0f)//軌跡の拡大倍率
 
 // 一つのノードを動的に生成
 static EffNode* AllocDnode(void)
@@ -274,10 +275,11 @@ void initializeEffect(EffList* eff) {
 
 	Initialize(eff);
 
-	InitImage(&eImage[ePARTICLE], getTexture(textureLoaderNS::BIG_STAR), 0.0f,0.0f, 20, 20);
-	InitImage(&eImage[eMAGIC], getTexture(textureLoaderNS::MAGIC_CIRCLE), 0.0f,0.0f, 100, 100);
+	InitImage(&eImage[ePARTICLE], getTexture(textureLoaderNS::PARTICLE_STAR), 0.0f,0.0f, 20, 20);
+	InitImage(&eImage[eMAGIC_ON], getTexture(textureLoaderNS::MAGIC_CIRCLE), 0.0f,0.0f, 100, 100);
+	InitImage(&eImage[eMAGIC_OFF], getTexture(textureLoaderNS::MAGIC_CIRCLE), 0.0f, 0.0f, -97, -97);
 //	eSPLITは砕く側から画像を貰うので空
-	InitImage(&eImage[eTAIL], getTexture(textureLoaderNS::FIRE), 0.0f, 0.0f, TAIL_LENGTH, 39);
+	InitImage(&eImage[eTAIL], getTexture(textureLoaderNS::FIRE), 0.0f, 0.0f, TAIL_LENGTH, 13);
 
 }
 void uninitializeEffect(EffList* eff) {
@@ -309,10 +311,19 @@ void updateEffect(EffList* eff) {
 			d->m_pos += d->m_speed;
 			break;
 		case eTAIL:
+			d->m_image.height += 1;
 			break;
-		case eMAGIC: {
+		case eMAGIC_ON: {
 			d->m_rot += 0.008f + 0.116f * float(d->m_time) / float(d->m_tMAX);
 			float f = 35.0f * float(d->m_time - d->m_tMAX * 2 / 3) / float(d->m_tMAX);
+			d->m_image.width += int(f);
+			d->m_image.height += int(f);
+			d->m_pos = { d->m_pos.x - f / 2.0f ,d->m_pos.y - f / 2.0f };
+			break;
+		}
+		case eMAGIC_OFF: {
+			d->m_rot -= 0.124f - 0.116f * float(d->m_time) / float(d->m_tMAX);
+			float f = 35.0f * float(d->m_tMAX * 2 / 3 - d->m_time) / float(d->m_tMAX);
 			d->m_image.width += int(f);
 			d->m_image.height += int(f);
 			d->m_pos = { d->m_pos.x - f / 2.0f ,d->m_pos.y - f / 2.0f };
@@ -321,7 +332,10 @@ void updateEffect(EffList* eff) {
 		default:
 			break;
 		}
-		if (d->m_time <= 0) RemoveCurrent(eff);//時間いっぱいになって削除
+		if (d->m_time <= 0) {
+			if (d->m_type == eMAGIC_ON) int a = 1;
+			RemoveCurrent(eff);//時間いっぱいになって削除
+		}
 	}
 }
 void drawEffect(EffList* eff) {
@@ -347,10 +361,16 @@ void drawEffect(EffList* eff) {
 			setAngleRad(&d->m_image, d->m_rot);
 			SetColorImage(&d->m_image, { 1.0f,1.0f,1.0f,float(d->m_time) / float(d->m_tMAX)});//薄くなっていく
 			break;
-		case eMAGIC:
-			setPosition(&d->m_image, d->m_pos.x, d->m_pos.y);//サイズの更新も兼ねている
+		case eMAGIC_ON:
+			setPosition(&eff->crnt->effD.m_image, eff->crnt->effD.m_pos.x, eff->crnt->effD.m_pos.y);//サイズの更新も兼ねている
 			setAngleRad(&d->m_image, d->m_rot);
 			SetColorImage(&d->m_image, { 1.0f,1.0f,1.0f,1.4f * float(d->m_time) / float(d->m_tMAX) - 0.1f });//薄くなっていく
+			break;
+		case eMAGIC_OFF:
+			setPosition(&eff->crnt->effD.m_image, eff->crnt->effD.m_pos.x, eff->crnt->effD.m_pos.y);//サイズの更新も兼ねている
+			setAngleRad(&d->m_image, d->m_rot);
+			SetColorImage(&d->m_image, { 1.0f,1.0f,1.0f,1.4f * float(d->m_time) / float(d->m_tMAX) - 0.1f });//薄くなっていく
+//			SetColorImage(&d->m_image, { 1.0f,1.0f,1.0f,1.4f * float(d->m_tMAX - d->m_time) / float(d->m_tMAX) - 0.1f });//薄くなっていく
 			break;
 		default:
 			break;
@@ -362,7 +382,7 @@ void drawEffect(EffList* eff) {
 
 void makeParticle(EffList* eff, D3DXVECTOR2 pos) {
 	float r; D3DXVECTOR2 speed;
-	pos = { pos.x - eImage[ePARTICLE].width / 2,pos.y - eImage[ePARTICLE].height / 2 };
+	pos -= getImageHarf(&eImage[ePARTICLE]);
 	for (int i = 0; i < 5; i++) {//5個作る
 		r = float(rand() % 100) * D3DX_PI / 50.0f;
 		speed = { 5.0f * cosf(r), 5.0f * sinf(r) };
@@ -373,11 +393,17 @@ void makeParticle(EffList* eff, D3DXVECTOR2 pos) {
 	}
 }
 
-void makeMagic(EffList* eff, D3DXVECTOR2 pos) {
+void makeMagic(EffList* eff, D3DXVECTOR2 pos,effTypes magic) {
 	float r;
 	r = float(rand() % 100) * D3DX_PI / 50.0f;
-	InsertRear(eff, { eMAGIC, true, {pos.x - eImage[eMAGIC].width / 2 ,pos.y - eImage[eMAGIC].height / 2},
-		r, { 1.0f, 1.0f}, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 40, 40, 0, eImage[eMAGIC] });
+	InsertRear(eff, { magic, true, pos-getImageHarf(&eImage[magic]),
+		r, { 1.0f, 1.0f}, { 0.0f, 0.0f }, { 0.0f, 0.0f }, 40, 40, 0, eImage[magic] });
+}
+void makeMagic_On(EffList* eff, D3DXVECTOR2 pos) {
+	makeMagic(eff, pos, eMAGIC_ON);
+}
+void makeMagic_Off(EffList* eff, D3DXVECTOR2 pos) {
+	makeMagic(eff, pos, eMAGIC_OFF);
 }
 
 float randSplit() {
@@ -396,7 +422,7 @@ void splitSquare(D3DXVECTOR2 pos2[4], D3DXVECTOR2 posed[4], int n0, int n1, int 
 	posed[n1] = pos2[n0]; posed[n3] = pos2[n2];//新しい方をもらう
 }//ローカル関数
 
-void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image image) {
+void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image* image) {
 	Image img; D3DXVECTOR2 pos2[4]; D3DXVECTOR2 posed[4]; D3DXVECTOR2 speed; D3DXVECTOR2 accel;
 	for (int i = 0; i < 4; i++)
 		posed[i] = { 1.0f * float(i % 2),1.0f * float(i / 2) };//初期状態をZ字にセット
@@ -414,39 +440,41 @@ void makeSplit(EffList* eff, D3DXVECTOR2 pos, Image image) {
 			for (int j = 0; j < 4; j++)
 				pos2[j] = posed[j];
 
-		InitImage(&img, &image.g_pD3DTexture, 0.0f, 0.0f, image.width, image.height);
+		InitImage(&img, &image->g_pD3DTexture, 0.0f, 0.0f, image->width, image->height);
 		SetTexture(&img, pos2[0], pos2[1], pos2[2], pos2[3]);//テクスチャ頂点座標の変更
 
 		for (int j = 0; j < 4; j++) {
-			pos2[j].x *= image.width; pos2[j].y *= image.height;
+			pos2[j] = D3DXVECTOR2{ pos2[j].x * image->width ,pos2[j].y * image->height } - getImageHarf(image);
 			pos2[j] += pos;
 		}
 		setVertex(&img, pos2[0], pos2[1], pos2[2], pos2[3]);//描画頂点座標の変更
 
 		speed = (pos2[0] + pos2[1] + pos2[2] + pos2[3]) / 4.0f//四点の中心
-			- (pos + D3DXVECTOR2{ image.width / 2.0f,image.height / 2.0f });//図形の中心を引く
+			- pos;//図形の中心を引く
 		speed /= 20.0f;//20で割る
 		accel = { cosf(atan2f(speed.y,speed.x) + D3DX_PI / 2.0f),sinf(atan2f(speed.y,speed.x) + D3DX_PI / 2.0f) };
 		accel *= sqrtf(speed.x * speed.x + speed.y * speed.y) / 45.0f;
-		InsertRear(eff, { eSPLIT, true, pos2[0] - D3DXVECTOR2{ image.width / 2.0f,image.height / 2.0f },
+		InsertRear(eff, { eSPLIT, true, pos2[0],
 			0.0f,{ 1.0f, 1.0f}, speed, accel, 40, 40, 0, img });
 	}
 }
 
 void makeTail(EffList* eff, D3DXVECTOR2 pos, D3DXVECTOR2 speed) {
 	float r; int num = 0;
-	if (speed.x >= 0.0f) num += int(speed.x); else num -= int(speed.x);
-	if (speed.y >= 0.0f) num += int(speed.y); else num -= int(speed.y);
+	if (speed.x >= 0.0f) num += int(speed.x * TAIL_RATE); else num -= int(speed.x * TAIL_RATE);
+	if (speed.y >= 0.0f) num += int(speed.y * TAIL_RATE); else num -= int(speed.y * TAIL_RATE);
 
-	num = num / TAIL_LENGTH + 1;
+	num = num / TAIL_LENGTH;
 	r = atan2f(speed.y, speed.x);
 	pos -= speed;
-	pos = { pos.x - eImage[eTAIL].width / 2, pos.y - eImage[eTAIL].height / 2 };
+	pos -= getImageHarf(&eImage[eTAIL]);
 
+	D3DXVECTOR2 pos_; float time;
 	for (int i = 0; i < num; i++) {
-		pos += speed * float(1) / float(num);
-		InsertRear(eff, { eTAIL, true, pos,
-			r, { 1.0f, 1.0f}, {0.0f, 0.0f}, { 0.0f, 0.0f }, 60, 60, 0, eImage[eTAIL] });
+		pos_ = pos + speed * float(i) * float(TAIL_LENGTH) / float(num) / TAIL_RATE;
+		time = 60.0f * (2.0f - min(float(num) / 5.0f, 1.0f));
+		InsertRear(eff, { eTAIL, true, pos_,
+			r, { 1.0f, 1.0f}, {0.0f, 0.0f}, { 0.0f, 0.0f }, int(time), int(time), 0, eImage[eTAIL] });
 	}
 }
 
@@ -455,19 +483,17 @@ void makeEffect(EffList* eff, effTypes eType, ObjStr* obj) {
 	case ePARTICLE:
 		makeParticle(eff, obj->m_pos);
 		break;
-	case eMAGIC:
-		makeMagic(eff, obj->m_pos);
+	case eMAGIC_ON:
+		makeMagic_On(eff, obj->m_pos);
+		break;
+	case eMAGIC_OFF:
+		makeMagic_Off(eff, obj->m_pos);
 		break;
 	case eSPLIT:
-		makeSplit(eff, obj->m_pos, obj->m_image);
+		makeSplit(eff, getObjectCenter(obj), &obj->m_image);
 		break;
 	case eTAIL:
-		makeTail(eff, { obj->m_pos.x + obj->m_image.width / 2.0f,
-			obj->m_pos.y + obj->m_image.height / 2.0f }, obj->m_speed + obj->m_accel);
+		makeTail(eff, getObjectCenter(obj), obj->m_speed + obj->m_accel);
 		break;
 	}
-}
-
-void setParticle(ObjStr* x, ObjStr* y) {
-
 }

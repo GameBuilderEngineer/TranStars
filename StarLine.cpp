@@ -8,7 +8,7 @@ void initializeStarLine(ObjStr* starLine)
 	starLine->m_speed = { 0.0f,0.0f };
 	starLine->m_accel = { 0.0f,0.0f };
 	starLine->m_attract = { 0.0f,0.0f };
-	starLine->m_time = -1;
+	starLine->m_time = -1.0f;
 	starLine->m_mode = -1;
 	starLine->m_rad = 50.0f;
 	starLine->m_rect = { 100.0f,100.0f };

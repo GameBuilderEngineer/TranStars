@@ -21,6 +21,7 @@
 #include "StarDust.h"
 #include "StarLine.h"
 #include "Reflection.h"
+#include "Stage.h"
 
 //菅野
 //改造しました。
@@ -78,6 +79,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		initializeBigStar(obj);
 		break;
 	case CHARA_COMET://隕石
+		initializeComet(obj);
 		break;
 	case POP_STAR://星がポップする場所
 		initializePopStar(obj);
@@ -105,10 +107,10 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		obj->m_speed = { 0.0f,0.0f };
 		obj->m_accel = { 0.0f,0.0f };
 		obj->m_attract = { 0.0f,0.0f };
-		obj->m_time = -1;
+		obj->m_time = -1.0f;
 		obj->m_mode = -1;
 		obj->m_rad = 50.0f;
-		obj->m_rect = { 100.0f,100.0f };
+		obj->m_rect = { 160.0f,160.0f };
 		obj->m_image.g_pD3DTexture = *getTexture(textureLoaderNS::BACK_GROUND);
 		obj->m_image.width = 100.0f;
 		obj->m_image.height = 100.0f;
@@ -120,6 +122,7 @@ void initializeObject(ObjStr *obj,int id, int objType,VECTOR2 position,float ang
 		InitImage(&obj->m_image, getTexture(textureLoaderNS::MAGIC_CIRCLE), obj->m_pos.x, obj->m_pos.y, 160.0f, 160.0f);
 		break;
 	}
+	setxBased(obj);//西川0604
 }
 
 void uninitializeObject(ObjStr* obj) {
@@ -183,8 +186,8 @@ void updateObject(ObjStr* obj) {
 		break;
 	}
 	//オブジェクトの基本処理
-	if (obj->m_use == false)return;
-	obj->m_speed = (obj->m_speed + obj->m_accel) * SPEED_MASATU;
+	if (obj->m_use == false) return;
+	obj->m_speed = (obj->m_speed + obj->m_accel) * SPEED_FRICTION;
 	obj->m_pos += obj->m_speed;
 	setPosition(&obj->m_image, obj->m_pos.x , obj->m_pos.y);
 	setAngle(&(obj->m_image), obj->m_image.angle);
@@ -229,13 +232,60 @@ void printObject(ObjStr* obj) {
 
 }
 
-float getObjectSizeLonger(ObjStr* obj) {
+float getObjectHarfSizeLonger(ObjStr* obj) {
 	float dgnl = sqrtf((obj->m_rect.x * obj->m_rect.x +
 		obj->m_rect.y * obj->m_rect.y)) / 2.0f;
 	if (dgnl >= obj->m_rad) return dgnl;
 	else return obj->m_rad;
 }//西川0519  オブジェクトの持つメンバのうち、矩形の対角線と半径で長い方を返す
+D3DXVECTOR2 getImageHarf(Image* image) {
+	return { image->width / 2.0f,image->height / 2.0f };
+}
+D3DXVECTOR2 getObjectFar_PosToCenter(ObjStr* obj) {
+	return getImageHarf(&obj->m_image);
+}
+D3DXVECTOR2 getObjectFar_PosToCorner(ObjStr* obj) {
+	return { obj->m_image.width ,obj->m_image.height};
+}
+D3DXVECTOR2 getObjectCenter(ObjStr* obj) {
+	return obj->m_pos + getObjectFar_PosToCenter(obj);
+}
 
+// 2つのオブジェクト間の距離を(算出する/戻す/返す)
+float objectLength(ObjStr* p_obj1, ObjStr* p_obj2)
+{
+	D3DXVECTOR2 toTarget;
+	D3DXVECTOR2 center1 = getObjectCenter(p_obj1);
+	D3DXVECTOR2 center2 = getObjectCenter(p_obj2);
+	toTarget.x = center1.x - center2.x;
+	toTarget.y = center1.y - center2.y;
+	float length = D3DXVec2Length(&toTarget);
+	return length;
+};
+
+// オブジェクト1に対するオブジェクト2の方向ベクトルを戻す
+D3DXVECTOR2 objectDirection(ObjStr* p_obj1, ObjStr* p_obj2)
+{
+	D3DXVECTOR2 dir;
+	D3DXVECTOR2 center1 = getObjectCenter(p_obj1);
+	D3DXVECTOR2 center2 = getObjectCenter(p_obj2);
+	dir.x = center1.x - center2.x;
+	dir.y = center1.y - center2.y;
+	// 正規化して大きさを1にする
+	D3DXVec2Normalize(&dir, &dir);
+	return dir;
+}
+
+void resetStar(ObjStr* p_obj)
+{
+	p_obj->m_pos = D3DXVECTOR2{ WINDOW_WIDTH , 450.0f };
+	p_obj->m_speed = D3DXVECTOR2{ -1.0f,0.0f };
+	p_obj->m_accel = D3DXVECTOR2{ 0.0f,0.0f };
+}
+void setWhiteHole(ObjStr* obj, ObjStr* whiteHole)
+{
+	obj->whiteHole = whiteHole;
+}
 
 /////以下オブジェクトセット系ローカル関数
 
@@ -369,35 +419,3 @@ void updatePlayer(ObjStr* obj) {
 
 };
 
-
-
-
-// 2つのオブジェクト間の距離を(算出する/戻す/返す)
-float objectLength(ObjStr* p_obj1, ObjStr* p_obj2)
-{
-	D3DXVECTOR2 toTarget;
-	toTarget.x = p_obj1->m_pos.x - p_obj2->m_pos.x;
-	toTarget.y = p_obj1->m_pos.y - p_obj2->m_pos.y;
-	float length = D3DXVec2Length(&toTarget);
-	return length;
-};
-
-// オブジェクト1に対するオブジェクト2の方向ベクトルを戻す
-D3DXVECTOR2 objectDirection(ObjStr* p_obj1, ObjStr* p_obj2)
-{
-	D3DXVECTOR2 dir;
-	dir.x = p_obj1->m_pos.x - p_obj2->m_pos.x;
-	dir.y = p_obj1->m_pos.y - p_obj2->m_pos.y;
-	// 正規化して大きさを1にする
-	D3DXVec2Normalize(&dir, &dir);
-	return dir;
-}
-
-void resetStar(ObjStr* p_obj)
-{
-	p_obj->m_pos = D3DXVECTOR2{ WINDOW_WIDTH , 450.0f };
-	p_obj->m_speed = D3DXVECTOR2{ -1.0f,0.0f };
-	p_obj->m_accel = D3DXVECTOR2{ 0.0f,0.0f };
-}
-void setWhiteHole(ObjStr* obj, ObjStr* whiteHole)
-{ obj->whiteHole = whiteHole; }

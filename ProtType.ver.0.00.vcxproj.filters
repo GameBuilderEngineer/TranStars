@@ -213,6 +213,9 @@
     <ClCompile Include="Select.cpp">
       <Filter>アプリケーション\シーン</Filter>
     </ClCompile>
+    <ClCompile Include="DynamicClass.cpp">
+      <Filter>アプリケーション\ステージクラス</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="Select.h">
       <Filter>アプリケーション\シーン</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicClass.h">
+      <Filter>アプリケーション\ステージクラス</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

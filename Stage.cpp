@@ -24,15 +24,16 @@ EffList effectList;//西川0525 エフェクト一つ一つが入ったリスト(通用)
 
 ObjStr blackHole;//ブラックホール
 ObjStr whiteHole;//ホワイトホール
-ObjStr cursor;//カーソル
-//ObjStr* star = NULL;//星へのポインタ[]動的配列用
-//ObjStr* comet = NULL;//隕石へのポインタ[]動的配列用
+//ObjStr cursor;//カーソル
+DynamicClass comet;//隕石
+DynamicClass star;//隕石
 
 void setTFLists();
 
 void initializeStage() {
 	InitImage(&gameBG, getTexture(textureLoaderNS::BACK_GROUND), 0, 0, 1200, 900);
-	initializeObjList(&xBasedList, &resultList);//西川0527
+	initializeObjList(&xBasedList);//西川0604
+	initializeObjList(&resultList);//西川0604
 	initializeTypeFuncList(&typeCollisionList);
 	initializeTypeFuncList(&typeActionList);
 	initializeEffect(&effectList);//西川0527
@@ -45,17 +46,14 @@ void startStage() {
 	stage.initialize(getSelectStage());//菅野
 	initializeObject(&whiteHole, 10000, CHARA_WHITEHOLE, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 	initializeObject(&blackHole, 10000, CHARA_BLACKHOLE, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
-	initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
+//	initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 
 	setWhiteHole(&blackHole, &whiteHole);
 
-	//initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
-	//initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
-
 	startEffect(&effectList);//西川0527
-	startObjList(&stage, &xBasedList, &resultList);//西川0527
+//	startObjList(&stage, &xBasedList, &resultList);//西川0604initializeObjectの中に入れた
 
-	setObjEdge(&xBasedList, &blackHole);
+//	setxBased(&blackHole);//西川0604initializeObjectの中に入れた
 
 };//西川0518 新しいステージに入る前に呼ぶ関数
 
@@ -70,7 +68,8 @@ void updateStage() {
 	stage.update();//菅野
 	updateObject(&whiteHole);
 	updateObject(&blackHole);
-	updateObject(&cursor);
+	comet.update();
+//	updateObject(&cursor);
 
 	updateEffect(&effectList);//西川0525
 
@@ -82,10 +81,12 @@ void drawStage() {
 	DrawImage(&gameBG);
 	drawEffect(&effectList);//西川0530オブジェクトより先に描画
 
+//	for (int i = 0; i < 1000; i++)//西川0602 わざとFPS下げる用
 	stage.draw();//菅野
 	drawObject(&whiteHole);
 	drawObject(&blackHole);
-	drawObject(&cursor);
+	comet.draw();
+//	drawObject(&cursor);
 
 };
 
@@ -101,22 +102,27 @@ void printStage() {
 	stage.print();//菅野
 	printObject(&whiteHole);
 	printObject(&blackHole);
-	printObject(&cursor);
+//	printObject(&cursor);
+	comet.print();
 #endif
 };
 
 void unInitializeStage() {
 	stage.uninitialize();//菅野//西川0527
 	uninitializeEffect(&effectList);//西川0527
-	uninitializeObjList(&xBasedList, &resultList);//西川0527
+	uninitializeObjList(&xBasedList); uninitializeObjList(&resultList);
 	uninitializeTypeFuncList(&typeCollisionList);//西川0530
 	uninitializeTypeFuncList(&typeActionList);//西川0530
 };
 
 void finishStage() {
+	comet.uninitialize();
 	finishEffect(&effectList);//西川0527
-	finishObjList(&xBasedList, &resultList);//西川0527
+	finishObjList(&xBasedList); finishObjList(&resultList);
 };//西川0518 今のステージをやめた後に呼ぶ関数
+void setxBased(ObjStr* obj) {
+	setObjEdge(&xBasedList, obj);
+}
 
 EffList* getEffect() {
 	return &effectList;
@@ -124,11 +130,19 @@ EffList* getEffect() {
 StageClass* getStageClass() {
 	return &stage;
 }
-
+DynamicClass* getCometClass() {
+	return &comet;
+}
+DynamicClass* getStarClass() {
+	return &star;
+}
 void setTFLists() {
+	//コリジョン
 	setCollisionsList(&typeCollisionList, NO_TYPE, TYPE_MAX, NO_TYPE, TYPE_MAX, &checkHitObjRR);//重複があるが、これでよい
+
+	//アクション
 	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, CHARA_BLACKHOLE,
-		CHARA_BLACKHOLE, &sendObject);//ブラックホールに当たったらホワイトホールに飛ぶ
+		CHARA_BLACKHOLE, &sendObject);//ブラックホールに当たったらホワイトホールに飛ぶか消滅
 
 	setActionsList(&typeActionList, CHARA_SMALL_STAR, CHARA_COMET, STAGE_REFLECTION,
 		STAGE_REFLECTION, &actReflect);//反射する
@@ -139,5 +153,5 @@ void setTFLists() {
 	setActionList(&typeActionList, CHARA_SMALL_STAR, CHARA_SMALL_STARFRAME, &actFitSmallStar);//はまる
 	setActionList(&typeActionList, CHARA_BIG_STAR, CHARA_BIG_STARFRAME, &actFitBigStar);//はまる
 
-	optimizeActionList(&typeActionList);//同じタイプで同じ処理があれば削除
+	optimizeActionList(&typeActionList);//同じタイプと同じ処理の組み合わせがあれば削除
 }

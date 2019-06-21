@@ -8,7 +8,7 @@ void initializeReflection(ObjStr* reflection)
 	reflection->m_speed = { 0.0f,0.0f };
 	reflection->m_accel = { 0.0f,0.0f };
 	reflection->m_attract = { 0.0f,0.0f };
-	reflection->m_time = -1;
+	reflection->m_time = -1.0f;
 	reflection->m_mode = -1;
 	reflection->m_rad = 50.0f;
 	reflection->m_rect = { 100.0f,100.0f };

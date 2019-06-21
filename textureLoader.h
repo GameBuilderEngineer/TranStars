@@ -32,6 +32,7 @@ namespace textureLoaderNS
 		MAGIC_CIRCLE,//êºêÏ0525
 		FIRE,//êºêÏ0528
 		TEXT_WINDOW,//êºêÏ0528
+		PARTICLE_STAR,
 		TITLE_LOGO,
 		TITLE_START,
 		TITLE_NEW_GAME,

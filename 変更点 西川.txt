@@ -1,3 +1,51 @@
+//西川 0617
+・オブジェクトによって当たり判定があったりなかったりする不具合が謎
+・とりあえず当たり判定自体のせいではない
+・ベクターの中で最新のやつにしか、ブラックホールのワープが働かないっぽい？
+
+<effect.cpp/h>
+・微調整
+
+<textureLoader.cpp/h>
+・エフェクトに使っていた旧星画像を再追加
+
+<TEXTURE>
+・読み込んでいないファイルを非使用フォルダに移動
+
+<comet001.png/comet002.PNG>
+・サイズ1/5に(元のファイルは名前変更)
+
+<stage01.txt>
+・いったんPOP_COMETが1体いるだけのステージに変更(元のファイルは名前変更)
+
+<blackHole.cpp/h>
+・オブジェクトを引き寄せる処理をattractObjectとして独立
+
+<popComet.cpp>
+・vector～型のcometの本体を、Stageに移動　定義はDynamicClassにしてDynamicClassに移動
+
+<popStar.cpp>
+・popComet同様にstarのpopを書く
+
+<DynamicClass.cpp/h>
+・vector～型のcometに関する変数・処理をDynamicClassとしてpopCometから移動
+・starも同様
+
+<Stage.cpp/h>
+・カーソルを消去
+・CometStr関連を追加
+・object端をxBasedに登録する処理setxBasedを作り、object.cppで呼び出すように
+・動的オブジェクトを作るgetStarClassとgetPopClassを作成
+
+<object.cpp>
+・object端をxBasedに登録する処理setxBasedをinitalizeObjectの最後で常に呼ぶように変更
+・オブジェクトの中心を取得する関数を作り、プロジェクト全体で、それらしいことをしたい箇所を、この関数を通るように書き換え
+・以前getObjectSizeLongerに不要な/2.0fが入っていたので削除したが、不要でなかったので再復活
+
+//西川 ~0616
+
+色々追加(うろ覚え)
+
 //西川 05/26
 <effect.cpp/h>
 ・魔法陣 追加

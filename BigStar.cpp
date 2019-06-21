@@ -10,7 +10,7 @@ void initializeBigStar(ObjStr* bigStar)
 	bigStar->m_speed = { 0.0f,0.0f };
 	bigStar->m_accel = { 1.0f,0.0f };
 	bigStar->m_attract = { 0.0f,0.0f };
-	bigStar->m_time = -1;
+	bigStar->m_time = -1.0f;
 	bigStar->m_mode = -1;
 	bigStar->m_rad = 100.0f;
 	bigStar->m_rect = { 100.0f,100.0f };

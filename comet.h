@@ -2,6 +2,6 @@
 
 #include "object.h"
 
-void initializeComet(ObjStr* comet, int id, int objType, VECTOR2 position, float angle);
+void initializeComet(ObjStr* comet);
 
 void updateComet(ObjStr* comet);

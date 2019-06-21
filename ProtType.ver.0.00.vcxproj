@@ -148,6 +148,7 @@
     <ClCompile Include="comet.cpp" />
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="dataList.cpp" />
+    <ClCompile Include="DynamicClass.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="fileLoader.cpp" />
     <ClCompile Include="funcTypeList.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="comet.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="dataList.h" />
+    <ClInclude Include="DynamicClass.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="fileLoader.h" />
     <ClInclude Include="funcTypeList.h" />

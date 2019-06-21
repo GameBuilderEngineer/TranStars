@@ -292,7 +292,7 @@ bool GetKeyboardPress(int key)
 bool GetKeyboardDebugEnter()
 {
 #ifndef DEBUG
-	return GetKeyboardPress(DIK_RETURN);
+	return GetKeyboardTrigger(DIK_RETURN);
 #endif
 	return false;
 }//西川0531
@@ -373,7 +373,7 @@ void UpdateMouse(void)
 	{
 		if (flag[0] == true)
 		{
-
+			mouseButtonTrigger[0] = false;//西川0602 たまたま1Fだけマウスを押して離した場合にTrigger[]がtrueのままになるのでは？
 			flag[0] = false;
 		}
 	}
@@ -394,7 +394,7 @@ void UpdateMouse(void)
 	{
 		if (flag[1] == true)
 		{
-
+			mouseButtonTrigger[1] = false;//西川0602
 			flag[1] = false;
 		}
 	}
@@ -415,7 +415,7 @@ void UpdateMouse(void)
 	{
 		if (flag[2] == true)
 		{
-
+			mouseButtonTrigger[2] = false;//西川0602
 			flag[2] = false;
 		}
 	}

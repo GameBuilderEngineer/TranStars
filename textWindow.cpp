@@ -102,7 +102,7 @@ void printTextW(TextW* textW) {
 	char* txt = new char[textW->m_written * 2 + 1];//テキストの内容
 
 	strncpy_s(txt, textW->m_written * 2 + 1, textW->m_text, textW->m_written * 2);
-	printTextDX(&font, txt, textW->m_x + TEXT_FONT_SIZE * 2.0f, textW->m_y + TEXT_FONT_SIZE * 2.0f);
+	printTextDX(&font, txt, textW->m_x + TEXT_FONT_SIZE * 2, textW->m_y + TEXT_FONT_SIZE * 2);
 	if (txt != NULL)
  		free(txt);
 }
