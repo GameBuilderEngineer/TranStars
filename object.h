@@ -61,7 +61,7 @@ typedef struct _obj{
 	Image m_image;						//描画情報
 }ObjStr;//Structure
 
-#define SPEED_FRICTION (0.85f)
+#define SPEED_FRICTION (0.975f)
 
 #define STUB_OBJNUM (100)	//ステージのデータ内にあるオブジェクトの総数/実際には外からもらう値
 #define PLUS_OBJNUM (5)		//ステージ側で保存する必要のないオブジェクト情報(UIなど)があればそれの数

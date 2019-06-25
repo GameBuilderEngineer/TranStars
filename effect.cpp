@@ -7,7 +7,7 @@
 Image eImage[eTYPE_MAX];//‰æ‘œAÅ‰‚Éì‚Á‚ÄI‚í‚è‚È‚Ì‚Å
 #define SPLIT_NUM (10)//•ªŠ„‰ñ”
 
-#define TAIL_LENGTH (2)//‹OÕ‚P‚Â‚Ìpixel”
+#define TAIL_LENGTH (3)//‹OÕ‚P‚Â‚Ìpixel”
 #define TAIL_RATE (3.0f)//‹OÕ‚ÌŠg‘å”{—¦
 
 // ˆê‚Â‚Ìƒm[ƒh‚ð“®“I‚É¶¬
@@ -311,7 +311,7 @@ void updateEffect(EffList* eff) {
 			d->m_pos += d->m_speed;
 			break;
 		case eTAIL:
-			d->m_image.height += 1;
+			d->m_image.height = float(eImage[eTAIL].height) * (2.0f - float(d->m_time) / float(d->m_tMAX));
 			break;
 		case eMAGIC_ON: {
 			d->m_rot += 0.008f + 0.116f * float(d->m_time) / float(d->m_tMAX);
@@ -472,7 +472,7 @@ void makeTail(EffList* eff, D3DXVECTOR2 pos, D3DXVECTOR2 speed) {
 	D3DXVECTOR2 pos_; float time;
 	for (int i = 0; i < num; i++) {
 		pos_ = pos + speed * float(i) * float(TAIL_LENGTH) / float(num) / TAIL_RATE;
-		time = 60.0f * (2.0f - min(float(num) / 5.0f, 1.0f));
+		time = 40.0f * (2.0f - min(float(num) / 5.0f, 1.0f));
 		InsertRear(eff, { eTAIL, true, pos_,
 			r, { 1.0f, 1.0f}, {0.0f, 0.0f}, { 0.0f, 0.0f }, int(time), int(time), 0, eImage[eTAIL] });
 	}

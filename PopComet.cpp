@@ -20,10 +20,11 @@ void initializePopComet(ObjStr* popComet)
 void updatePopComet(ObjStr* popComet)
 {
 	popComet->m_time += getFrameTime();
-	if (popComet->m_time >= 5.0f && getCometClass()->getDynObjNum() < COMET_MAX)
+	if (popComet->m_time >= 5.0f)
 	{
-		initializeObject(getCometClass()->dynObjPop(), 0, CHARA_COMET, popComet->m_pos, 0.0f, NULL, 0);//initializeComet内で動的確保するのでObjStr*はNULL
-//		initializeComet(&data,01,CHARA_COMET,popComet->m_pos,0);
+		ObjStr* o = getCometClass()->dynObjPop();
+		if (o != NULL)
+			initializeObject(o, 0, CHARA_COMET, popComet->m_pos, 0.0f, NULL, 0);//initializeComet内で動的確保するのでObjStr*はNULL
 		popComet->m_time = 0.0f;
 	}
 }

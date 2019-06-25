@@ -122,15 +122,20 @@ void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b)) {
 		if (result->crnt->d._oC.m_use) result->crnt->d._oC.m_use = func(result->crnt->d._oC.mp_objL, result->crnt->d._oC.mp_objR);
 }*/
 
-//オブジェクトの端をx順リストに登録
+//オブジェクトの端をx順リストに登録／削除
 void setObjEdge(DataList* xBased, ObjStr* p_obj) {
 	float size = getObjectHarfSizeLonger(p_obj);//半径と辺、どちらが当たり判定かはともかく長い方
 	InsertRearEdges(xBased, p_obj, getObjectFar_PosToCenter(p_obj).x - size, getObjectFar_PosToCenter(p_obj).x + size);
 }
+void deleteObjEdge(DataList* xBased, ObjStr* p_obj) {
+	xBased->crnt = xBased->head;
+	while(SearchNextObjEdge(xBased, p_obj) != NULL)//次を探して見つかったら着目、見つからなくなるまで繰り返し
+		RemoveCurrent(xBased);//着目ノード削除
+}
 
 //リストの中身を画面に表示
-void printList(DataList* draw) {
-	Print(draw);
+void printList(DataList* print) {
+	Print(print);
 }
 
 

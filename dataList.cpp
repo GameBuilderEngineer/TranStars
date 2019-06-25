@@ -127,7 +127,12 @@ void Initialize(DataList* list)
 // ŠÖ”compare‚É‚æ‚Á‚Äx‚Æƒf[ƒ^“à—e‚ªˆê’v‚µ‚Ä‚¢‚éƒm[ƒh‚ğ’Tõ
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x)
 {
-	DataNode* ptr = list->head->next;
+	list->crnt = list->head;//æ“ª‚©‚çŒŸõ
+	return SearchNextObjEdge(list, x);
+};
+DataNode* SearchNextObjEdge(DataList *list, const ObjStr* x)
+{
+	DataNode* ptr = list->crnt->next;
 	if (ptr->d._oE.dType != DATA_OBJ_EDGE) return NULL;//ƒf[ƒ^Œ^‚ªˆá‚Á‚½‚ç¸”s
 	while (ptr != list->head)
 	{

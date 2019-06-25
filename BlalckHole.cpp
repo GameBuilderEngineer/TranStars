@@ -13,8 +13,8 @@ void initializeBlackHole(ObjStr* blackHole, ObjStr* others,int targetNum)
 	blackHole->m_attract = { 0.0f,0.0f };
 	blackHole->m_time = -1.0f;
 	blackHole->m_mode = -1;
-	blackHole->m_rad = 50.0f;
-	blackHole->m_rect = { 80.0f,80.0f };
+	blackHole->m_rad = 10.0f;
+	blackHole->m_rect = { 1.0f,1.0f };
 	InitImage(&blackHole->m_image, getTexture(textureLoaderNS::BLACK_HOLE), blackHole->m_pos.x, blackHole->m_pos.y, 80.0f, 80.0f);
 	//ブラックホールの影響を受けるオブジェクトをセットする
 	blackHole->m_tar = others;
@@ -51,7 +51,7 @@ void attractObject(ObjStr* object, ObjStr*blackHole) {
 	if (objectLength(blackHole, object) <= RANGE_ATTRACTION)
 	{// オブジェクトの距離が引力の働く範囲内ならば
 		// オブジェクトの加速度へ引力を加算する
-		object->m_accel =
+		object->m_speed +=
 			blackHole->m_attract * (1 - (objectLength(blackHole, object) / RANGE_ATTRACTION));
 			// (引力) * (1 - オブジェクト距離/引力範囲)
 	}

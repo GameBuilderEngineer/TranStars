@@ -44,6 +44,7 @@ void initializeStage() {
 void startStage() {	
 	//ステージセレクトで、ステージ変数から初期化するようにする:とりあえずステージ１
 	stage.initialize(getSelectStage());//菅野
+	comet.initialize();
 	initializeObject(&whiteHole, 10000, CHARA_WHITEHOLE, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 	initializeObject(&blackHole, 10000, CHARA_BLACKHOLE, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
 //	initializeObject(&cursor, 10000, UI_CURSOR, D3DXVECTOR2(0,0), 0, stage.getObj(), stage.getObjNum());
@@ -122,6 +123,9 @@ void finishStage() {
 };//西川0518 今のステージをやめた後に呼ぶ関数
 void setxBased(ObjStr* obj) {
 	setObjEdge(&xBasedList, obj);
+}
+void deletexBased(ObjStr* obj) {
+	deleteObjEdge(&xBasedList, obj);
 }
 
 EffList* getEffect() {

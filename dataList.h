@@ -60,6 +60,7 @@ void PrintCurrent(const DataList *list);
 
 // 関数compareによって(x)/(x1,x2)とデータ内容が一致しているノードを探索
 DataNode* SearchObjEdge(DataList *list, const ObjStr* x);
+DataNode* SearchNextObjEdge(DataList *list, const ObjStr* x);
 DataNode* SearchObjCon(DataList *list, const ObjStr* x1, const ObjStr* x2);
 DataNode* SearchNode(DataList *list, DataNode* n);
 DataNode* SearchData(DataList *list, UnionData* d);

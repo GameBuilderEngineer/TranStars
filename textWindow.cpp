@@ -43,8 +43,7 @@ void initializeTextW(TextW* textW) {
 	createTextDX(&font, TEXT_FONT_SIZE, true, false, "ƒƒCƒŠƒI");//¼ì0530
 	InitImage(&imageW, getTexture(textureLoaderNS::TEXT_WINDOW), float(textW->m_x), float(textW->m_y), float(WINDOW_WIDTH), sizeY);
 
-	Icon.m_pos = { 0.0f,0.0f,0.0f };
-	Icon.m_c1 = Icon.m_c2 = 0.0f;
+	setIcon();
 	InitImage(&Icon.m_img, getTexture(textureLoaderNS::WITCH), Icon.m_pos.x, Icon.m_pos.y, ICON_SIZE_MIN, ICON_SIZE_MAX);
 }
 void uninitializeTextW(TextW* textW){

@@ -52,3 +52,4 @@ void updateAndResultList(DataList* result, bool func(ObjStr* a, ObjStr* b));//戻
 
 //オブジェクトの端をx順リストに登録
 void setObjEdge(DataList* xBased, ObjStr* p_obj);
+void deleteObjEdge(DataList* xBased, ObjStr* p_obj);
